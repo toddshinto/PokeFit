@@ -13,6 +13,24 @@ app.use(sessionMiddleware);
 
 app.use(express.json());
 
+app.get('/api/user-stats/:userId', (req, res, next) => {
+  const userId = Number(req.params.userId);
+  const sql = `
+    select  *
+      from  "users"
+     where  "userId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        return next(new ClientError(`cannot ${req.method} ${req.originalUrl}, user does not found`));
+      }
+      return res.status(200).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/health-check', (req, res, next) => {
   db.query('select \'successfully connected\' as "message"')
     .then(result => res.json(result.rows[0]))
