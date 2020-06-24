@@ -26,9 +26,37 @@ app.get('/api/user-stats/:userId', (req, res, next) => {
       if (result.rows.length < 1) {
         return next(new ClientError(`cannot ${req.method} ${req.originalUrl}, user does not found`));
       }
-      return res.status(200).json(result.rows);
+      return res.status(200).send(result.rows);
     })
     .catch(err => next(err));
+});
+
+app.put('/api/user-stats/:userId', (req, res, next) => {
+  const userId = Number(req.params.userId);
+  const milesWalked = req.body.milesWalked;
+  const encounters = req.body.encounters;
+  if (!milesWalked) {
+    return res.status(400).json({ error: 'milesWalked required' });
+  }
+  if (!encounters) {
+    return res.status(400).json({ error: 'encounters required' });
+  }
+  const sql = `
+    insert into "users" ("userId", "milesWalked", "encounters", "createdAt", "updatedAt")
+    values ($1, $2, $3, NOW(), NOW())
+    on conflict ("userId") do update set
+    "milesWalked" = $2, "encounters" = $3, "updatedAt"=NOW()
+    returning "userId", "milesWalked", "encounters", "updatedAt"
+  `;
+  const params = [userId, milesWalked, encounters];
+  db.query(sql, params)
+    .then(result => {
+      return res.status(201).json(result.rows);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    });
 });
 
 app.get('/api/health-check', (req, res, next) => {
