@@ -17,9 +17,9 @@ app.get('/api/users', (req, res, next) => {
   const userId = req.session.userId;
   if (userId) {
     const sql = `
-    select  *
-      from  "users"
-     where  "userId" = $1
+      select  *
+        from  "users"
+       where  "userId" = $1
   `;
     const params = [userId];
     db.query(sql, params)
@@ -32,9 +32,9 @@ app.get('/api/users', (req, res, next) => {
       .catch(err => next(err));
   } else {
     const newUser = `
-      insert into "users" ("milesWalked", "encounters")
-      values(0, 0)
-      returning "userId", "milesWalked", "encounters", "createdAt"
+      insert into  "users" ("milesWalked", "encounters")
+           values  (0, 0)
+        returning  "userId", "milesWalked", "encounters", "createdAt"
     `;
     db.query(newUser)
       .then(result => {
@@ -59,10 +59,11 @@ app.put('/api/users', (req, res, next) => {
     return res.status(400).json({ error: 'how did this happen sir. userId required, restart app' });
   }
   const sql = `
-    update "users"
-    set "milesWalked" = $2, "encounters" = $3
-    where "userId" = $1
-    returning "userId", "milesWalked", "encounters", "updatedAt"
+       update  "users"
+          set  "milesWalked" = $2,
+               "encounters" = $3
+        where  "userId" = $1
+    returning  "userId", "milesWalked", "encounters", "updatedAt"
   `;
   const params = [userId, milesWalked, encounters];
   db.query(sql, params)
@@ -96,6 +97,29 @@ app.get('/api/pokeboxes', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       return res.status(201).json(result.rows);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    });
+});
+
+app.get('/api/backpack-items', (req, res, next) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'userId required' });
+  }
+  const sql = `
+    select  "backpackId",
+            "itemId",
+            "quantity"
+      from  "backpackItems"
+     where  "userId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      return res.status(201).json(result.rows[0]);
     })
     .catch(err => {
       console.error(err);
