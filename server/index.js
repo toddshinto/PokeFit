@@ -13,7 +13,7 @@ app.use(sessionMiddleware);
 
 app.use(express.json());
 
-app.get('/api/user-stats', (req, res, next) => {
+app.get('/api/users', (req, res, next) => {
   const userId = req.session.userId;
   if (!userId) {
     return res.status(400).json({ error: 'valid userId not found' });
@@ -34,7 +34,7 @@ app.get('/api/user-stats', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.put('/api/user-stats', (req, res, next) => {
+app.put('/api/users', (req, res, next) => {
   const milesWalked = req.body.milesWalked;
   const encounters = req.body.encounters;
   let sql;
@@ -75,6 +75,29 @@ app.put('/api/user-stats', (req, res, next) => {
         req.session.cookie.maxAge = oneWeek;
       }
       return res.status(201).json(result.rows[0]);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    });
+});
+
+app.get('/api/pokeboxes', (req, res, next) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'userId required' });
+  }
+  const sql = `
+    select  "pokemonId",
+            "name",
+            "createdAt"
+      from  "pokeboxes"
+     where  "userId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      return res.status(201).json(result.rows);
     })
     .catch(err => {
       console.error(err);
