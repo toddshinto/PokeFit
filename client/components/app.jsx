@@ -1,6 +1,7 @@
 import React from 'react';
 import HomePage from './home-page';
 import Start from './start';
+import Backpack from './backpack';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -24,6 +25,9 @@ export default class App extends React.Component {
         break;
       case 'start':
         display = <Start setView={this.setView} />;
+        break;
+      case 'backpack':
+        display = <Backpack setView={this.setView} />;
         break;
     }
     return (

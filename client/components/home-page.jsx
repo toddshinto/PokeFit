@@ -6,6 +6,7 @@ export default class HomePage extends React.Component {
     return (
       <div>
         <h1 onClick={() => this.props.setView('start')}>Home Page</h1>
+        <button onClick={() => this.props.setView('backpack')}>Back Pack</button>
       </div>
     );
   }
