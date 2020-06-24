@@ -42,17 +42,16 @@ app.put('/api/user-stats/:userId', (req, res, next) => {
     return res.status(400).json({ error: 'encounters required' });
   }
   const sql = `
-    insert into  "users" ("userId", "milesWalked", "encounters")
-    values ($1, $2, $3)
-    on conflict "userId"
-    do update
-    set "milesWalked" = $2, "encounters" = $3
+    insert into "users" ("userId", "milesWalked", "encounters", "createdAt", "updatedAt")
+    values ($1, $2, $3, NOW(), NOW())
+    on conflict ("userId") do update set
+    "milesWalked" = $2, "encounters" = $3, "updatedAt"=NOW()
     returning "userId", "milesWalked", "encounters", "updatedAt"
   `;
   const params = [userId, milesWalked, encounters];
   db.query(sql, params)
     .then(result => {
-      return result.status(201).json(result.rows);
+      return res.status(201).json(result.rows);
     })
     .catch(err => {
       console.error(err);
