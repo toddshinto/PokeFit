@@ -16,64 +16,62 @@ app.use(express.json());
 app.get('/api/users', (req, res, next) => {
   const userId = req.session.userId;
   if (!userId) {
-    return res.status(400).json({ error: 'valid userId not found' });
-  }
-  const sql = `
+    const newUser = `
+      insert into "users" ("milesWalked", "encounters")
+      values(0, 0)
+      returning "userId", "milesWalked", "encounters", "createdAt"
+    `;
+    db.query(newUser)
+      .then(result => {
+        req.session.userId = result.rows[0].userId;
+        return res.status(200).json(result.rows[0]);
+      })
+      .catch(err => next(err));
+  } else {
+    const sql = `
     select  *
       from  "users"
      where  "userId" = $1
   `;
-  const params = [userId];
-  db.query(sql, params)
-    .then(result => {
-      if (result.rows.length < 1) {
-        return next(new ClientError(`cannot ${req.method} ${req.originalUrl}, user does not found`));
-      }
-      return res.status(200).send(result.rows);
-    })
-    .catch(err => next(err));
+    const params = [userId];
+    db.query(sql, params)
+      .then(result => {
+        if (result.rows.length < 1) {
+          return next(new ClientError(`cannot ${req.method} ${req.originalUrl}, user does not found`));
+        }
+        return res.status(200).json(result.rows[0]);
+      })
+      .catch(err => next(err));
+  }
 });
 
 app.put('/api/users', (req, res, next) => {
   const milesWalked = req.body.milesWalked;
   const encounters = req.body.encounters;
-  let sql;
-  let userId;
-  let params;
-  if (req.session.userId) {
-    userId = req.session.userId;
-    sql = `
-    insert into "users" ("userId", "milesWalked", "encounters")
-    values ($1, $2, $3)
-    on conflict ("userId") do update set
-    "milesWalked" = $2, "encounters" = $3
-    returning "userId", "milesWalked", "encounters", "updatedAt"
-  `;
-    params = [userId, milesWalked, encounters];
-  } else {
-    sql = `
-    insert into "users" ("milesWalked", "encounters")
-    values ($1, $2)
-    returning "userId", "milesWalked", "encounters", "updatedAt"
-  `;
-    params = [milesWalked, encounters];
-  }
+  const userId = req.session.userId;
   if (!milesWalked) {
     return res.status(400).json({ error: 'milesWalked required' });
   }
   if (!encounters) {
     return res.status(400).json({ error: 'encounters required' });
   }
+  if (!userId) {
+    return res.status(400).json({ error: 'how did this happen sir. userId required, restart app' });
+  }
+  const sql = `
+    update "users"
+    set "milesWalked" = $2, "encounters" = $3
+    where "userId" = $1
+    returning "userId", "milesWalked", "encounters", "updatedAt"
+  `;
+  const params = [userId, milesWalked, encounters];
   db.query(sql, params)
     .then(result => {
       if (!req.session.userId) {
         req.session.userId = result.rows[0].userId;
       }
-      if (req.body.rememberMe) {
-        const oneWeek = 7 * 24 * 3600 * 1000;
-        req.session.cookie.expires = new Date(Date.now() + oneWeek);
-        req.session.cookie.maxAge = oneWeek;
-      }
+      req.session.cookie.expires = new Date(Date.now() + 315360000000);
+      req.session.cookie.maxAge = 315360000000;
       return res.status(201).json(result.rows[0]);
     })
     .catch(err => {

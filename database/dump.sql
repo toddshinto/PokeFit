@@ -267,6 +267,9 @@ COPY public.items ("itemId", name, "itemType", "itemDescription", effect, sprite
 --
 
 COPY public.pokeboxes ("pokeboxId", "userId", "pokemonId", name, "createdAt", "updatedAt") FROM stdin;
+1	2	1	Bulbasaur	2020-06-24 07:52:33.331801+00	2020-06-24 07:52:33.331801+00
+2	2	4	Charmander	2020-06-24 07:53:09.859013+00	2020-06-24 07:53:09.859013+00
+3	2	7	Squirtle	2020-06-24 07:53:18.274833+00	2020-06-24 07:53:18.274833+00
 \.
 
 
@@ -275,11 +278,7 @@ COPY public.pokeboxes ("pokeboxId", "userId", "pokemonId", name, "createdAt", "u
 --
 
 COPY public.users ("userId", "milesWalked", encounters, "createdAt", "updatedAt") FROM stdin;
-6	15	31	2020-06-24 03:53:27.687643+00	2020-06-24 03:53:27.687643+00
-3	15	32	2020-06-24 04:04:06.977202+00	2020-06-24 04:31:07.748928+00
-4	15	33	2020-06-24 04:32:11.304063+00	2020-06-24 04:32:36.165046+00
-1	0	0	2020-06-24 06:10:45.51077+00	2020-06-24 06:10:45.51077+00
-2	0	1	2020-06-24 06:35:57.781666+00	2020-06-24 06:36:07.466381+00
+1	1	4	2020-06-24 18:23:31.445757+00	2020-06-24 18:34:41.709567+00
 \.
 
 
@@ -301,14 +300,14 @@ SELECT pg_catalog.setval('public."items_itemId_seq"', 1, false);
 -- Name: pokeboxes_pokeboxId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 1, false);
+SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 3, true);
 
 
 --
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 2, true);
+SELECT pg_catalog.setval('public."users_userId_seq"', 1, true);
 
 
 --
