@@ -40,7 +40,7 @@ app.get('/api/users', (req, res, next) => {
     db.query(newUser)
       .then(result => {
         req.session.userId = result.rows[0].userId;
-        return res.status(200).json(result.rows[0]);
+        return res.status(201).json(result.rows[0]);
       })
       .catch(err => next(err));
   }
@@ -74,7 +74,7 @@ app.put('/api/users', (req, res, next) => {
       }
       req.session.cookie.expires = new Date(Date.now() + 315360000000);
       req.session.cookie.maxAge = 315360000000;
-      return res.status(201).json(result.rows[0]);
+      return res.status(200).json(result.rows[0]);
     })
     .catch(err => {
       console.error(err);
@@ -89,6 +89,7 @@ app.get('/api/pokeboxes', (req, res, next) => {
   }
   const sql = `
     select  "pokemonId",
+            "pokeboxId",
             "name",
             "createdAt"
       from  "pokeboxes"
@@ -102,6 +103,32 @@ app.get('/api/pokeboxes', (req, res, next) => {
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'An unexpected error occurred' });
+    });
+});
+
+app.put('/api/pokeboxes', (req, res, next) => {
+  const userId = req.session.userId;
+  const pokeboxId = req.body.pokeboxId;
+  const newName = req.body.newName;
+  if (!userId) {
+    return res.status(400).json({ error: 'userId required' });
+  }
+  if (!pokeboxId) {
+    return res.status(400).json({ error: 'pokeboxId required' });
+  }
+  if (!newName) {
+    return res.status(400).json({ error: 'new name required. what is the point of this without one' });
+  }
+  const sql = `
+       update  "pokeboxes"
+          set  "name" = $1
+        where  "pokeboxId" = $2
+    returning  "name"
+  `;
+  const params = [newName, pokeboxId];
+  db.query(sql, params)
+    .then(result => {
+      return res.status(200).json(result.rows[0]);
     });
 });
 
