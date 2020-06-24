@@ -13,8 +13,8 @@ app.use(sessionMiddleware);
 
 app.use(express.json());
 
-app.get('/api/user-stats/:userId', (req, res, next) => {
-  const userId = Number(req.params.userId);
+app.get('/api/user-stats', (req, res, next) => {
+  const userId = req.session.userId;
   const sql = `
     select  *
       from  "users"
