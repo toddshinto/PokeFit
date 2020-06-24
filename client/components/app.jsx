@@ -1,25 +1,33 @@
 import React from 'react';
+import HomePage from './home-page';
+import Start from './start';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: null,
-      isLoading: true
+      view: 'start'
     };
+    this.setView = this.setView.bind(this);
+
   }
 
-  componentDidMount() {
-    fetch('/api/health-check')
-      .then(res => res.json())
-      .then(data => this.setState({ message: data.message || data.error }))
-      .catch(err => this.setState({ message: err.message }))
-      .finally(() => this.setState({ isLoading: false }));
+  setView(view) {
+    this.setState({ view: view });
   }
 
   render() {
-    return this.state.isLoading
-      ? <h1>Testing connections...</h1>
-      : <h1>{this.state.message.toUpperCase()}</h1>;
+    let display = null;
+    switch (this.state.view) {
+      case 'home':
+        display = <HomePage setView={this.setView} />;
+        break;
+      case 'start':
+        display = <Start setView={this.setView} />;
+        break;
+    }
+    return (
+      display
+    );
   }
 }
