@@ -7,7 +7,7 @@ export default class Start extends React.Component {
         <div className="main-background"></div>
         <div onClick={() => this.props.setView('home')} className="press-start">PRESS START</div>
         <div>
-          <img src="/assets/images/great-ball.png" alt="8 bit Ash from pokemon" className="ash-sprite" />
+          <img src="/assets/images/ash1.png" alt="8 bit Ash from pokemon" className="ash-sprite" />
         </div>
         <div className="pokefit-logo">
           <img src="/assets/images/pokefit-shadow.png" alt="pokefit logo" className="pokefit-logo" />
