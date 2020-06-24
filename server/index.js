@@ -66,6 +66,11 @@ app.put('/api/user-stats', (req, res, next) => {
       if (!req.session.userId) {
         req.session.userId = result.rows[0].userId;
       }
+      if (req.body.rememberMe) {
+        const oneWeek = 7 * 24 * 3600 * 1000;
+        req.session.cookie.expires = new Date(Date.now() + oneWeek);
+        req.session.cookie.maxAge = oneWeek;
+      }
       return res.status(201).json(result.rows[0]);
     })
     .catch(err => {
