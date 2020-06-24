@@ -2,6 +2,7 @@ import React from 'react';
 import HomePage from './home-page';
 import Start from './start';
 import Backpack from './backpack';
+import Walk from './walk';
 import Pokebox from './pokebox';
 
 export default class App extends React.Component {
@@ -30,8 +31,12 @@ export default class App extends React.Component {
       case 'backpack':
         display = <Backpack setView={this.setView} />;
         break;
+      case 'walk':
+        display = <Walk setView={this.setView} />;
+        break;
       case 'pokebox':
         display = <Pokebox setView={this.setView} />;
+        break;
     }
     return (
       display
