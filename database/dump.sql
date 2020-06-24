@@ -16,6 +16,8 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+DROP TRIGGER set_timestamp ON public.users;
+DROP TRIGGER set_timestamp ON public.pokeboxes;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
 ALTER TABLE ONLY public.pokeboxes DROP CONSTRAINT pokeboxes_pk;
 ALTER TABLE ONLY public.items DROP CONSTRAINT items_pk;
@@ -32,6 +34,7 @@ DROP SEQUENCE public."items_itemId_seq";
 DROP TABLE public.items;
 DROP SEQUENCE public."backpackItems_backpackId_seq";
 DROP TABLE public."backpackItems";
+DROP FUNCTION public.trigger_set_timestamp();
 DROP EXTENSION plpgsql;
 DROP SCHEMA public;
 --
@@ -62,6 +65,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: trigger_set_timestamp(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.trigger_set_timestamp() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  NEW."updatedAt" = NOW();
+  RETURN NEW;
+END;
+$$;
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -75,8 +92,8 @@ CREATE TABLE public."backpackItems" (
     "userId" integer NOT NULL,
     "itemId" integer NOT NULL,
     quantity integer NOT NULL,
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
@@ -143,8 +160,8 @@ CREATE TABLE public.pokeboxes (
     "userId" character varying(16) NOT NULL,
     "pokemonId" integer NOT NULL,
     name character varying(16) NOT NULL,
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
@@ -176,8 +193,8 @@ CREATE TABLE public.users (
     "userId" integer NOT NULL,
     "milesWalked" integer NOT NULL,
     encounters integer NOT NULL,
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
@@ -258,9 +275,11 @@ COPY public.pokeboxes ("pokeboxId", "userId", "pokemonId", name, "createdAt", "u
 --
 
 COPY public.users ("userId", "milesWalked", encounters, "createdAt", "updatedAt") FROM stdin;
-2	6	5	2020-06-24 00:21:24.071873+00	2020-06-24 00:21:24.071873+00
-3	15	24	2020-06-24 00:29:25.720064+00	2020-06-24 00:29:25.720064+00
-6	15	24	2020-06-24 00:26:43.69367+00	2020-06-24 00:33:27.377226+00
+6	15	31	2020-06-24 03:53:27.687643+00	2020-06-24 03:53:27.687643+00
+3	15	32	2020-06-24 04:04:06.977202+00	2020-06-24 04:31:07.748928+00
+4	15	33	2020-06-24 04:32:11.304063+00	2020-06-24 04:32:36.165046+00
+1	0	0	2020-06-24 06:10:45.51077+00	2020-06-24 06:10:45.51077+00
+2	0	1	2020-06-24 06:35:57.781666+00	2020-06-24 06:36:07.466381+00
 \.
 
 
@@ -322,6 +341,20 @@ ALTER TABLE ONLY public.pokeboxes
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pk PRIMARY KEY ("userId");
+
+
+--
+-- Name: pokeboxes set_timestamp; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.pokeboxes FOR EACH ROW EXECUTE PROCEDURE public.trigger_set_timestamp();
+
+
+--
+-- Name: users set_timestamp; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.users FOR EACH ROW EXECUTE PROCEDURE public.trigger_set_timestamp();
 
 
 --
