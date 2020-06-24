@@ -2,6 +2,7 @@ import React from 'react';
 import HomePage from './home-page';
 import Start from './start';
 import Backpack from './backpack';
+import Pokebox from './pokebox';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -29,6 +30,8 @@ export default class App extends React.Component {
       case 'backpack':
         display = <Backpack setView={this.setView} />;
         break;
+      case 'pokebox':
+        display = <Pokebox setView={this.setView} />;
     }
     return (
       display

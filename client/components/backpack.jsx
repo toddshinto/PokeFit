@@ -6,6 +6,7 @@ export default class Backpack extends React.Component {
       <div>
         <h1>BackPack</h1>
         <button onClick={() => this.props.setView('home')} >Home Page</button>
+        <button onClick={() => this.props.setView('pokebox')} >Pokebox</button>
       </div>
     );
   }
