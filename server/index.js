@@ -15,6 +15,9 @@ app.use(express.json());
 
 app.get('/api/user-stats', (req, res, next) => {
   const userId = req.session.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'valid userId not found' });
+  }
   const sql = `
     select  *
       from  "users"
