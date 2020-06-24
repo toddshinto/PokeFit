@@ -21,6 +21,7 @@ app.get('/api/users', (req, res, next) => {
         from  "users"
        where  "userId" = $1
   `;
+
     const params = [userId];
     db.query(sql, params)
       .then(result => {

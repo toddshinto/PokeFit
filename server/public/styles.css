@@ -2,8 +2,11 @@
   box-sizing: border-box;
 }
 
+
+
 .main-background {
-background-image: url(./server/public/images/afternoon-bg.png);
+background-image: url(/assets/images/afternoon-bg.png);
+
 background-size: cover;
 background-repeat: no-repeat;
 position: relative;
@@ -16,7 +19,8 @@ margin-top: 2rem;
 
 @font-face {
   font-family: 'Pokemon';
-  src: url(./server/public/assets/fonts/PKMN_RBYGSC.ttf);
+  src: url(/assets/fonts/PKMN_RBYGSC.ttf);
+
   font-weight: normal;
   font-style: normal;
 }
