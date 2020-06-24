@@ -3,7 +3,7 @@
 }
 
 .main-background {
-background-image: url(./server/public/images/afternoon-bg.png);
+background-image: url(./assets/images/afternoon-bg.png);
 background-size: cover;
 background-repeat: no-repeat;
 position: relative;
@@ -45,4 +45,37 @@ width: 271px;
 height: 114px;
 left: 17rem;
 top: 4.25rem;
+}
+
+.pokebox-button-container {
+position: absolute;
+width: 70.24px;
+height: 115.9px;
+left: 16rem;
+top: 17rem;
+}
+
+.pokebox-button-icon {
+position: absolute;
+width: 70.24px;
+height: 115.9px;
+left: 16rem;
+top: 17rem;
+-webkit-filter: drop-shadow(0px 4px 4px #222);
+filter: drop-shadow(0px 4px 4px #222);
+}
+
+.pokebox-button-text {
+position: absolute;
+width: 85px;
+height: 14px;
+left: 15.75rem;
+top: 25rem;
+font-family: "Pokemon";
+font-style: normal;
+font-weight: normal;
+font-size: 12px;
+line-height: 13px;
+text-align: center;
+color: #000000;
 }
