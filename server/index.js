@@ -13,7 +13,7 @@ app.use(sessionMiddleware);
 
 app.use(express.json());
 
-app.get('/api/user-stats', (req, res, next) => {
+app.get('/api/users', (req, res, next) => {
   const userId = req.session.userId;
   if (!userId) {
     return res.status(400).json({ error: 'valid userId not found' });
@@ -29,7 +29,7 @@ app.get('/api/user-stats', (req, res, next) => {
       if (result.rows.length < 1) {
         return next(new ClientError(`cannot ${req.method} ${req.originalUrl}, user does not found`));
       }
-      return res.status(200).send(result.rows);
+      return res.status(200).send(result.rows[0]);
     })
     .catch(err => next(err));
 });
