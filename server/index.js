@@ -13,8 +13,11 @@ app.use(sessionMiddleware);
 
 app.use(express.json());
 
-app.get('/api/user-stats/:userId', (req, res, next) => {
-  const userId = Number(req.params.userId);
+app.get('/api/user-stats', (req, res, next) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'valid userId not found' });
+  }
   const sql = `
     select  *
       from  "users"
@@ -31,27 +34,47 @@ app.get('/api/user-stats/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.put('/api/user-stats/:userId', (req, res, next) => {
-  const userId = Number(req.params.userId);
+app.put('/api/user-stats', (req, res, next) => {
   const milesWalked = req.body.milesWalked;
   const encounters = req.body.encounters;
+  let sql;
+  let userId;
+  let params;
+  if (req.session.userId) {
+    userId = req.session.userId;
+    sql = `
+    insert into "users" ("userId", "milesWalked", "encounters")
+    values ($1, $2, $3)
+    on conflict ("userId") do update set
+    "milesWalked" = $2, "encounters" = $3
+    returning "userId", "milesWalked", "encounters", "updatedAt"
+  `;
+    params = [userId, milesWalked, encounters];
+  } else {
+    sql = `
+    insert into "users" ("milesWalked", "encounters")
+    values ($1, $2)
+    returning "userId", "milesWalked", "encounters", "updatedAt"
+  `;
+    params = [milesWalked, encounters];
+  }
   if (!milesWalked) {
     return res.status(400).json({ error: 'milesWalked required' });
   }
   if (!encounters) {
     return res.status(400).json({ error: 'encounters required' });
   }
-  const sql = `
-    insert into "users" ("userId", "milesWalked", "encounters", "createdAt", "updatedAt")
-    values ($1, $2, $3, NOW(), NOW())
-    on conflict ("userId") do update set
-    "milesWalked" = $2, "encounters" = $3, "updatedAt"=NOW()
-    returning "userId", "milesWalked", "encounters", "updatedAt"
-  `;
-  const params = [userId, milesWalked, encounters];
   db.query(sql, params)
     .then(result => {
-      return res.status(201).json(result.rows);
+      if (!req.session.userId) {
+        req.session.userId = result.rows[0].userId;
+      }
+      if (req.body.rememberMe) {
+        const oneWeek = 7 * 24 * 3600 * 1000;
+        req.session.cookie.expires = new Date(Date.now() + oneWeek);
+        req.session.cookie.maxAge = oneWeek;
+      }
+      return res.status(201).json(result.rows[0]);
     })
     .catch(err => {
       console.error(err);
