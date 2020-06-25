@@ -103,7 +103,8 @@ app.get('/api/pokeboxes', (req, res, next) => {
             "p"."growth_rate",
             "p"."species",
             "pb"."is_shiny",
-            "pb"."created_at"
+            "pb"."created_at",
+            "pb"."user_id"
       from  "pokeboxes" as "pb"
       join  "pokemon" as "p" using ("pokemon_id")
      where  "user_id" = $1

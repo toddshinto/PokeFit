@@ -19,7 +19,12 @@ export default class Pokebox extends React.Component {
   }
 
   getPokemon() {
-    fetch('/api/pokeboxes');
+    fetch('/api/pokeboxes')
+      .then(response => response.json())
+      .then(pokemons => {
+        this.setState({ pokemons });
+        this.setPokemonDetails(0);
+      });
   }
 
   // this method was to add pokemon to our database initially
@@ -100,7 +105,7 @@ export default class Pokebox extends React.Component {
       body: JSON.stringify(pokemon)
     })
       .then(res => res.json())
-      .then(data => console.log('add success', data));
+      .then(data => (process.stdout.write(data)));
   }
 
   render() {
@@ -109,10 +114,10 @@ export default class Pokebox extends React.Component {
       <div>
         <h1>Pokebox</h1>
         <PokemonDetails pokemon={this.state.pokemonDetails} />
-        {/* <div className="pokemon-list">
+        <div className="pokemon-list">
           {pokemons.map(pokemon =>
-            <PokemonListItem key={pokemons.indexOf(pokemon)} pokemon={pokemon} setPokemonDetails={this.setPokemonDetails} />)}
-        </div> */}
+            <PokemonListItem key={pokemons.indexOf(pokemon)} pokemon={pokemon} setPokemonDetails={this.setPokemonDetails} number={pokemons.indexOf(pokemon)}/>)}
+        </div>
         <button onClick={() => this.props.setView('home')} >Home Page</button>
         <button onClick={() => this.props.setView('walk')} >Walk Screen</button>
         <button onClick={() => this.props.setView('backpack')} >Backpack</button>
