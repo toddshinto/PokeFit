@@ -1,5 +1,6 @@
 import React from 'react';
 import PokemonListItem from './pokemon-list-item';
+import PokemonDetails from './pokemon-details';
 
 export default class Pokebox extends React.Component {
   constructor(props) {
@@ -31,6 +32,7 @@ export default class Pokebox extends React.Component {
     return (
       <div>
         <h1>Pokebox</h1>
+        <PokemonDetails pokemon={this.state.pokemonDetails} />
         <div className="pokemon-list">
           {pokemons.map(pokemon =>
             <PokemonListItem key={pokemons.indexOf(pokemon)} pokemon={pokemon} setPokemonDetails={this.setPokemonDetails} />)}
