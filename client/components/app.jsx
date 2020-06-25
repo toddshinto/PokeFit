@@ -13,7 +13,7 @@ export default class App extends React.Component {
       stats: {}
     };
     this.setView = this.setView.bind(this);
-
+    this.getStats = this.getStats.bind(this);
   }
 
   componentDidMount() {

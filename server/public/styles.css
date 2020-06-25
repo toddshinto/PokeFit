@@ -1,52 +1,188 @@
-* {
-  box-sizing: border-box;
+body {
+  margin: 0;
 }
 
-
-
-.main-background {
-background-image: url(/assets/images/afternoon-bg.png);
-
-background-size: cover;
-background-repeat: no-repeat;
-position: relative;
+#root {
+margin: 0 auto;
 width: 375px;
 height: 667px;
-margin-left: 30rem;
-margin-top: 2rem;
+letter-spacing: 0.1em;
+}
+
+.main-background {
+background-image: url(./assets/images/afternoon-bg.png);
+background-size: cover;
+background-repeat: no-repeat;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+width: 100%;
+height: 100%;
+background-position: center bottom;
 }
 
 
 @font-face {
   font-family: 'Pokemon';
-  src: url(/assets/fonts/PKMN_RBYGSC.ttf);
-
+  src: url(./assets/fonts/PKMN_RBYGSC.ttf);
   font-weight: normal;
   font-style: normal;
 }
 
 .press-start {
 font-family: "Pokemon";
-position: absolute;
+margin: 0 auto;
+position: relative;
+top: 50%;
 width: 167px;
 height: 18px;
-left: 37.5rem;
-top: 20.84375rem;
 }
 
-.ash-sprite {
-position: absolute;
+.ash-sprite-container {
+background-image: url(./assets/images/ash1.png);
+margin: 0 auto;
+position: relative;
+top: 74%;
 width: 57.13px;
 height: 70.62px;
-left: 41rem;
-top: 35rem;
+background-size: contain;
 }
 
 
 .pokefit-logo {
-position: absolute;
+margin: 0 auto;
+margin-top: 20px;
 width: 271px;
 height: 114px;
-left: 17rem;
-top: 4.25rem;
+
+}
+
+.buttons-container {
+display: flex;
+justify-content: space-evenly;
+position: relative;
+}
+
+.stats-screen-container {
+background-color: white;
+border-style: double;
+border-width: 5px;
+margin: 0 auto;
+width: 290px;
+height: 215px;
+padding: 0px 20px;
+position: relative;
+}
+
+.pokeball-icon {
+background-image: url(./assets/images/pixel-pokeball.png);
+background-repeat: no-repeat;
+background-size: contain;
+width: 13px;
+height: 13px;
+position: absolute;
+}
+
+
+
+.top-right {
+top: -9px;
+right: -9px;
+}
+
+.top-left {
+top: -9px;
+left: -9px;
+}
+
+.bottom-right {
+bottom: -9px;
+right: -9px;
+}
+
+.bottom-left {
+bottom: -9px;
+left: -9px;
+}
+
+.stats-board {
+font-family: "Pokemon";
+font-size: 13px;
+display: flex;
+justify-content: space-around;
+flex-direction: column;
+height: 100%;
+}
+
+.stats-text {
+display: flex;
+justify-content: space-between;
+}
+
+.pokebox-button-container {
+display: flex;
+justify-content: center;
+flex-direction: column;
+width: 25%;
+height: auto;
+text-align: center;
+align-items: center;
+}
+
+.button-icon {
+width: 70.24px;
+height: 115.9px;
+-webkit-filter: drop-shadow(0px 4px 4px #222);
+filter: drop-shadow(0px 4px 4px #222);
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center bottom;
+}
+
+.pokebox-button-icon {
+background-image: url(./assets/images/pokebox.png);
+background-position: center;
+}
+
+.backpack-button-icon {
+background-image: url(./assets/images/backpack.png);
+background-position: center;
+}
+
+.button-text {
+font-family: "Pokemon";
+font-style: normal;
+font-weight: normal;
+font-size: 12px;
+line-height: 13px;
+text-align: center;
+color: #000000;
+width: 100%;
+}
+
+.backpack-button-container {
+display: flex;
+justify-content: flex;
+flex-direction: column;
+width: 25%;
+height: auto;
+text-align: center;
+align-items: center;
+}
+
+
+.walk-button-container {
+display: flex;
+justify-content: center;
+flex-direction: column;
+width: 25%;
+height: auto;
+text-align: center;
+align-items: center;
+}
+
+
+.walk-button-icon {
+background-image: url(./assets/images/ash1.png);
+background-position: center;
 }
