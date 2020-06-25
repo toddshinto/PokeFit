@@ -33,17 +33,16 @@ background-position: center bottom;
 .press-start {
 font-family: "Pokemon";
 margin: 0 auto;
-position: relative;
-top: 50%;
-width: 167px;
+text-align: center;
+width: 100%;
 height: 18px;
 }
 
 .ash-sprite-container {
 background-image: url(./assets/images/ash1.png);
 margin: 0 auto;
+margin-bottom: 15%;
 position: relative;
-top: 74%;
 width: 57.13px;
 height: 70.62px;
 background-size: contain;
@@ -61,7 +60,6 @@ height: 114px;
 .buttons-container {
 display: flex;
 justify-content: space-evenly;
-position: relative;
 }
 
 .stats-screen-container {
