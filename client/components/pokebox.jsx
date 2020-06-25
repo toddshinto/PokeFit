@@ -1,13 +1,15 @@
 import React from 'react';
+import PokemonListItem from './pokemon-list-item';
 
 export default class Pokebox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pokemon: [],
-      viewDetails: this.state.pokemon[0]
+      pokemons: [],
+      pokemonDetails: this.state.pokemons[0]
     };
     this.getPokemon = this.getPokemon.bind(this);
+    this.setPokemonDetails = this.setPokemonDetails.bind(this);
   }
 
   componentDidMount() {
@@ -20,16 +22,19 @@ export default class Pokebox extends React.Component {
       .then(data => this.setState({ pokemon: data }));
   }
 
-  setViewDetails(index) {
-    this.setState({ viewDetails: this.state.pokemon[index] });
+  setPokemonDetails(index) {
+    this.setState({ pokemonDetails: this.state.pokemons[index] });
   }
 
   render() {
-    const pokemon = this.state.pokemon;
+    const pokemons = this.state.pokemons;
     return (
       <div>
         <h1>Pokebox</h1>
-
+        <div className="pokemon-list">
+          {pokemons.map(pokemon =>
+            <PokemonListItem key={pokemons.indexOf(pokemon)} pokemon={pokemon} setPokemonDetails={this.setPokemonDetails} />)}
+        </div>
         <button onClick={() => this.props.setView('home')} >Home Page</button>
         <button onClick={() => this.props.setView('walk')} >Walk Screen</button>
         <button onClick={() => this.props.setView('backpack')} >Backpack</button>
