@@ -15,10 +15,10 @@ export default class HomePage extends React.Component {
             <img src="/assets/images/pokefit-shadow.png" alt="pokefit logo" className="pokefit-logo" />
           </div>
           <div className="stats-screen-container">
-            <div className="pokeball-icon-top-right"></div>
-            <div className="pokeball-icon-top-left"></div>
-            <div className="pokeball-icon-bottom-right"></div>
-            <div className="pokeball-icon-bottom-left"></div>
+            <div className="pokeball-icon top-right"></div>
+            <div className="pokeball-icon top-left"></div>
+            <div className="pokeball-icon bottom-right"></div>
+            <div className="pokeball-icon bottom-left"></div>
             <div className="stats-board">
               <div className="stats-text">
                 <p>MILES WALKED</p>
