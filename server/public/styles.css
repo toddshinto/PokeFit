@@ -3,16 +3,9 @@ body {
 }
 
 
-#root {
-margin: 0 auto;
-width: 375px;
-height: 667px;
-letter-spacing: 0.1em;
-}
-
 
 .main-background {
-background-image: url(./assets/images/afternoon-bg.png);
+background-image: url(/assets/images/afternoon-bg.png);
 background-size: cover;
 background-repeat: no-repeat;
 display: flex;
@@ -26,7 +19,7 @@ background-position: center bottom;
 
 @font-face {
   font-family: 'Pokemon';
-  src: url(./assets/fonts/PKMN_RBYGSC.ttf);
+  src: url(/assets/fonts/PKMN_RBYGSC.ttf);
   font-weight: normal;
   font-style: normal;
 }
