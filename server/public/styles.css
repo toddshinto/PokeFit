@@ -2,6 +2,12 @@ body {
   margin: 0;
 }
 
+#root {
+margin: 0 auto;
+width: 375px;
+height: 667px;
+letter-spacing: 0.1em;
+}
 
 
 .main-background {
