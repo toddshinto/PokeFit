@@ -10,7 +10,7 @@ export default class HomePage extends React.Component {
     const s = this.props.stats;
     return (
       <>
-        <div className="mai-background">
+        <div className="main-background">
           <div className="pokefit-logo">
             <img src="/assets/images/pokefit-shadow.png" alt="pokefit logo" className="pokefit-logo" />
           </div>
