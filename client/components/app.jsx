@@ -9,21 +9,33 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'start'
+      view: 'start',
+      stats: {}
     };
     this.setView = this.setView.bind(this);
 
   }
 
+  componentDidMount() {
+    this.getStats();
+  }
+
+  getStats() {
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(stats => this.setState({ stats }))
+      .catch(err => console.error(err.message));
+  }
+
   setView(view) {
-    this.setState({ view: view });
+    this.setState({ view });
   }
 
   render() {
     let display = null;
     switch (this.state.view) {
       case 'home':
-        display = <HomePage setView={this.setView} />;
+        display = <HomePage stats={this.state.stats} setView={this.setView} />;
         break;
       case 'start':
         display = <Start setView={this.setView} />;
@@ -32,7 +44,7 @@ export default class App extends React.Component {
         display = <Backpack setView={this.setView} />;
         break;
       case 'walk':
-        display = <Walk setView={this.setView} />;
+        display = <Walk stats={this.state.stats} setView={this.setView} />;
         break;
       case 'pokebox':
         display = <Pokebox setView={this.setView} />;
