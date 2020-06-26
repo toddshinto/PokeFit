@@ -1,11 +1,6 @@
 import React from 'react';
 
 export default class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { stats: this.props.stats };
-  }
-
   render() {
     const s = this.props.stats;
     return (
@@ -26,7 +21,7 @@ export default class HomePage extends React.Component {
               </div>
               <div className="stats-text">
                 <p>POKéBOX</p>
-                <p>4</p>
+                <p>{this.props.pokemons.length}</p>
               </div>
               <div className="stats-text">
                 <p>TIME WALKED</p>

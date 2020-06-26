@@ -10,14 +10,34 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: 'start',
-      stats: {}
+      stats: {},
+      pokemons: [],
+      pokemonDetails: null
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
+    this.getPokemon = this.getPokemon.bind(this);
+    this.setPokemonDetails = this.setPokemonDetails.bind(this);
   }
 
   componentDidMount() {
     this.getStats();
+    this.getPokemon();
+  }
+
+  getPokemon() {
+    fetch('/api/pokeboxes')
+      .then(response => response.json())
+      .then(pokemons => {
+        this.setState({ pokemons });
+        this.setPokemonDetails(0);
+      });
+  }
+
+  setPokemonDetails(index) {
+    if (this.state.pokemons) {
+      this.setState({ pokemonDetails: this.state.pokemons[index] });
+    }
   }
 
   getStats() {
@@ -34,11 +54,14 @@ export default class App extends React.Component {
   render() {
     let display = null;
     switch (this.state.view) {
-      case 'home':
-        display = <HomePage stats={this.state.stats} setView={this.setView} />;
-        break;
       case 'start':
         display = <Start setView={this.setView} />;
+        break;
+      case 'home':
+        display = <HomePage
+          stats={this.state.stats}
+          setView={this.setView}
+          pokemons={this.state.pokemons}/>;
         break;
       case 'backpack':
         display = <Backpack setView={this.setView} />;
@@ -47,7 +70,12 @@ export default class App extends React.Component {
         display = <Walk stats={this.state.stats} setView={this.setView} />;
         break;
       case 'pokebox':
-        display = <Pokebox setView={this.setView} />;
+        display = <Pokebox
+          setView={this.setView}
+          pokemons={this.state.pokemons}
+          setPokemonDetails={this.setPokemonDetails}
+          pokemonDetails={this.state.pokemonDetails}
+        />;
         break;
     }
     return (
