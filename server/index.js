@@ -29,7 +29,7 @@ app.get('/api/users', (req, res, next) => {
     db.query(sql, params)
       .then(result => {
         if (result.rows.length < 1) {
-          return next(new ClientError(`cannot ${req.method} ${req.originalUrl}, user does not found`));
+          return next(new ClientError(`cannot ${req.method} ${req.originalUrl}, user does not found`, 401));
         }
         return res.status(200).json(result.rows[0]);
       })
