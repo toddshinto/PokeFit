@@ -55,7 +55,7 @@ export default class PokemonDetails extends React.Component {
       );
     } else {
       return (
-        <div>No Pokemon Found</div>
+        <div>0</div>
       );
     }
   }

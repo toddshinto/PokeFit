@@ -15,6 +15,14 @@ app.use(express.json());
 
 app.get('/api/users', (req, res, next) => {
   const userId = req.session.userId;
+  const newUser = `
+             insert into  "users" ("miles_walked", "encounters")
+                 values   (0, 0)
+               returning  "user_id" as "userId",
+                          "miles_walked" as "milesWalked",
+                          "encounters",
+                          "created_at" as "createdAt"
+            `;
   if (userId) {
     const sql = `
       select  "user_id" as "userId",
@@ -24,25 +32,22 @@ app.get('/api/users', (req, res, next) => {
         from  "users"
        where  "user_id" = $1
   `;
-
     const params = [userId];
     db.query(sql, params)
       .then(result => {
         if (result.rows.length < 1) {
-          return next(new ClientError(`cannot ${req.method} ${req.originalUrl}, user does not found`, 401));
+          db.query(newUser)
+            .then(result => {
+              req.session.userId = result.rows[0].userId;
+              return res.status(201).json(result.rows[0]);
+            })
+            .catch(err => next(err));
+
         }
         return res.status(200).json(result.rows[0]);
       })
       .catch(err => next(err));
   } else {
-    const newUser = `
-      insert into  "users" ("miles_walked", "encounters")
-           values  (0, 0)
-        returning  "user_id" as "userId",
-                   "miles_walked" as "milesWalked",
-                   "encounters",
-                   "created_at" as "createdAt"
-    `;
     db.query(newUser)
       .then(result => {
         req.session.userId = result.rows[0].userId;
