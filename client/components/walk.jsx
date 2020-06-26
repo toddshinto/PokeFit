@@ -68,7 +68,7 @@ export default class Walk extends React.Component {
         <ul>
           <li>Miles walked: {s.milesWalked}</li>
           <li>total encounters: {s.encounters}</li>
-          <li>time Walked: {s.timeWalked}</li>
+          <li>time Walked: {this.props.timeWalked}</li>
         </ul>
         <button onClick={() => this.props.setView('home')} >Home Page</button>
         <button onClick={() => this.props.setView('pokebox')} >Pokebox</button>
