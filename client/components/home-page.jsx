@@ -23,7 +23,7 @@ export default class HomePage extends React.Component {
               </div>
               <div className="stats-text">
                 <p>POKéBOX</p>
-                <p>{pokemons.length}</p>
+                <p>{pokemons ? pokemons.length : 0}</p>
               </div>
               <div className="stats-text">
                 <p>TIME WALKED</p>

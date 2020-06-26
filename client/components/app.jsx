@@ -18,6 +18,9 @@ export default class App extends React.Component {
       currLat: null,
       currLon: null,
       currMilesWalked: null
+      sessionTimeWalked: 0,
+      startTime: 0
+
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -26,11 +29,33 @@ export default class App extends React.Component {
     this.getStartPosition = this.getStartPosition.bind(this);
     this.getCurrentPosition = this.getCurrentPosition.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
+    this.getTimeWalked = this.getTimeWalked.bind(this);
+
   }
 
   componentDidMount() {
     this.getStats();
     this.getPokemon();
+    const d = new Date();
+    const startTime = d.getTime();
+    this.setState({ startTime });
+
+  }
+
+  getTimeWalked() {
+
+    if (!this.state.timeWalked) {
+      const startTime = this.state.startTime;
+      let currentTime = 0;
+      let timeDiff = 0;
+      setInterval(() => {
+        const d = new Date();
+        currentTime = d.getTime();
+        timeDiff = currentTime - startTime;
+        const tw = Math.round(timeDiff / 60000);
+        this.setState({ sessionTimeWalked: tw });
+      }, 60001);
+    }
   }
 
   getPokemon() {
@@ -138,6 +163,7 @@ export default class App extends React.Component {
 
   setView(view) {
     this.setState({ view });
+    this.getTimeWalked();
   }
 
   render() {
@@ -160,7 +186,7 @@ export default class App extends React.Component {
         display = <Backpack setView={this.setView} />;
         break;
       case 'walk':
-        display = <Walk stats={this.state.stats} setView={this.setView} />;
+        display = <Walk timeWalked={this.state.sessionTimeWalked} stats={this.state.stats} setView={this.setView} />;
         break;
       case 'pokebox':
         display = <Pokebox
