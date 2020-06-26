@@ -6,5 +6,4 @@ node_modules
 server/sessions/*.json
 server/public/main.js*
 index.html
-styles.css
 index-home-page.html
