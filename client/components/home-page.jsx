@@ -2,6 +2,7 @@ import React from 'react';
 
 export default class HomePage extends React.Component {
   render() {
+    console.log(this.props.stats);
     const s = this.props.stats;
     const pokemons = this.props.pokemons;
     return (

@@ -42,6 +42,7 @@ app.get('/api/users', (req, res, next) => {
               return res.status(201).json(result.rows[0]);
             })
             .catch(err => next(err));
+
         }
         return res.status(200).json(result.rows[0]);
       })
