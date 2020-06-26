@@ -93,6 +93,7 @@ app.get('/api/pokeboxes', (req, res, next) => {
             "p"."type",
             "p"."type_secondary",
             "p"."height",
+            "p"."habitat",
             "p"."weight",
             "p"."sprite_front_default",
             "p"."sprite_back_default",
@@ -168,36 +169,6 @@ app.get('/api/backpack-items', (req, res, next) => {
       res.status(500).json({ error: 'An unexpected error occurred' });
     });
 });
-
-// app.post('/api/pokemon', (req, res, next) => {
-//   const id = req.body.id;
-//   const name = req.body.name;
-//   const type = req.body.type;
-//   let type_secondary = null;
-//   if (req.body.type_secondary) { type_secondary = req.body.type_secondary; }
-//   const sprite_front_default = req.body.sprite_front_default;
-//   const sprite_back_default = req.body.sprite_back_default;
-//   const sprite_front_shiny = req.body.sprite_front_shiny;
-//   const sprite_back_shiny = req.body.sprite_back_shiny;
-//   const height = req.body.height;
-//   const weight = req.body.weight;
-//   const habitat = req.body.habitat;
-//   const flavor_text = req.body.flavor_text;
-//   const flavor_text_new = req.body.flavor_text_new;
-//   const growth_rate = req.body.growth_rate;
-//   const species = req.body.species;
-//   const sql = `
-//     insert into "pokemon" ("id", "name", "type", "type_secondary", "sprite_front_default", "sprite_back_default", "sprite_front_shiny", "sprite_back_shiny", "height", "weight", "habitat", "flavor_text", "flavor_text_new", "growth_rate", "species")
-//     values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
-//     returning *
-//   `;
-//   const params = [id, name, type, type_secondary, sprite_front_default, sprite_back_default, sprite_front_shiny, sprite_back_shiny, height, weight, habitat, flavor_text, flavor_text_new, growth_rate, species];
-//   db.query(sql, params)
-//     .then(result => {
-//       return res.status(201).json(result.rows[0]);
-//     })
-//     .catch(err => next(err));
-// });
 
 app.get('/api/health-check', (req, res, next) => {
   db.query('select \'successfully connected\' as "message"')
