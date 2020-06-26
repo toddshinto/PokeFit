@@ -17,7 +17,10 @@ app.get('/api/users', (req, res, next) => {
   const userId = req.session.userId;
   if (userId) {
     const sql = `
-      select  *
+      select  "user_id" as "userId",
+              "miles_walked" as "milesWalked",
+              "encounters",
+              "created_at" as "createdAt"
         from  "users"
        where  "user_id" = $1
   `;
@@ -35,7 +38,10 @@ app.get('/api/users', (req, res, next) => {
     const newUser = `
       insert into  "users" ("miles_walked", "encounters")
            values  (0, 0)
-        returning  "user_id", "miles_walked", "encounters", "created_at"
+        returning  "user_id" as "userId",
+                   "miles_walked" as "milesWalked",
+                   "encounters",
+                   "created_at" as "createdAt"
     `;
     db.query(newUser)
       .then(result => {
@@ -64,7 +70,10 @@ app.put('/api/users', (req, res, next) => {
           set  "miles_walked" = $2,
                "encounters" = $3
         where  "user_id" = $1
-    returning  "user_id", "miles_walked", "encounters", "updated_at"
+    returning  "user_id" as "userId",
+               "miles_walked" as "milesWalked",
+               "encounters",
+               "updated_at" as "updatedAt"
   `;
   const params = [userId, milesWalked, encounters];
   db.query(sql, params)
@@ -88,24 +97,24 @@ app.get('/api/pokeboxes', (req, res, next) => {
     return res.status(400).json({ error: 'userId required' });
   }
   const sql = `
-    select  "pb"."pokebox_id",
+    select  "pb"."pokebox_id" as "pokeboxId",
             "pb"."name",
             "p"."type",
-            "p"."type_secondary",
+            "p"."type_secondary" as "typeSecondary",
             "p"."height",
             "p"."habitat",
             "p"."weight",
-            "p"."sprite_front_default",
-            "p"."sprite_back_default",
-            "p"."sprite_front_shiny",
-            "p"."sprite_back_shiny",
-            "p"."flavor_text",
-            "p"."flavor_text_new",
-            "p"."growth_rate",
+            "p"."sprite_front_default" as "spriteFrontDefault",
+            "p"."sprite_back_default" as "spriteBackDefault",
+            "p"."sprite_front_shiny" as "spriteFrontShiny",
+            "p"."sprite_back_shiny" as "spriteBackShiny",
+            "p"."flavor_text" as "flavorText",
+            "p"."flavor_text_new" as "flavorTextNew",
+            "p"."growth_rate" as "growthRate",
             "p"."species",
-            "pb"."is_shiny",
-            "pb"."created_at",
-            "pb"."user_id"
+            "pb"."is_shiny" as "isShiny",
+            "pb"."created_at" as "createdAt",
+            "pb"."user_id" as "userId"
       from  "pokeboxes" as "pb"
       join  "pokemon" as "p" using ("pokemon_id")
      where  "user_id" = $1

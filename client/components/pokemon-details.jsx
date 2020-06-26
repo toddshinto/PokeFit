@@ -35,14 +35,14 @@ export default class PokemonDetails extends React.Component {
           details = (
             <div onClick={() => this.changeView('description-cont')}>
               <div>Habitat: {pokemon.habitat}</div>
-              <div>{pokemon.flavor_text}</div>
+              <div>{pokemon.flavorText}</div>
             </div>
           );
           break;
         case 'description-cont':
           details = (
             <div onClick={() => this.changeView('stats')}>
-              <div>{pokemon.flavor_text_new}</div>
+              <div>{pokemon.flavorTextNew}</div>
             </div>
           );
           break;

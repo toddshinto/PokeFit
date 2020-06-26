@@ -10,7 +10,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: 'start',
-      stats: {},
+      stats: null,
       pokemons: [],
       pokemonDetails: null
     };

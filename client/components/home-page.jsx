@@ -3,6 +3,7 @@ import React from 'react';
 export default class HomePage extends React.Component {
   render() {
     const s = this.props.stats;
+    const pokemons = this.props.pokemons;
     return (
       <>
         <div className="main-background">
@@ -21,7 +22,7 @@ export default class HomePage extends React.Component {
               </div>
               <div className="stats-text">
                 <p>POKéBOX</p>
-                <p>{this.props.pokemons.length}</p>
+                <p>{pokemons.length}</p>
               </div>
               <div className="stats-text">
                 <p>TIME WALKED</p>
