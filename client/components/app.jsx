@@ -13,12 +13,10 @@ export default class App extends React.Component {
       stats: null,
       pokemons: [],
       pokemonDetails: null,
-      position: {
-        startLat: null,
-        startLon: null,
-        currLat: null,
-        currLon: null
-      },
+      startLat: null,
+      startLon: null,
+      currLat: null,
+      currLon: null,
       currMilesWalked: null
     };
     this.setView = this.setView.bind(this);
@@ -33,8 +31,6 @@ export default class App extends React.Component {
   componentDidMount() {
     this.getStats();
     this.getPokemon();
-    this.getStartPosition();
-    this.getCurrentPosition();
   }
 
   getPokemon() {
@@ -49,12 +45,8 @@ export default class App extends React.Component {
   getStartPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => this.setState({
-          position: {
-            startLat: position.coords.latitude,
-            startLon: position.coords.longitude
-          }
-        }), error => {
+        position => this.setState({ startLat: position.coords.latitude, startLon: position.coords.longitude })
+        , error => {
           switch (error.code) {
             case (0):
               console.error('Error unknown');
@@ -74,18 +66,10 @@ export default class App extends React.Component {
   }
 
   getCurrentPosition() {
-    const location = this.state.position;
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
-        position => {
-          this.setState({
-            position: {
-              currLat: position.coords.latitude,
-              currLon: position.coords.longitude
-            }
-          });
-          this.calculateDistance(location.startLat, location.startLon, location.currLat, location.currLon);
-        }, error => {
+        position => this.setState({ currLat: position.coords.latitude, currLon: position.coords.longitude })
+        , error => {
           switch (error.code) {
             case (0):
               console.error('Error unknown');
@@ -120,6 +104,23 @@ export default class App extends React.Component {
     distance = distance * 180 / Math.PI;
     distance = distance * 60 * 1.1515;
     this.setState({ currMilesWalked: distance });
+    if (this.state.currMilesWalked > 0.3) {
+      this.setState({
+        stats: {
+          milesWalked: this.state.stats.milesWalked + this.state.currMilesWalked
+        },
+        currMilesWalked: 0
+      });
+      fetch('/api/users', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.state.stats)
+      })
+        .then(res => res.json())
+        .then(data => process.stdout.write(data));
+    }
   }
 
   setPokemonDetails(index) {
@@ -143,7 +144,11 @@ export default class App extends React.Component {
     let display = null;
     switch (this.state.view) {
       case 'start':
-        display = <Start setView={this.setView} />;
+        display = <Start
+          setView={this.setView}
+          getStartPosition={this.getStartPosition}
+          getCurrentPosition={this.getCurrentPosition}
+        />;
         break;
       case 'home':
         display = <HomePage
