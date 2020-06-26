@@ -22,7 +22,7 @@ export default class Pokebox extends React.Component {
     fetch('/api/pokeboxes')
       .then(response => response.json())
       .then(pokemons => {
-        this.setState({ pokemons });
+        this.setState({ pokemons: pokemons });
         this.setPokemonDetails(0);
       });
   }
