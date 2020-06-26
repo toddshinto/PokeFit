@@ -7,3 +7,4 @@ server/sessions/*.json
 server/public/main.js*
 index.html
 index-home-page.html
+loading-pokemon.js
