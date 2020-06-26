@@ -17,7 +17,7 @@ export default class App extends React.Component {
       startLon: null,
       currLat: null,
       currLon: null,
-      currMilesWalked: null
+      currMilesWalked: null,
       sessionTimeWalked: 0,
       startTime: 0
 
