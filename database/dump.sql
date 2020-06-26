@@ -163,7 +163,8 @@ CREATE TABLE public.pokeboxes (
     pokemon_id integer NOT NULL,
     name character varying(16) NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    is_shiny boolean
 );
 
 
@@ -292,14 +293,17 @@ COPY public.items (item_id, name, item_type, item_description, effect, sprite) F
 -- Data for Name: pokeboxes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.pokeboxes (pokebox_id, user_id, pokemon_id, name, created_at, updated_at) FROM stdin;
-1	2	1	Bulbasaur	2020-06-24 07:52:33.331801+00	2020-06-24 07:52:33.331801+00
-2	2	4	Charmander	2020-06-24 07:53:09.859013+00	2020-06-24 07:53:09.859013+00
-3	2	7	Squirtle	2020-06-24 07:53:18.274833+00	2020-06-24 07:53:18.274833+00
-4	1	7	Turtle	2020-06-24 20:23:59.20849+00	2020-06-24 20:26:20.314579+00
-5	1	7	Squirtle	2020-06-25 07:54:18.994215+00	2020-06-25 07:54:18.994215+00
-6	1	7	Squirtle	2020-06-25 07:54:21.043486+00	2020-06-25 07:54:21.043486+00
-7	1	7	Squirtle	2020-06-25 07:54:22.060805+00	2020-06-25 07:54:22.060805+00
+COPY public.pokeboxes (pokebox_id, user_id, pokemon_id, name, created_at, updated_at, is_shiny) FROM stdin;
+1	2	1	Bulbasaur	2020-06-24 07:52:33.331801+00	2020-06-24 07:52:33.331801+00	\N
+2	2	4	Charmander	2020-06-24 07:53:09.859013+00	2020-06-24 07:53:09.859013+00	\N
+3	2	7	Squirtle	2020-06-24 07:53:18.274833+00	2020-06-24 07:53:18.274833+00	\N
+4	1	7	Turtle	2020-06-24 20:23:59.20849+00	2020-06-24 20:26:20.314579+00	\N
+5	1	7	Squirtle	2020-06-25 07:54:18.994215+00	2020-06-25 07:54:18.994215+00	\N
+6	1	7	Squirtle	2020-06-25 07:54:21.043486+00	2020-06-25 07:54:21.043486+00	\N
+7	1	7	Squirtle	2020-06-25 07:54:22.060805+00	2020-06-25 07:54:22.060805+00	\N
+8	5	7	Squirtle	2020-06-26 00:49:08.630756+00	2020-06-26 00:49:08.630756+00	\N
+9	5	4	Charmander	2020-06-26 00:49:18.082235+00	2020-06-26 00:49:18.082235+00	\N
+10	5	1	Bulbasaur	2020-06-26 00:49:23.739248+00	2020-06-26 00:49:23.739248+00	\N
 \.
 
 
@@ -363,7 +367,7 @@ COPY public.pokemon (pokemon_id, name, type, type_secondary, sprite_front_defaul
 121	starmie	water	psychic	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/121.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/121.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/121.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/121.png	11	800	sea	Its central core glows with the seven colors of the rainbow. Some people value the core as a gem.	STARMIE swims through water by spinning its star-shaped body as if it were a propeller on a ship. The core at the center of this POKéMON’s body glows in seven colors.	slow	Mysterious Pokémon
 30	nidorina	poison	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/30.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/30.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/30.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/30.png	8	200	grassland	The female''s horn develops slowly. Prefers physical attacks such as clawing and biting.	When NIDORINA are with their friends or family, they keep their barbs tucked away to prevent hurting each other. This POKéMON appears to become nervous if separated from the others.	medium-slow	Poison Pin Pokémon
 116	horsea	water	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/116.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/116.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/116.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/116.png	4	80	sea	Known to shoot down flying bugs with precision blasts of ink from the surface of the water.	If HORSEA senses danger, it will reflexively spray a dense black ink from its mouth and try to escape. This POKéMON swims by cleverly flapping the fins on its back.	medium	Dragon Pokémon
-38	ninetales	fire	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/38.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/38.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/38.png	11	199	grassland	According to an enduring legend, 9 noble saints were united and reincarnated as this Pokémon. Jenn''s favorite.	NINETALES casts a sinister light from its bright red eyes to gain total control over its foe’s mind. This POKéMON is said to live for a thousand years.	medium	Fox Pokémon
+38	ninetales	fire	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/38.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/38.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/38.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/38.png	11	199	grassland	According to an enduring legend, 9 noble saints were united and reincarnated as this Pokémon. 	NINETALES casts a sinister light from its bright red eyes to gain total control over its foe’s mind. This POKéMON is said to live for a thousand years.	medium	Fox Pokémon
 13	weedle	bug	poison	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/13.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/13.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/13.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/13.png	3	32	forest	Often found in forests, eating leaves. It has a sharp venomous stinger on its head.	WEEDLE has an extremely acute sense of smell. It is capable of distinguishing its favorite kinds of leaves from those it dislikes just by sniffing with its big red proboscis (nose).	medium	Hairy Bug Pokémon
 14	kakuna	bug	poison	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/14.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/14.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/14.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/14.png	6	100	forest	Almost incapable of moving, this POKéMON can only harden its shell to protect itself from predators.	KAKUNA remains virtually immobile as it clings to a tree. However, on the inside, it is extremely busy as it prepares for its coming evolution. This is evident from how hot the shell becomes to the touch.	medium	Cocoon Pokémon
 59	arcanine	fire	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/59.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/59.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/59.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/59.png	19	1550	grassland	Its proud and regal appearance has captured the hearts of people since long ago.	ARCANINE is known for its high speed. It is said to be capable of running over 6,200 miles in a single day and night. The fire that blazes wildly within this POKéMON’s body is its source of power.	slow	Legendary Pokémon
@@ -432,7 +436,7 @@ COPY public.pokemon (pokemon_id, name, type, type_secondary, sprite_front_defaul
 96	drowzee	psychic	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/96.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/96.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/96.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/96.png	10	324	grassland	Puts enemies to sleep then eats their dreams. Occasionally gets sick from eating bad dreams.	If your nose becomes itchy while you are sleeping, it’s a sure sign that one of these POKéMON is standing above your pillow and trying to eat your dream through your nostrils.	medium	Hypnosis Pokémon
 2	ivysaur	grass	poison	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/2.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/2.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/2.png	10	130	grassland	When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.	There is a bud on this POKéMON’s back. To support its weight, IVYSAUR’s legs and trunk grow thick and strong. If it starts spending more time lying in the sunlight, it’s a sign that the bud will bloom into a large flower soon.	medium-slow	Seed Pokémon
 146	moltres	fire	flying	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/146.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/146.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/146.png	20	600	rare	One of the legendary bird Pokémon. It is said that its appearance indicates the coming of spring.	Legendary bird POKéMON. It is said to migrate from the south along with the spring.	slow	Flame Pokémon
-133	eevee	normal	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/133.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/133.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/133.png	3	65	urban	Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs.	EEVEE has an unstable genetic makeup that suddenly mutates due to the environment in which it lives. Radiation from various STONES causes this POKéMON to evolve.	medium	Evolution Pokémon
+133	eevee	normal	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/133.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/133.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/133.png	3	65	urban	Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs. Known to have an unusual affection for Jenn.	EEVEE has an unstable genetic makeup that suddenly mutates due to the environment in which it lives. Radiation from various STONES causes this POKéMON to evolve.	medium	Evolution Pokémon
 23	ekans	poison	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/23.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/23.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/23.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/23.png	20	69	grassland	Moves silently and stealthily. Eats the eggs of birds, such as PIDGEY and SPEAROW, whole.	EKANS curls itself up in a spiral while it rests. Assuming this position allows it to quickly respond to a threat from any direction with a glare from its upraised head.	medium	Snake Pokémon
 7	squirtle	water	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/7.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/7.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/7.png	5	90	waters-edge	After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth.	SQUIRTLE’s shell is not merely used for protection. The shell’s rounded shape and the grooves on its surface help minimize resistance in water, enabling this POKéMON to swim at high speeds.	medium-slow	Tiny Turtle Pokémon
 55	golduck	water	\N	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/55.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/55.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/55.png	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/55.png	17	766	waters-edge	Often seen swim­ ming elegantly by lake shores. It is often mistaken for the Japanese monster, Kappa.	GOLDUCK is the fastest swimmer among all POKéMON. It swims effortlessly, even in a rough, stormy sea. It sometimes rescues people from wrecked ships floundering in high seas.	medium	Duck Pokémon
@@ -493,7 +497,7 @@ SELECT pg_catalog.setval('public."items_itemId_seq"', 1, false);
 -- Name: pokeboxes_pokeboxId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 7, true);
+SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 10, true);
 
 
 --
@@ -567,3 +571,4 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+
