@@ -19,7 +19,8 @@ export default class App extends React.Component {
       currLon: null,
       currMilesWalked: null,
       sessionTimeWalked: 0,
-      startTime: 0
+      startTime: 0,
+      locationError: null
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -29,12 +30,13 @@ export default class App extends React.Component {
     this.getCurrentPosition = this.getCurrentPosition.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
     this.getTimeWalked = this.getTimeWalked.bind(this);
-
+    this.setLocationError = this.setLocationError.bind(this);
   }
 
   componentDidMount() {
     this.getStats();
     this.getPokemon();
+    this.getPokemonToFillDatabase();
     const d = new Date();
     const startTime = d.getTime();
     this.setState({ startTime });
@@ -67,24 +69,28 @@ export default class App extends React.Component {
   getStartPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => this.setState({ startLat: position.coords.latitude, startLon: position.coords.longitude })
+        position => this.setState({ startLat: position.coords.latitude, startLon: position.coords.longitude, locationError: null })
         , error => {
           switch (error.code) {
             case (0):
-              console.error('Error unknown');
+              this.setLocationError('Error unknown');
               break;
             case (1):
-              alert('Permission denied. Permission must be enabled to track walk distance');
+              this.setLocationError('Permission denied.');
               break;
             case (2):
-              console.error('Position unavailable');
+              this.setLocationError('Position unavailable');
               break;
             case (3):
-              console.error('Request timed out');
+              this.setLocationError('Request timed out');
               break;
           }
         }, { enableHighAccuracy: true });
     }
+  }
+
+  setLocationError(locationError) {
+    this.setState({ locationError });
   }
 
   getCurrentPosition() {
@@ -97,13 +103,13 @@ export default class App extends React.Component {
               console.error('Error unknown');
               break;
             case (1):
-              alert('Permission denied. Permission must be enabled to track walk distance');
+              alert('Permission denied. Permission must be enabled to track walk distance'); // replace-page-with must enable geolocation
               break;
             case (2):
-              console.error('Position unavailable');
+              console.error('Position unavailable'); // show message on screen
               break;
             case (3):
-              console.error('Request timed out');
+              console.error('Request timed out'); // show message on screen
               break;
           }
         },
@@ -126,14 +132,15 @@ export default class App extends React.Component {
     distance = Math.acos(distance);
     distance = distance * 180 / Math.PI;
     distance = distance * 60 * 1.1515;
-    this.setState({ currMilesWalked: distance });
+    this.setState({ currMilesWalked: this.state.currMilesWalked + distance });
     if (this.state.currMilesWalked > 0.3) {
-      this.setState({
+      this.setState(prevState => ({
         stats: {
+          ...prevState.stats,
           milesWalked: this.state.stats.milesWalked + this.state.currMilesWalked
         },
         currMilesWalked: 0
-      });
+      }));
       fetch('/api/users', {
         method: 'PUT',
         headers: {
