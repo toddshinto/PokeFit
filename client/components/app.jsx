@@ -178,6 +178,7 @@ export default class App extends React.Component {
         display = <HomePage
           stats={this.state.stats}
           setView={this.setView}
+          timeWalked={this.state.sessionTimeWalked}
           pokemons={this.state.pokemons}/>;
         break;
       case 'backpack':

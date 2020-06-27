@@ -27,7 +27,7 @@ export default class HomePage extends React.Component {
               </div>
               <div className="stats-text">
                 <p>TIME WALKED</p>
-                <p>{s.timeWalked}</p>
+                <p>{this.props.timeWalked}</p>
               </div>
             </div>
           </div>
