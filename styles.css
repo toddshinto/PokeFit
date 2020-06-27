@@ -215,6 +215,7 @@ position: relative;
   height: auto;
   justify-content: space-between;
   margin: 0 auto;
+  align-items: center;
 }
 
 .button {
@@ -230,6 +231,18 @@ border: 2px solid black;
   height: auto;
   justify-content: space-evenly;
 }
+
+
+.triangle-button {
+width: 0;
+height: 0;
+border: 0 solid transparent;
+border-top-width: 15px;
+border-bottom-width: 15px;
+border-right: 15px solid #F1BB2F;
+}
+
+
 
 .yellow-circle-button {
   height: 30px;
