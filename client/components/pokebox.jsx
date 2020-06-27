@@ -8,7 +8,7 @@ export default class Pokebox extends React.Component {
     return (
       <div>
         <h1>Pokebox</h1>
-        <PokemonDetails pokemon={this.props.pokemonDetails} />
+        <PokemonDetails pokemon={this.props.pokemonDetails} getPokemon={this.props.getPokemon}/>
         <div className="pokemon-list">
           { pokemons.length > 1
             ? pokemons.map(pokemon =>
