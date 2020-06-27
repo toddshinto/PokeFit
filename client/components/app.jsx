@@ -36,7 +36,6 @@ export default class App extends React.Component {
   componentDidMount() {
     this.getStats();
     this.getPokemon();
-    this.getPokemonToFillDatabase();
     const d = new Date();
     const startTime = d.getTime();
     this.setState({ startTime });
@@ -200,6 +199,7 @@ export default class App extends React.Component {
           pokemons={this.state.pokemons}
           setPokemonDetails={this.setPokemonDetails}
           pokemonDetails={this.state.pokemonDetails}
+          getPokemon={this.getPokemon}
         />;
         break;
     }

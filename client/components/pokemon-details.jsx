@@ -1,4 +1,5 @@
 import React from 'react';
+import Menu from './menu-drawer/menu';
 
 export default class PokemonDetails extends React.Component {
   constructor(props) {
@@ -49,6 +50,7 @@ export default class PokemonDetails extends React.Component {
       }
       return (
         <div>
+          <Menu pokemon={pokemon} getPokemon={this.props.getPokemon}/>
           <div>{pokemon.name}</div>
           {details}
         </div>
