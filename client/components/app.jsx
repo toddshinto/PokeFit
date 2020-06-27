@@ -20,7 +20,6 @@ export default class App extends React.Component {
       currMilesWalked: null,
       sessionTimeWalked: 0,
       startTime: 0
-
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -39,11 +38,9 @@ export default class App extends React.Component {
     const d = new Date();
     const startTime = d.getTime();
     this.setState({ startTime });
-
   }
 
   getTimeWalked() {
-
     if (!this.state.timeWalked) {
       const startTime = this.state.startTime;
       let currentTime = 0;
@@ -86,7 +83,7 @@ export default class App extends React.Component {
               console.error('Request timed out');
               break;
           }
-        });
+        }, { enableHighAccuracy: true });
     }
   }
 
@@ -109,7 +106,8 @@ export default class App extends React.Component {
               console.error('Request timed out');
               break;
           }
-        });
+        },
+        { enableHighAccuracy: true });
     }
   }
 
