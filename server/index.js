@@ -16,11 +16,12 @@ app.use(express.json());
 app.get('/api/users', (req, res, next) => {
   const userId = req.session.userId;
   const newUser = `
-             insert into  "users" ("miles_walked", "encounters")
-                 values   (0, 0)
+             insert into  "users" ("miles_walked", "encounters", "time_walked")
+                 values   (0, 0, 0)
                returning  "user_id" as "userId",
                           "miles_walked" as "milesWalked",
                           "encounters",
+                          "time_walked" as "timeWalked",
                           "created_at" as "createdAt"
             `;
   if (userId) {
@@ -28,6 +29,7 @@ app.get('/api/users', (req, res, next) => {
       select  "user_id" as "userId",
               "miles_walked" as "milesWalked",
               "encounters",
+              "time_walked" as "timeWalked",
               "created_at" as "createdAt"
         from  "users"
        where  "user_id" = $1
@@ -61,6 +63,7 @@ app.put('/api/users', (req, res, next) => {
   const milesWalked = req.body.milesWalked;
   const encounters = req.body.encounters;
   const userId = req.session.userId;
+  const timeWalked = req.body.timeWalked;
   if (!milesWalked) {
     return res.status(400).json({ error: 'miles_walked required' });
   }
@@ -73,14 +76,16 @@ app.put('/api/users', (req, res, next) => {
   const sql = `
        update  "users"
           set  "miles_walked" = $2,
-               "encounters" = $3
+               "encounters" = $3,
+               "time_walked" = $4
         where  "user_id" = $1
     returning  "user_id" as "userId",
                "miles_walked" as "milesWalked",
+               "time_walked" as "timeWalked",
                "encounters",
                "updated_at" as "updatedAt"
   `;
-  const params = [userId, milesWalked, encounters];
+  const params = [userId, milesWalked, encounters, timeWalked];
   db.query(sql, params)
     .then(result => {
       if (!req.session.userId) {
