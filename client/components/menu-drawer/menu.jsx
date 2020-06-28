@@ -27,18 +27,36 @@ export default class Menu extends React.Component {
   }
 
   render() {
+    let menu = 'menu';
+    let menuTriangle = 'menu-triangle';
+    let rename = 'menu-drawer-item';
+    let release = 'menu-drawer-item';
+    if (this.state.opened) {
+      menu = 'menu-opened';
+      menuTriangle = 'menu-triangle-opened';
+    }
+    if (this.state.action === 'rename') {
+      rename = 'menu-drawer-item-selected';
+    }
+    if (this.state.action === 'release') {
+      release = 'menu-drawer-item-selected';
+    }
+
     return (
       <>
-        <div onClick={this.openDrawer}>Menu</div>
+        <div className={menu} onClick={this.openDrawer}>
+          Menu
+          <div className={menuTriangle}>
+          </div></div>
         {this.state.opened
           ? (
-            <div>
-              <div onClick={() => this.setAction('rename')}>Rename</div>
-              <div onClick={() => this.setAction('release')}>Release</div>
+            <div className='menu-drawer'>
+              <div className={rename} onClick={() => this.setAction('rename')}>Rename</div>
+              <div className={release} onClick={() => this.setAction('release')}>Release</div>
             </div>
           )
           : <></>}
-        {this.state.action ? <MenuAction action={this.state.action} pokemon={this.props.pokemon} closeDrawer={this.closeDrawer} setAction={this.setAction}/> : <></>}
+        {this.state.action ? <MenuAction action={this.state.action} pokemon={this.props.pokemon} closeDrawer={this.closeDrawer} setAction={this.setAction} setView={this.props.setView}/> : <></>}
       </>
     );
   }

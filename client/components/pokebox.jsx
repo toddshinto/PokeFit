@@ -6,20 +6,28 @@ export default class Pokebox extends React.Component {
   render() {
     const pokemons = this.props.pokemons;
     return (
-      <div>
-        <h1>Pokebox</h1>
-        <PokemonDetails pokemon={this.props.pokemonDetails} getPokemon={this.props.getPokemon}/>
-        <div className="pokemon-list">
-          { pokemons.length > 1
-            ? pokemons.map(pokemon =>
-              <PokemonListItem
-                key={pokemons.indexOf(pokemon)}
-                pokemon={pokemon}
-                setPokemonDetails={this.props.setPokemonDetails}
-                number={pokemons.indexOf(pokemon)}/>
-            )
-            : <div>No Pokemon Found :(</div>
-          }
+      <div className="pokebox-body">
+        <PokemonDetails
+          pokemon={this.props.pokemonDetails}
+          getPokemon={this.props.getPokemon}
+          backgroundImage={this.props.backgroundImage}
+          setView={this.props.setView}/>
+        <div className="pokebox-screen-container">
+          <div className="pokebox-rectangle-screen">
+            <div className="pokebox-headline">POKéBOX</div>
+            <div className="pokemon-list">
+              { pokemons.length > 0
+                ? pokemons.map(pokemon =>
+                  <PokemonListItem
+                    key={pokemons.indexOf(pokemon)}
+                    pokemon={pokemon}
+                    setPokemonDetails={this.props.setPokemonDetails}
+                    number={pokemons.indexOf(pokemon)}/>
+                )
+                : <div>No Pokemon Found :(</div>
+              }
+            </div>
+          </div>
         </div>
         <button onClick={() => this.props.setView('home')} >Home Page</button>
         <button onClick={() => this.props.setView('walk')} >Walk Screen</button>

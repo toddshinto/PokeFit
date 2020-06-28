@@ -4,6 +4,8 @@ import Start from './start';
 import Backpack from './backpack';
 import Walk from './walk';
 import Pokebox from './pokebox';
+import Header from './header';
+import Footer from './footer';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -20,7 +22,8 @@ export default class App extends React.Component {
       currMilesWalked: null,
       sessionTimeWalked: 0,
       startTime: 0,
-      locationError: null
+      locationError: null,
+      backgroundImage: null
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -31,11 +34,13 @@ export default class App extends React.Component {
     this.calculateDistance = this.calculateDistance.bind(this);
     this.getTimeWalked = this.getTimeWalked.bind(this);
     this.setLocationError = this.setLocationError.bind(this);
+    this.getBackground = this.getBackground.bind(this);
   }
 
   componentDidMount() {
     this.getStats();
     this.getPokemon();
+    this.getBackground();
     const d = new Date();
     const startTime = d.getTime();
     this.setState({ startTime });
@@ -170,41 +175,111 @@ export default class App extends React.Component {
     this.getTimeWalked();
   }
 
+  getBackground() {
+    const d = new Date();
+    const time = d.getHours();
+    let backgroundImage = null;
+    switch (time) {
+      case (0):
+      case (1):
+      case (2):
+      case (3):
+      case (4):
+        backgroundImage = 'midnight';
+        break;
+      case (5):
+      case (6):
+        backgroundImage = 'early-morning';
+        break;
+      case (7):
+      case (8):
+        backgroundImage = 'morning';
+        break;
+      case (9):
+      case (10):
+      case (11):
+      case (12):
+        backgroundImage = 'late-morning';
+        break;
+      case (13):
+      case (14):
+      case (15):
+      case (16):
+        backgroundImage = 'afternoon';
+        break;
+      case (17):
+      case (18):
+        backgroundImage = 'late-afternoon';
+        break;
+      case (19):
+      case (20):
+        backgroundImage = 'evening';
+        break;
+      case (21):
+      case (22):
+        backgroundImage = 'late-evening';
+        break;
+      case (23):
+      case (24):
+        backgroundImage = 'night';
+        break;
+    }
+    this.setState({ backgroundImage: `/assets/images/${backgroundImage}-bg.png` });
+  }
+
   render() {
-    let display = null;
-    switch (this.state.view) {
-      case 'start':
-        display = <Start
-          setView={this.setView}
-          getStartPosition={this.getStartPosition}
-          getCurrentPosition={this.getCurrentPosition}
-        />;
-        break;
-      case 'home':
-        display = <HomePage
-          stats={this.state.stats}
-          setView={this.setView}
-          timeWalked={this.state.sessionTimeWalked}
-          pokemons={this.state.pokemons}/>;
-        break;
-      case 'backpack':
-        display = <Backpack setView={this.setView} />;
-        break;
-      case 'walk':
-        display = <Walk timeWalked={this.state.sessionTimeWalked} stats={this.state.stats} setView={this.setView} />;
-        break;
-      case 'pokebox':
-        display = <Pokebox
+    const display = null;
+    // switch (this.state.view) {
+    //   case 'start':
+    //     display = <Start
+    //       setView={this.setView}
+    //       getStartPosition={this.getStartPosition}
+    //       getCurrentPosition={this.getCurrentPosition}
+    //     />;
+    //     break;
+    //   case 'home':
+    //     display = <HomePage
+    //       stats={this.state.stats}
+    //       setView={this.setView}
+    //       timeWalked={this.state.sessionTimeWalked}
+    //       pokemons={this.state.pokemons}/>;
+    //     break;
+    //   case 'backpack':
+    //     display = <Backpack setView={this.setView} />;
+    //     break;
+    //   case 'walk':
+    //     display = <Walk
+    //       timeWalked={this.state.sessionTimeWalked}
+    //       stats={this.state.stats}
+    //       setView={this.setView}
+    //       backgroundImage={this.state.backgroundImage} />;
+    //     break;
+    //   case 'pokebox':
+    //     display = <Pokebox
+    //       backgroundImage={this.state.backgroundImage}
+    //       setView={this.setView}
+    //       pokemons={this.state.pokemons}
+    //       setPokemonDetails={this.setPokemonDetails}
+    //       pokemonDetails={this.state.pokemonDetails}
+    //       getPokemon={this.getPokemon}
+    //     />;
+    //     break;
+    // }
+    return (
+    // this.state.view === 'home' || this.state.view === 'start'
+      // ? display
+      <>
+        <Header />
+        <Pokebox
+          backgroundImage={this.state.backgroundImage}
           setView={this.setView}
           pokemons={this.state.pokemons}
           setPokemonDetails={this.setPokemonDetails}
           pokemonDetails={this.state.pokemonDetails}
           getPokemon={this.getPokemon}
-        />;
-        break;
-    }
-    return (
-      display
+        />
+        <Footer />
+      </>
     );
   }
 }
