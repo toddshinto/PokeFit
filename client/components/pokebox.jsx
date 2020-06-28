@@ -29,9 +29,6 @@ export default class Pokebox extends React.Component {
             </div>
           </div>
         </div>
-        <button onClick={() => this.props.setView('home')} >Home Page</button>
-        <button onClick={() => this.props.setView('walk')} >Walk Screen</button>
-        <button onClick={() => this.props.setView('backpack')} >Backpack</button>
       </div>
     );
   }

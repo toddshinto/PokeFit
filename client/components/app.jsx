@@ -228,58 +228,53 @@ export default class App extends React.Component {
   }
 
   render() {
-    const display = null;
-    // switch (this.state.view) {
-    //   case 'start':
-    //     display = <Start
-    //       setView={this.setView}
-    //       getStartPosition={this.getStartPosition}
-    //       getCurrentPosition={this.getCurrentPosition}
-    //     />;
-    //     break;
-    //   case 'home':
-    //     display = <HomePage
-    //       stats={this.state.stats}
-    //       setView={this.setView}
-    //       timeWalked={this.state.sessionTimeWalked}
-    //       pokemons={this.state.pokemons}/>;
-    //     break;
-    //   case 'backpack':
-    //     display = <Backpack setView={this.setView} />;
-    //     break;
-    //   case 'walk':
-    //     display = <Walk
-    //       timeWalked={this.state.sessionTimeWalked}
-    //       stats={this.state.stats}
-    //       setView={this.setView}
-    //       backgroundImage={this.state.backgroundImage} />;
-    //     break;
-    //   case 'pokebox':
-    //     display = <Pokebox
-    //       backgroundImage={this.state.backgroundImage}
-    //       setView={this.setView}
-    //       pokemons={this.state.pokemons}
-    //       setPokemonDetails={this.setPokemonDetails}
-    //       pokemonDetails={this.state.pokemonDetails}
-    //       getPokemon={this.getPokemon}
-    //     />;
-    //     break;
-    // }
-    return (
-    // this.state.view === 'home' || this.state.view === 'start'
-      // ? display
-      <>
-        <Header />
-        <Pokebox
+    let display = null;
+    switch (this.state.view) {
+      case 'start':
+        display = <Start
+          setView={this.setView}
+          getStartPosition={this.getStartPosition}
+          getCurrentPosition={this.getCurrentPosition}
+        />;
+        break;
+      case 'home':
+        display = <HomePage
+          stats={this.state.stats}
+          setView={this.setView}
+          timeWalked={this.state.sessionTimeWalked}
+          pokemons={this.state.pokemons}/>;
+        break;
+      case 'backpack':
+        display = <Backpack setView={this.setView} />;
+        break;
+      case 'walk':
+        display = <Walk
+          timeWalked={this.state.sessionTimeWalked}
+          stats={this.state.stats}
+          setView={this.setView}
+          backgroundImage={this.state.backgroundImage} />;
+        break;
+      case 'pokebox':
+        display = <Pokebox
           backgroundImage={this.state.backgroundImage}
           setView={this.setView}
           pokemons={this.state.pokemons}
           setPokemonDetails={this.setPokemonDetails}
           pokemonDetails={this.state.pokemonDetails}
           getPokemon={this.getPokemon}
-        />
-        <Footer />
-      </>
+        />;
+        break;
+    }
+    return (
+      this.state.view === 'home' || this.state.view === 'start'
+        ? display
+        : <>
+          <Header />
+          {display}
+          <Footer
+            view={this.state.view}
+            setView={this.setView}/>
+        </>
     );
   }
 }

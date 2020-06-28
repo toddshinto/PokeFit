@@ -19,10 +19,10 @@ export default class Footer extends React.Component {
     }
     return (
       <div className="pokebox-footer">
-        <div className={`${button1}-button-container`}>
+        <div className={`${button1}-button-container`} onClick={() => this.props.setView(button1)}>
           <div className={`${button1}-button-icon button-icon`} />
         </div>
-        <div className={`${button2}-button-container`}>
+        <div className={`${button2}-button-container`} onClick={() => this.props.setView(button2)}>
           <div className={`${button2}-button-icon button-icon`} />
         </div>
       </div>
