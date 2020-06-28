@@ -64,7 +64,11 @@ export default class PokemonDetails extends React.Component {
       );
     } else {
       return (
-        <div>0</div>
+        <div className="pokemon-screen-container">
+          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
+            <div className="display-header" style={{ backgroundColor: 'yellow' }}>Go catch some POKéMON!</div>
+          </div>
+        </div>
       );
     }
   }

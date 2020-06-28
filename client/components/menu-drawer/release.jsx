@@ -5,13 +5,17 @@ export default class Release extends React.Component {
     return (
       <div className='action-modal'>
         <div className='action-content'>
-          <div>Are you sure?</div>
-          <div onClick={this.props.releasePokemon}>
-          YES</div>
-          <div onClick={() => {
-            this.props.setAction(null);
-            this.props.closeDrawer();
-          }}>NO</div>
+          <div className='action-header' style={{ backgroundColor: 'red', color: 'white', borderBottom: '2px solid black' }}>{'Are you sure?'}</div>
+          <div className='action-body action-body-message'>
+            {'Your POKéMON will be released...'}
+            <div className='action-yes-no'>
+              <div onClick={this.props.releasePokemon}>YES</div>
+              <div onClick={() => {
+                this.props.setAction(null);
+                this.props.closeDrawer();
+              }}>NO</div>
+            </div>
+          </div>
         </div>
       </div>
     );
