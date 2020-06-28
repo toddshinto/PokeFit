@@ -5,6 +5,10 @@ export default class ReleaseSuccess extends React.Component {
     return (
       <div className='action-modal'>
         <div className='action-content'>
+          <div className='pokeball-icon-small top-left-small' />
+          <div className="pokeball-icon-small top-right-small" />
+          <div className="pokeball-icon-small bottom-left-small" />
+          <div className="pokeball-icon-small bottom-right-small" />
           <div className='action-body action-body-message' onClick={() => {
             this.props.closeDrawer();
             this.props.setAction(null);

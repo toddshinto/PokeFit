@@ -5,6 +5,10 @@ export default class Release extends React.Component {
     return (
       <div className='action-modal'>
         <div className='action-content'>
+          <div className='pokeball-icon-small top-left-small' />
+          <div className="pokeball-icon-small top-right-small" />
+          <div className="pokeball-icon-small bottom-left-small" />
+          <div className="pokeball-icon-small bottom-right-small" />
           <div className='action-header' style={{ backgroundColor: 'red', color: 'white', borderBottom: '2px solid black' }}>{'Are you sure?'}</div>
           <div className='action-body action-body-message'>
             {'Your POKéMON will be released...'}

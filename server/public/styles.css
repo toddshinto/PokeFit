@@ -210,13 +210,21 @@ padding: 0px 20px;
 position: relative;
 }
 
-.pokeball-icon {
+.pokeball-icon, .pokeball-icon-small {
 background-image: url(./assets/images/pixel-pokeball.png);
 background-repeat: no-repeat;
 background-size: contain;
-width: 13px;
-height: 13px;
 position: absolute;
+}
+
+.pokeball-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.pokeball-icon-small {
+  width: 8px;
+  height: 8px;
 }
 
 .right-side-buttons {
@@ -266,6 +274,27 @@ right: -9px;
 bottom: -9px;
 left: -9px;
 }
+
+.top-right-small {
+  top: -6px;
+  right: -6px;
+}
+
+.top-left-small {
+  top: -6px;
+  left: -6px;
+}
+
+.bottom-right-small {
+  bottom: -6px;
+  right: -6px;
+}
+
+.bottom-left-small {
+  bottom: -6px;
+  left: -6px;
+}
+
 
 .stats-board {
 font-family: "Pokemon";

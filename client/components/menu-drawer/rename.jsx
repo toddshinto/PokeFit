@@ -5,6 +5,10 @@ export default class Rename extends React.Component {
     return (
       <div className="action-modal">
         <div className="action-contents">
+          <div className='pokeball-icon-small top-left-small' />
+          <div className="pokeball-icon-small top-right-small" />
+          <div className="pokeball-icon-small bottom-left-small" />
+          <div className="pokeball-icon-small bottom-right-small" />
           <div className="action-header">Name your Pokémon:</div>
           <form className = "action-body" style={{ marginTop: '10px' }}onSubmit={this.props.handleSubmit}>
             <input
