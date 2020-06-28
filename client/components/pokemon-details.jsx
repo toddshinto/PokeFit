@@ -61,6 +61,7 @@ export default class PokemonDetails extends React.Component {
                 closeDrawer={this.props.closeDrawer}
                 setAction={this.props.setAction}
                 opened={this.props.opened}
+                setPokemonDetails={this.props.setPokemonDetails}
                 action={this.props.action}/>
               <div className="pokemon-name">{pokemon.name}</div>
             </div>

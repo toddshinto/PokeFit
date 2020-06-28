@@ -9,7 +9,7 @@ export default class Rename extends React.Component {
           <div className="pokeball-icon-small top-right-small" />
           <div className="pokeball-icon-small bottom-left-small" />
           <div className="pokeball-icon-small bottom-right-small" />
-          <div className="action-header">Name your Pokémon:</div>
+          <div className="action-header" style={{ backgroundColor: 'rgb(51, 172, 251)', color: 'white' }}>Name your Pokémon:</div>
           <form
             className = "action-body"
             style={{ marginTop: '10px' }}

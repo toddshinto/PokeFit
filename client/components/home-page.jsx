@@ -4,9 +4,13 @@ export default class HomePage extends React.Component {
   render() {
     const s = this.props.stats;
     const pokemons = this.props.pokemons;
+    let nightLetters = '';
+    if (this.props.timeOfDay === 'midnight' || this.props.timeOfDay === 'night') {
+      nightLetters = 'night-letters';
+    }
     return (
       <>
-        <div className="main-background">
+        <div className="main-background" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
           <div className="pokefit-logo">
             <img src="/assets/images/pokefit-shadow.png" alt="pokefit logo" className="pokefit-logo" />
           </div>
@@ -15,7 +19,7 @@ export default class HomePage extends React.Component {
             <div className="pokeball-icon top-left"></div>
             <div className="pokeball-icon bottom-right"></div>
             <div className="pokeball-icon bottom-left"></div>
-            <div className="stats-board">
+            <div className={'stats-board'}>
               <div className="stats-text">
                 <p>MILES WALKED</p>
                 <p>{s.milesWalked}</p>
@@ -30,7 +34,7 @@ export default class HomePage extends React.Component {
               </div>
             </div>
           </div>
-          <div className="buttons-container">
+          <div className={`buttons-container ${nightLetters}`}>
             <div className="pokebox-button-container">
               <div onClick={() => this.props.setView('pokebox')} className="pokebox-button-icon button-icon"></div>
               <p className="button-text">POKéBOX</p>

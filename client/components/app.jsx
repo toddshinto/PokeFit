@@ -72,7 +72,9 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(pokemons => {
         this.setState({ pokemons });
-        this.setPokemonDetails(0);
+        if (!this.state.pokemonDetails && pokemons.length > 0) {
+          this.setPokemonDetails(0);
+        }
       });
   }
 
@@ -164,8 +166,9 @@ export default class App extends React.Component {
   }
 
   setPokemonDetails(index) {
-    if (this.state.pokemons) {
-      this.setState({ pokemonDetails: this.state.pokemons[index] });
+    const pokemons = this.state.pokemons;
+    if (pokemons) {
+      this.setState({ pokemonDetails: pokemons[index] });
     }
   }
 
@@ -251,6 +254,8 @@ export default class App extends React.Component {
     switch (this.state.view) {
       case 'start':
         display = <Start
+          timeOfDay = {this.state.timeOfDay}
+          backgroundImage={this.state.backgroundImage}
           setView={this.setView}
           getStartPosition={this.getStartPosition}
           getCurrentPosition={this.getCurrentPosition}
@@ -258,8 +263,10 @@ export default class App extends React.Component {
         break;
       case 'home':
         display = <HomePage
+          timeOfDay={this.state.timeOfDay}
           stats={this.state.stats}
           setView={this.setView}
+          backgroundImage={this.state.backgroundImage}
           timeWalked={this.state.sessionTimeWalked}
           pokemons={this.state.pokemons}/>;
         break;

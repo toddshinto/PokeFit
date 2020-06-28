@@ -9,12 +9,13 @@ export default class ReleaseSuccess extends React.Component {
           <div className="pokeball-icon-small top-right-small" />
           <div className="pokeball-icon-small bottom-left-small" />
           <div className="pokeball-icon-small bottom-right-small" />
+          <div className='action-header' style={{ backgroundColor: 'green' }}>Success</div>
           <div className='action-body action-body-message' onClick={() => {
             this.props.closeDrawer();
             this.props.setAction(null);
+            this.props.setPokemonDetails(0);
           }}>
-            <div className='action-body-message'>{`Okay... Bye bye ${this.props.pokemon}!`}</div>
-            <div className='action-body-message'>See you around..</div>
+            <div className='action-body-message'>{`Okay... Bye-bye ${this.props.pokemon}! \\n See you around...`}</div>
 
           </div>
         </div>

@@ -16,6 +16,7 @@ export default class Pokebox extends React.Component {
           timeOfDay={this.props.timeOfDay}
           pokemon={this.props.pokemonDetails}
           getPokemon={this.props.getPokemon}
+          setPokemonDetails={this.props.setPokemonDetails}
           backgroundImage={this.props.backgroundImage}
           setView={this.props.setView}/>
         <div className="pokebox-screen-container" >

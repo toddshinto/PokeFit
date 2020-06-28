@@ -27,7 +27,12 @@ export default class Menu extends React.Component {
     }
     return (
       <>
-        <div className={menu} onClick={() => this.props.openDrawer()}>
+        <div className={menu} onClick={() => {
+          this.props.openDrawer();
+          if (this.props.action) {
+            this.props.setAction(null);
+          }
+        }}>
           Menu
           <div className={menuTriangle}>
           </div></div>
@@ -39,7 +44,7 @@ export default class Menu extends React.Component {
             </div>
           )
           : <></>}
-        {this.props.action ? <MenuAction action={this.props.action} pokemon={this.props.pokemon} closeDrawer={this.props.closeDrawer} setAction={this.props.setAction} setView={this.props.setView}/> : <></>}
+        {this.props.action ? <MenuAction action={this.props.action} pokemon={this.props.pokemon} closeDrawer={this.props.closeDrawer} setAction={this.props.setAction} setPokemonDetails={this.props.setPokemonDetails} setView={this.props.setView}/> : <></>}
       </>
     );
   }

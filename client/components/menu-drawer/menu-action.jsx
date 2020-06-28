@@ -86,6 +86,7 @@ export default class MenuAction extends React.Component {
         screen = <ReleaseSuccess
           setAction={this.props.setAction}
           pokemon={this.props.pokemon.name}
+          setPokemonDetails={this.props.setPokemonDetails}
           closeDrawer={this.props.closeDrawer}/>;
         break;
       default:
