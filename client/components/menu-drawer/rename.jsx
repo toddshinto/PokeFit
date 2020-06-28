@@ -10,7 +10,11 @@ export default class Rename extends React.Component {
           <div className="pokeball-icon-small bottom-left-small" />
           <div className="pokeball-icon-small bottom-right-small" />
           <div className="action-header">Name your Pokémon:</div>
-          <form className = "action-body" style={{ marginTop: '10px' }}onSubmit={this.props.handleSubmit}>
+          <form
+            className = "action-body"
+            style={{ marginTop: '10px' }}
+            spellCheck={false}
+            onSubmit={this.props.handleSubmit}>
             <input
               type="text"
               defaultValue={this.props.pokemonName}

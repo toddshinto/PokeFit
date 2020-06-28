@@ -50,12 +50,24 @@ export default class PokemonDetails extends React.Component {
       }
       return (
         <div className="pokemon-screen-container">
-          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
+          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }} >
             <div className="first-row">
-              <Menu pokemon={pokemon} setView={this.props.setView} getPokemon={this.props.getPokemon} className="menu-button"/>
+              <Menu pokemon={pokemon}
+                setView={this.props.setView}
+                getPokemon={this.props.getPokemon}
+                timeOfDay={this.props.timeOfDay}
+                className="menu-button"
+                openDrawer={this.props.openDrawer}
+                closeDrawer={this.props.closeDrawer}
+                setAction={this.props.setAction}
+                opened={this.props.opened}
+                action={this.props.action}/>
               <div className="pokemon-name">{pokemon.name}</div>
             </div>
-            <div className="second-row">
+            <div className="second-row" onClick={() => {
+              this.props.setAction(null);
+              this.props.closeDrawer();
+            }}>
               <div className="pokemon-picture" style={{ backgroundImage: `url(${pokemon.spriteFrontDefault})` }} />
               {details}
             </div>

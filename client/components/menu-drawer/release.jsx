@@ -13,8 +13,8 @@ export default class Release extends React.Component {
           <div className='action-body action-body-message'>
             {'Your POKéMON will be released...'}
             <div className='action-yes-no'>
-              <div onClick={this.props.releasePokemon}>YES</div>
-              <div onClick={() => {
+              <div className='answer' onClick={this.props.releasePokemon}>YES</div>
+              <div className='answer' onClick={() => {
                 this.props.setAction(null);
                 this.props.closeDrawer();
               }}>NO</div>

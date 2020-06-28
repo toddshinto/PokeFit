@@ -23,7 +23,10 @@ export default class App extends React.Component {
       sessionTimeWalked: 0,
       startTime: 0,
       locationError: null,
-      backgroundImage: null
+      backgroundImage: null,
+      timeOfDay: null,
+      opened: false,
+      action: null
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -35,6 +38,9 @@ export default class App extends React.Component {
     this.getTimeWalked = this.getTimeWalked.bind(this);
     this.setLocationError = this.setLocationError.bind(this);
     this.getBackground = this.getBackground.bind(this);
+    this.openDrawer = this.openDrawer.bind(this);
+    this.closeDrawer = this.closeDrawer.bind(this);
+    this.setAction = this.setAction.bind(this);
   }
 
   componentDidMount() {
@@ -175,6 +181,19 @@ export default class App extends React.Component {
     this.getTimeWalked();
   }
 
+  openDrawer() {
+    this.setState({ opened: !this.state.opened });
+  }
+
+  closeDrawer() {
+    this.setState({ opened: false });
+    this.getPokemon();
+  }
+
+  setAction(action) {
+    this.setState({ action });
+  }
+
   getBackground() {
     const d = new Date();
     const time = d.getHours();
@@ -224,7 +243,7 @@ export default class App extends React.Component {
         backgroundImage = 'night';
         break;
     }
-    this.setState({ backgroundImage: `/assets/images/${backgroundImage}-bg.png` });
+    this.setState({ backgroundImage: `/assets/images/${backgroundImage}-bg.png`, timeOfDay: backgroundImage });
   }
 
   render() {
@@ -256,6 +275,12 @@ export default class App extends React.Component {
         break;
       case 'pokebox':
         display = <Pokebox
+          openDrawer={this.openDrawer}
+          closeDrawer={this.closeDrawer}
+          setAction={this.setAction}
+          opened={this.state.opened}
+          action={this.state.action}
+          timeOfDay={this.state.timeOfDay}
           backgroundImage={this.state.backgroundImage}
           setView={this.setView}
           pokemons={this.state.pokemons}

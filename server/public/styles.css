@@ -4,8 +4,12 @@ body {
 
 #root {
 margin: 0 auto;
-width: 375px;
-height: 667px;
+width: 100vw;
+height: 100vh;
+max-width: 1080px;
+max-height: 1920px;
+min-height: 640px;
+min-width: 340px;
 letter-spacing: 0.1em;
 font-family: "Pokemon";
 }
@@ -20,19 +24,50 @@ font-family: "Pokemon";
   margin-top: -5px;
 }
 
-.menu, .menu-opened {
+.menu-triangle, .menu-triangle-opened {
+  width: 0;
+  height: 0;
+  position: relative;
+  top: 3px;
+  border-style: solid;
+  border-width:  7px 4px 0 4px;
+}
+
+.menu-triangle {
+  border-color: black transparent transparent transparent;
+}
+
+.menu-triangle-opened {
+  border-color: white transparent transparent transparent;
+}
+
+.menu, .menu-opened,
+.menu-night, .menu-night-opened {
   border: 2px solid black;
   position: absolute;
-  z-index: 500;
+  z-index: 400;
   right: 10px;
   font-size: 10px;
   padding: 2px;
   display: flex;
+  cursor: pointer;
 }
 
-.menu-opened {
+.menu-night {
+  border-color: white;
+  color: white;
+}
+
+.menu-night-opened, .menu-night:hover {
+  background-color: white;
+  color: black;
+  border-color: black transparent transparent transparent;
+}
+
+.menu:hover, .menu-opened {
   background-color: black;
   color: white;
+  border-color: white transparent transparent transparent;
 }
 
 .menu-drawer {
@@ -53,6 +88,12 @@ font-family: "Pokemon";
 
 .menu-drawer-item {
   padding: 3px 5px;
+  cursor: pointer
+}
+
+.menu-drawer-item:hover {
+  background-color: black;
+  color: white;
 }
 
 .menu-drawer-item-selected {
@@ -66,13 +107,19 @@ font-family: "Pokemon";
 }
 
 .rename-enter {
-  background-color: black;
+  background-color: white;
   font-family: inherit;
-  color: white;
+  color: black;
   font-size: 10px;
   text-transform: uppercase;
-  border: none;
+  border: 1px solid black;
   padding: 2px;
+  cursor: pointer;
+}
+
+.rename-enter:hover {
+  background-color: black;
+  color: white;
 }
 
 .action-modal {
@@ -113,6 +160,16 @@ font-family: "Pokemon";
   padding: 10px
 }
 
+.answer {
+  cursor: pointer;
+  padding: 4px;
+}
+
+.answer:hover {
+  color: white;
+  background-color: black
+}
+
 .action-yes-no {
   display: flex;
   flex-direction: row;
@@ -128,21 +185,8 @@ font-family: "Pokemon";
   letter-spacing: 2px;
 }
 
-.menu-triangle, .menu-triangle-opened {
-  width: 0;
-  height: 0;
-  position: relative;
-  top: 3px;
-  border-style: solid;
-  border-width:  7px 4px 0 4px;
-}
-
-.menu-triangle {
-  border-color: black transparent transparent transparent;
-}
-
-.menu-triangle-opened {
-  border-color: white transparent transparent transparent;
+.pokemon-rename:focus {
+  border: none;
 }
 
 
@@ -157,7 +201,6 @@ width: 100%;
 height: 100%;
 background-position: center bottom;
 }
-
 
 @font-face {
   font-family: 'Pokemon';
@@ -174,6 +217,10 @@ width: 100%;
 height: 18px;
 }
 
+.press-start {
+  cursor: pointer;
+}
+
 .ash-sprite-container {
 background-image: url(./assets/images/ash1.png);
 margin: 0 auto;
@@ -184,13 +231,11 @@ height: 70.62px;
 background-size: contain;
 }
 
-
 .pokefit-logo {
 margin: 0 auto;
 margin-top: 20px;
 width: 271px;
 height: 114px;
-
 }
 
 .buttons-container {
@@ -310,15 +355,6 @@ display: flex;
 justify-content: space-between;
 }
 
-.pokebox-button-container {
-display: flex;
-justify-content: center;
-flex-direction: column;
-width: 25%;
-height: auto;
-text-align: center;
-align-items: center;
-}
 
 .button-icon {
 width: 70.24px;
@@ -351,7 +387,9 @@ color: #000000;
 width: 100%;
 }
 
-.backpack-button-container {
+.backpack-button-container,
+.pokebox-button-container,
+.walk-button-container {
 display: flex;
 justify-content: flex;
 flex-direction: column;
@@ -359,19 +397,14 @@ width: 25%;
 height: auto;
 text-align: center;
 align-items: center;
+cursor: pointer;
 }
 
-
-.walk-button-container {
-display: flex;
-justify-content: center;
-flex-direction: column;
-width: 25%;
-height: auto;
-text-align: center;
-align-items: center;
+.backpack-button-icon:hover,
+.pokebox-button-icon:hover,
+.walk-button-icon:hover {
+  transform: translate(2px, 2px)
 }
-
 
 .walk-button-icon {
 background-image: url(./assets/images/ash1.png);
@@ -405,22 +438,21 @@ height: 100%;
   margin-left: 5px;
 }
 
-.yellow-circle-button {
-  box-shadow: inset 1px 1px 1px rgba(50, 50, 50, 0.5);
-  height: 30px;
-  width: 30px;
-  background-color: #F1BB2F;
-  border-radius: 50%;
-  display: inline-block;
-}
-
+.yellow-circle-button,
 .green-circle-button {
   box-shadow: inset 1px 1px 1px rgba(50, 50, 50, 0.5);
   height: 30px;
   width: 30px;
-  background-color: #64B572;
   border-radius: 50%;
   display: inline-block;
+}
+
+.yellow-circle-button {
+  background-color: #F1BB2F;
+}
+
+.green-circle-button {
+  background-color: #64B572;
 }
 
 
@@ -469,7 +501,6 @@ width: 340px;
 height: 199px;
 background: #a84909;
 border-radius: 30px;
-background-image: url(./server/public/assets/images/late-morning-bg.png);
 background-repeat: no-repeat;
 background-size: cover;
 border: 2px solid black;
@@ -514,9 +545,6 @@ padding-top: 15px;
   left: -10px;
 }
 
-.first-row {
-}
-
 .second-row {
 display: flex;
 position: relative;
@@ -531,9 +559,6 @@ height: 100px;
   position: relative;
   left: 5px;
   top: 0px;
-}
-
-.pokebox-screen-container {
 }
 
 .pokebox-headline {

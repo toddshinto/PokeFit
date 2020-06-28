@@ -8,11 +8,17 @@ export default class Pokebox extends React.Component {
     return (
       <div className="pokebox-body">
         <PokemonDetails
+          openDrawer={this.props.openDrawer}
+          closeDrawer={this.props.closeDrawer}
+          setAction={this.props.setAction}
+          opened={this.props.opened}
+          action={this.props.action}
+          timeOfDay={this.props.timeOfDay}
           pokemon={this.props.pokemonDetails}
           getPokemon={this.props.getPokemon}
           backgroundImage={this.props.backgroundImage}
           setView={this.props.setView}/>
-        <div className="pokebox-screen-container">
+        <div className="pokebox-screen-container" >
           <div className="pokebox-rectangle-screen">
             <div className="pokebox-headline">POKéBOX</div>
             <div className="pokemon-list">
