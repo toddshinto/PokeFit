@@ -6,24 +6,36 @@ export default class Pokebox extends React.Component {
   render() {
     const pokemons = this.props.pokemons;
     return (
-      <div>
-        <h1>Pokebox</h1>
-        <PokemonDetails pokemon={this.props.pokemonDetails} />
-        <div className="pokemon-list">
-          { pokemons.length > 1
-            ? pokemons.map(pokemon =>
-              <PokemonListItem
-                key={pokemons.indexOf(pokemon)}
-                pokemon={pokemon}
-                setPokemonDetails={this.props.setPokemonDetails}
-                number={pokemons.indexOf(pokemon)}/>
-            )
-            : <div>No Pokemon Found :(</div>
-          }
+      <div className="pokebox-body">
+        <PokemonDetails
+          openDrawer={this.props.openDrawer}
+          closeDrawer={this.props.closeDrawer}
+          setAction={this.props.setAction}
+          opened={this.props.opened}
+          action={this.props.action}
+          timeOfDay={this.props.timeOfDay}
+          pokemon={this.props.pokemonDetails}
+          getPokemon={this.props.getPokemon}
+          setPokemonDetails={this.props.setPokemonDetails}
+          backgroundImage={this.props.backgroundImage}
+          setView={this.props.setView}/>
+        <div className="pokebox-screen-container" >
+          <div className="pokebox-rectangle-screen">
+            <div className="pokebox-headline">POKéBOX</div>
+            <div className="pokemon-list">
+              { pokemons.length > 0
+                ? pokemons.map(pokemon =>
+                  <PokemonListItem
+                    key={pokemons.indexOf(pokemon)}
+                    pokemon={pokemon}
+                    setPokemonDetails={this.props.setPokemonDetails}
+                    number={pokemons.indexOf(pokemon)}/>
+                )
+                : <div>No Pokemon Found :(</div>
+              }
+            </div>
+          </div>
         </div>
-        <button onClick={() => this.props.setView('home')} >Home Page</button>
-        <button onClick={() => this.props.setView('walk')} >Walk Screen</button>
-        <button onClick={() => this.props.setView('backpack')} >Backpack</button>
       </div>
     );
   }
