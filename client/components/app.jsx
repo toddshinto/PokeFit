@@ -4,6 +4,7 @@ import Start from './start';
 import Backpack from './backpack';
 import Walk from './walk';
 import Pokebox from './pokebox';
+import { response } from 'express';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -29,7 +30,7 @@ export default class App extends React.Component {
     this.getCurrentPosition = this.getCurrentPosition.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
     this.getTimeWalked = this.getTimeWalked.bind(this);
-
+    // this.getItems = this.getItems.bind(this);
   }
 
   componentDidMount() {
@@ -38,6 +39,7 @@ export default class App extends React.Component {
     const d = new Date();
     const startTime = d.getTime();
     this.setState({ startTime });
+    this.getItems();
   }
 
   getTimeWalked() {
@@ -54,6 +56,26 @@ export default class App extends React.Component {
       }, 60001);
     }
   }
+
+  // getItems() {
+  //   for (let i = 1; i <= 16; i++) {
+  //     fetch(`https://pokeapi.co/api/v2/item/${i}`)
+  //       .then(response => response.json())
+  //       .then(item => {
+  //         // const items = {
+  //         //   itemId: i,
+  //         //   sprite: item.sprites.default,
+  //         //   shortDesc: item.effect_entries[0].short_effect,
+  //         //   longDesc: item.flavor_text_entries[0].text,
+  //         //   effectDesc: item.effect_entries[0].effect,
+  //         //   itemType: 'ball',
+  //         //   name: item.name
+  //         // };
+  //         console.log(item);
+  //       });
+  //   }
+
+  // }
 
   getPokemon() {
     fetch('/api/pokeboxes')
