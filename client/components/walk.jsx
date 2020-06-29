@@ -7,20 +7,35 @@ export default class Walk extends React.Component {
   }
 
   render() {
-    const backround = this.props.backgroundImage;
+    const background = this.props.backgroundImage;
     const s = this.props.stats;
     return (
-      <div className={backround}>
-        <h1>Walk Screen</h1>
-        <ul>
-          <li>Miles walked: {s.milesWalked}</li>
-          <li>total encounters: {s.encounters}</li>
-          <li>time Walked: {this.props.timeWalked}</li>
-        </ul>
-        <button onClick={() => this.props.setView('home')} >Home Page</button>
-        <button onClick={() => this.props.setView('pokebox')} >Pokebox</button>
-        <button onClick={() => this.props.setView('backpack')} >Backpack</button>
-
+      <div className="pokebox-body">
+        <div className="pokebox-screen-container">
+          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${background})` }}>
+            <div className="ash-walk-screen"></div>
+          </div>
+        </div>
+        <div className="pokebox-screen-container">
+          <div className="pokebox-rectangle-screen stats-walk-screen">
+            <div className="stats-text stats-text-walk-screen">
+              <p>MILES WALKED:</p>
+              <p>{s.milesWalked > 0 ? s.milesWalked : 0}</p>
+            </div>
+            <div className="stats-text stats-text-walk-screen">
+              <p>ENCOUNTERS:</p>
+              <p></p>
+            </div>
+            <div className="stats-text stats-text-walk-screen">
+              <p>TIME WALKED:</p>
+              <p>{this.props.timeWalked}</p>
+            </div>
+            <div className="stats-text stats-text-walk-screen">
+              <p>POKé BALLS:</p>
+              <p></p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
