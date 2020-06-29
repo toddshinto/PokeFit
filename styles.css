@@ -1,0 +1,339 @@
+body {
+  margin: 0;
+}
+
+#root {
+margin: 0 auto;
+width: 375px;
+height: 667px;
+letter-spacing: 0.1em;
+}
+
+
+@font-face {
+  font-family: 'Pokemon';
+  src: url(./server/public/assets/fonts/PKMN_RBYGSC.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+.press-start {
+font-family: "Pokemon";
+margin: 0 auto;
+position: relative;
+top: 50%;
+width: 167px;
+height: 18px;
+}
+
+.ash-sprite-container {
+background-image: url(./server/public/assets/images/ash1.png);
+margin: 0 auto;
+position: relative;
+top: 74%;
+width: 57.13px;
+height: 70.62px;
+background-size: contain;
+}
+
+
+.pokefit-logo {
+margin: 0 auto;
+margin-top: 20px;
+width: 271px;
+height: 114px;
+
+}
+
+.buttons-container {
+display: flex;
+justify-content: space-evenly;
+position: relative;
+}
+
+.stats-screen-container {
+background-color: white;
+border-style: double;
+border-width: 5px;
+margin: 0 auto;
+width: 290px;
+height: 215px;
+padding: 0px 20px;
+position: relative;
+}
+
+.pokeball-icon {
+background-image: url(./server/public/assets/images/pixel-pokeball.png);
+background-repeat: no-repeat;
+background-size: contain;
+width: 13px;
+height: 13px;
+position: absolute;
+}
+
+
+
+.top-right {
+top: -9px;
+right: -9px;
+}
+
+.top-left {
+top: -9px;
+left: -9px;
+}
+
+.bottom-right {
+bottom: -9px;
+right: -9px;
+}
+
+.bottom-left {
+bottom: -9px;
+left: -9px;
+}
+
+.stats-board {
+font-family: "Pokemon";
+font-size: 13px;
+display: flex;
+justify-content: space-around;
+flex-direction: column;
+height: 100%;
+}
+
+.stats-text {
+display: flex;
+justify-content: space-between;
+}
+
+.pokebox-button-container {
+display: flex;
+justify-content: center;
+flex-direction: column;
+width: 25%;
+height: auto;
+text-align: center;
+align-items: center;
+}
+
+.button-icon {
+width: 70.24px;
+height: 115.9px;
+-webkit-filter: drop-shadow(0px 4px 4px #222);
+filter: drop-shadow(0px 4px 4px #222);
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center bottom;
+}
+
+.pokebox-button-icon {
+background-image: url(./server/public/assets/images/pokebox.png);
+background-position: center;
+}
+
+.backpack-button-icon {
+background-image: url(./server/public/assets/images/backpack.png);
+background-position: center;
+}
+
+.button-text {
+font-family: "Pokemon";
+font-style: normal;
+font-weight: normal;
+font-size: 12px;
+line-height: 13px;
+text-align: center;
+color: #000000;
+width: 100%;
+}
+
+.backpack-button-container {
+display: flex;
+justify-content: flex;
+flex-direction: column;
+width: 25%;
+height: auto;
+text-align: center;
+align-items: center;
+}
+
+
+.walk-button-container {
+display: flex;
+justify-content: center;
+flex-direction: column;
+width: 25%;
+height: auto;
+text-align: center;
+align-items: center;
+}
+
+
+.walk-button-icon {
+background-image: url(./server/public/assets/images/ash1.png);
+background-position: center;
+}
+
+
+.red-background {
+background-color: #DA1332;
+display: flex;
+flex-direction: column;
+justify-content: space-evenly;
+width: 100%;
+height: 100%;
+}
+
+.pokebox-top-buttons-container {
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+  height: auto;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+
+.button {
+box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5);
+cursor: pointer;
+border: 2px solid black;
+}
+
+.triangle-button {
+box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+width: 0;
+height: 0;
+border-top: 25px solid transparent;
+border-bottom: 25px solid transparent;
+border-right: 25px solid #F1BB2F;
+}
+
+.yellow-circle-button {
+  height: 30px;
+  width: 30px;
+  background-color: #F1BB2F;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.green-circle-button {
+  height: 30px;
+  width: 30px;
+  background-color: #64B572;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+
+.outer-white-circle {
+  height: 40px;
+  width: 40px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  border-style: double;
+  border-width: 10px;
+}
+
+
+.inner-blue-circle {
+  height: 38px;
+  width: 32px;
+  background-color: #33ACFB;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  z-index: 0;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.pokemon-screen-container {
+display: flex;
+}
+
+.pokemon-display-screen {
+width: 340px;
+height: 199px;
+background: #a84909;
+border-radius: 30px;
+background-repeat: no-repeat;
+background-size: cover;
+border: 2px solid black;
+box-shadow: inset 10px 6px 9px rgba(0, 0, 0, 0.5);
+position: relative;
+}
+
+.pokemon-name {
+  font-family: "Pokemon";
+  font-size: 14px;
+  text-align: center;
+  text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
+  color: white;
+  margin-top: 10px;
+}
+
+.pokemon-desc {
+  font-family: "Pokemon";
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: left;
+  word-spacing: 1px;
+  text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
+  color: white;
+  display:flex;
+  flex-flow: column;
+  width: 159px;
+  height: 103px;
+  white-space: nowrap;
+  position: relative;
+  right: 4%;
+  top: 30%;
+}
+
+.first-row {
+}
+
+.second-row {
+display: flex;
+position: relative;
+height: 100px;
+}
+
+.pokemon-picture {
+  background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 175px;
+  height: 175px;
+  position: relative;
+  left: 5px;
+  top: -20px;
+}
+
+.pokebox-screen-container {
+padding-left: 15px;
+}
+
+.pokebox-headline {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.pokemon-list {
+  text-align: left;
+  line-height: 35px;
+  padding-left: 50px;
+}
+
+.pokebox-rectangle-screen {
+width: 339.78px;
+height: 230.62px;
+background: #FFFFFF;
+border: 2px solid #000000;
+box-sizing: border-box;
+box-shadow: inset 10px 6px 4px rgba(0, 0, 0, 0.5);
+font-family: "Pokemon";
+font-size: 14px;
+}
