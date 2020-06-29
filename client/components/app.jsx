@@ -300,13 +300,13 @@ export default class App extends React.Component {
     return (
       this.state.view === 'home' || this.state.view === 'start'
         ? display
-        : <>
+        : <div className="background-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
           <Header />
           {display}
           <Footer
             view={this.state.view}
             setView={this.setView}/>
-        </>
+        </div>
     );
   }
 }

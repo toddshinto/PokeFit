@@ -19,7 +19,10 @@ export default class Start extends React.Component {
           this.props.getCurrentPosition();
           this.props.getStartPosition();
         }} className={`press-start ${glowText}`}>PRESS START</div>
-        <div className={`ash-sprite-container ${glow}`}></div>
+        <div className='start-sprites-container'>
+          <div className="pikachu-sprite-container" />
+          <div className={`ash-sprite-container ${glow}`} />
+        </div>
       </div>
     );
   }
