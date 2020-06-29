@@ -112,16 +112,16 @@ export default class App extends React.Component {
         , error => {
           switch (error.code) {
             case (0):
-              console.error('Error unknown');
+              this.setLocationError('Error unknown');
               break;
             case (1):
-              alert('Permission denied. Permission must be enabled to track walk distance'); // replace-page-with must enable geolocation
+              this.setLocationError('Permission denied.');
               break;
             case (2):
-              console.error('Position unavailable'); // show message on screen
+              this.setLocationError('Position unavailable');
               break;
             case (3):
-              console.error('Request timed out'); // show message on screen
+              this.setLocationError('Request timed out');
               break;
           }
         },
@@ -254,7 +254,7 @@ export default class App extends React.Component {
     switch (this.state.view) {
       case 'start':
         display = <Start
-          timeOfDay = {this.state.timeOfDay}
+          timeOfDay={this.state.timeOfDay}
           backgroundImage={this.state.backgroundImage}
           setView={this.setView}
           getStartPosition={this.getStartPosition}
@@ -268,7 +268,7 @@ export default class App extends React.Component {
           setView={this.setView}
           backgroundImage={this.state.backgroundImage}
           timeWalked={this.state.sessionTimeWalked}
-          pokemons={this.state.pokemons}/>;
+          pokemons={this.state.pokemons} />;
         break;
       case 'backpack':
         display = <Backpack setView={this.setView} />;
@@ -305,7 +305,7 @@ export default class App extends React.Component {
           {display}
           <Footer
             view={this.state.view}
-            setView={this.setView}/>
+            setView={this.setView} />
         </div>
     );
   }
