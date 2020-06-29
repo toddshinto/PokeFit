@@ -140,13 +140,26 @@ app.get('/api/pokeboxes', (req, res, next) => {
     });
 });
 
-app.put('/api/pokeboxes', (req, res, next) => {
-  const userId = req.session.userId;
+app.delete('/api/pokeboxes', (req, res, next) => {
   const pokeboxId = req.body.pokeboxId;
-  const newName = req.body.newName;
-  if (!userId) {
-    return res.status(400).json({ error: 'userId required' });
-  }
+  const sql = `
+    delete from pokeboxes
+    where pokebox_id = $1
+  `;
+  const params = [pokeboxId];
+  db.query(sql, params)
+    .then(result => {
+      return res.status(200).json({ message: 'success' });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    });
+});
+
+app.put('/api/pokeboxes', (req, res, next) => {
+  const pokeboxId = req.body.pokeboxId;
+  const newName = req.body.name;
   if (!pokeboxId) {
     return res.status(400).json({ error: 'pokeboxId required' });
   }

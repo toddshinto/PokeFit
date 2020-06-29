@@ -4,7 +4,8 @@ import Start from './start';
 import Backpack from './backpack';
 import Walk from './walk';
 import Pokebox from './pokebox';
-import { response } from 'express';
+import Header from './header';
+import Footer from './footer';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -20,7 +21,12 @@ export default class App extends React.Component {
       currLon: null,
       currMilesWalked: null,
       sessionTimeWalked: 0,
-      startTime: 0
+      startTime: 0,
+      locationError: null,
+      backgroundImage: null,
+      timeOfDay: null,
+      opened: false,
+      action: null
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -30,16 +36,20 @@ export default class App extends React.Component {
     this.getCurrentPosition = this.getCurrentPosition.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
     this.getTimeWalked = this.getTimeWalked.bind(this);
-    // this.getItems = this.getItems.bind(this);
+    this.setLocationError = this.setLocationError.bind(this);
+    this.getBackground = this.getBackground.bind(this);
+    this.openDrawer = this.openDrawer.bind(this);
+    this.closeDrawer = this.closeDrawer.bind(this);
+    this.setAction = this.setAction.bind(this);
   }
 
   componentDidMount() {
     this.getStats();
     this.getPokemon();
+    this.getBackground();
     const d = new Date();
     const startTime = d.getTime();
     this.setState({ startTime });
-    this.getItems();
   }
 
   getTimeWalked() {
@@ -57,56 +67,42 @@ export default class App extends React.Component {
     }
   }
 
-  // getItems() {
-  //   for (let i = 1; i <= 16; i++) {
-  //     fetch(`https://pokeapi.co/api/v2/item/${i}`)
-  //       .then(response => response.json())
-  //       .then(item => {
-  //         // const items = {
-  //         //   itemId: i,
-  //         //   sprite: item.sprites.default,
-  //         //   shortDesc: item.effect_entries[0].short_effect,
-  //         //   longDesc: item.flavor_text_entries[0].text,
-  //         //   effectDesc: item.effect_entries[0].effect,
-  //         //   itemType: 'ball',
-  //         //   name: item.name
-  //         // };
-  //         console.log(item);
-  //       });
-  //   }
-
-  // }
-
   getPokemon() {
     fetch('/api/pokeboxes')
       .then(response => response.json())
       .then(pokemons => {
         this.setState({ pokemons });
-        this.setPokemonDetails(0);
+        if (!this.state.pokemonDetails && pokemons.length > 0) {
+          this.setPokemonDetails(0);
+        }
       });
   }
 
   getStartPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => this.setState({ startLat: position.coords.latitude, startLon: position.coords.longitude })
+        position => this.setState({ startLat: position.coords.latitude, startLon: position.coords.longitude, locationError: null })
         , error => {
           switch (error.code) {
             case (0):
-              console.error('Error unknown');
+              this.setLocationError('Error unknown');
               break;
             case (1):
-              alert('Permission denied. Permission must be enabled to track walk distance');
+              this.setLocationError('Permission denied.');
               break;
             case (2):
-              console.error('Position unavailable');
+              this.setLocationError('Position unavailable');
               break;
             case (3):
-              console.error('Request timed out');
+              this.setLocationError('Request timed out');
               break;
           }
         }, { enableHighAccuracy: true });
     }
+  }
+
+  setLocationError(locationError) {
+    this.setState({ locationError });
   }
 
   getCurrentPosition() {
@@ -116,16 +112,16 @@ export default class App extends React.Component {
         , error => {
           switch (error.code) {
             case (0):
-              console.error('Error unknown');
+              this.setLocationError('Error unknown');
               break;
             case (1):
-              alert('Permission denied. Permission must be enabled to track walk distance');
+              this.setLocationError('Permission denied.');
               break;
             case (2):
-              console.error('Position unavailable');
+              this.setLocationError('Position unavailable');
               break;
             case (3):
-              console.error('Request timed out');
+              this.setLocationError('Request timed out');
               break;
           }
         },
@@ -148,14 +144,15 @@ export default class App extends React.Component {
     distance = Math.acos(distance);
     distance = distance * 180 / Math.PI;
     distance = distance * 60 * 1.1515;
-    this.setState({ currMilesWalked: distance });
+    this.setState({ currMilesWalked: this.state.currMilesWalked + distance });
     if (this.state.currMilesWalked > 0.3) {
-      this.setState({
+      this.setState(prevState => ({
         stats: {
+          ...prevState.stats,
           milesWalked: this.state.stats.milesWalked + this.state.currMilesWalked
         },
         currMilesWalked: 0
-      });
+      }));
       fetch('/api/users', {
         method: 'PUT',
         headers: {
@@ -169,8 +166,9 @@ export default class App extends React.Component {
   }
 
   setPokemonDetails(index) {
-    if (this.state.pokemons) {
-      this.setState({ pokemonDetails: this.state.pokemons[index] });
+    const pokemons = this.state.pokemons;
+    if (pokemons) {
+      this.setState({ pokemonDetails: pokemons[index] });
     }
   }
 
@@ -186,11 +184,78 @@ export default class App extends React.Component {
     this.getTimeWalked();
   }
 
+  openDrawer() {
+    this.setState({ opened: !this.state.opened });
+  }
+
+  closeDrawer() {
+    this.setState({ opened: false });
+    this.getPokemon();
+  }
+
+  setAction(action) {
+    this.setState({ action });
+  }
+
+  getBackground() {
+    const d = new Date();
+    const time = d.getHours();
+    let backgroundImage = null;
+    switch (time) {
+      case (0):
+      case (1):
+      case (2):
+      case (3):
+      case (4):
+        backgroundImage = 'midnight';
+        break;
+      case (5):
+      case (6):
+        backgroundImage = 'early-morning';
+        break;
+      case (7):
+      case (8):
+        backgroundImage = 'morning';
+        break;
+      case (9):
+      case (10):
+      case (11):
+      case (12):
+        backgroundImage = 'late-morning';
+        break;
+      case (13):
+      case (14):
+      case (15):
+      case (16):
+        backgroundImage = 'afternoon';
+        break;
+      case (17):
+      case (18):
+        backgroundImage = 'late-afternoon';
+        break;
+      case (19):
+      case (20):
+        backgroundImage = 'evening';
+        break;
+      case (21):
+      case (22):
+        backgroundImage = 'late-evening';
+        break;
+      case (23):
+      case (24):
+        backgroundImage = 'night';
+        break;
+    }
+    this.setState({ backgroundImage: `/assets/images/${backgroundImage}-bg.png`, timeOfDay: backgroundImage });
+  }
+
   render() {
     let display = null;
     switch (this.state.view) {
       case 'start':
         display = <Start
+          timeOfDay={this.state.timeOfDay}
+          backgroundImage={this.state.backgroundImage}
           setView={this.setView}
           getStartPosition={this.getStartPosition}
           getCurrentPosition={this.getCurrentPosition}
@@ -198,28 +263,50 @@ export default class App extends React.Component {
         break;
       case 'home':
         display = <HomePage
+          timeOfDay={this.state.timeOfDay}
           stats={this.state.stats}
           setView={this.setView}
+          backgroundImage={this.state.backgroundImage}
           timeWalked={this.state.sessionTimeWalked}
-          pokemons={this.state.pokemons}/>;
+          pokemons={this.state.pokemons} />;
         break;
       case 'backpack':
         display = <Backpack setView={this.setView} />;
         break;
       case 'walk':
-        display = <Walk timeWalked={this.state.sessionTimeWalked} stats={this.state.stats} setView={this.setView} />;
+        display = <Walk
+          timeWalked={this.state.sessionTimeWalked}
+          stats={this.state.stats}
+          setView={this.setView}
+          backgroundImage={this.state.backgroundImage} />;
         break;
       case 'pokebox':
         display = <Pokebox
+          openDrawer={this.openDrawer}
+          closeDrawer={this.closeDrawer}
+          setAction={this.setAction}
+          opened={this.state.opened}
+          action={this.state.action}
+          timeOfDay={this.state.timeOfDay}
+          backgroundImage={this.state.backgroundImage}
           setView={this.setView}
           pokemons={this.state.pokemons}
           setPokemonDetails={this.setPokemonDetails}
           pokemonDetails={this.state.pokemonDetails}
+          getPokemon={this.getPokemon}
         />;
         break;
     }
     return (
-      display
+      this.state.view === 'home' || this.state.view === 'start'
+        ? display
+        : <div className="background-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
+          <Header />
+          {display}
+          <Footer
+            view={this.state.view}
+            setView={this.setView} />
+        </div>
     );
   }
 }
