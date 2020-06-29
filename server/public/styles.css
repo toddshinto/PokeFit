@@ -463,6 +463,10 @@ transition: all .3s ease-in-out;
   transform: translate(2px, 2px)
 }
 
+.walk-button-icon:hover {
+  background-image: url('assets/images/ash-walk.gif')
+}
+
 .walk-button-icon {
 background-image: url(./assets/images/ash1.png);
 background-position: center;
