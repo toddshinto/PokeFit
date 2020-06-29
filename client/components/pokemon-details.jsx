@@ -24,9 +24,9 @@ export default class PokemonDetails extends React.Component {
       switch (viewDetails) {
         case 'stats':
           details = (
-            <div onClick={() => this.changeView('description')}>
+            <div className="pokemon-desc" onClick={() => this.changeView('description')}>
               <div>{pokemon.species}</div>
-              <div>Type: {pokemon.type}</div>
+              <div className='to-capitalize'>Type: {pokemon.type}</div>
               <div>Height: {pokemon.height}</div>
               <div>Weight: {pokemon.weight}</div>
             </div>
@@ -34,30 +34,54 @@ export default class PokemonDetails extends React.Component {
           break;
         case 'description':
           details = (
-            <div onClick={() => this.changeView('description-cont')}>
-              <div>Habitat: {pokemon.habitat}</div>
+            <div className="pokemon-desc" onClick={() => this.changeView('description-cont')}>
+              <div className='to-capitalize'>Habitat: {pokemon.habitat}</div>
               <div>{pokemon.flavorText}</div>
             </div>
           );
           break;
         case 'description-cont':
           details = (
-            <div onClick={() => this.changeView('stats')}>
+            <div className="pokemon-desc" onClick={() => this.changeView('stats')}>
               <div>{pokemon.flavorTextNew}</div>
             </div>
           );
           break;
       }
       return (
-        <div>
-          <Menu pokemon={pokemon} getPokemon={this.props.getPokemon}/>
-          <div>{pokemon.name}</div>
-          {details}
+        <div className="pokemon-screen-container">
+          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }} >
+            <div className="first-row">
+              <Menu pokemon={pokemon}
+                setView={this.props.setView}
+                getPokemon={this.props.getPokemon}
+                timeOfDay={this.props.timeOfDay}
+                className="menu-button"
+                openDrawer={this.props.openDrawer}
+                closeDrawer={this.props.closeDrawer}
+                setAction={this.props.setAction}
+                opened={this.props.opened}
+                setPokemonDetails={this.props.setPokemonDetails}
+                action={this.props.action}/>
+              <div className="pokemon-name">{pokemon.name}</div>
+            </div>
+            <div className="second-row" onClick={() => {
+              this.props.setAction(null);
+              this.props.closeDrawer();
+            }}>
+              <div className="pokemon-picture" style={{ backgroundImage: `url(${pokemon.spriteFrontDefault})` }} />
+              {details}
+            </div>
+          </div>
         </div>
       );
     } else {
       return (
-        <div>0</div>
+        <div className="pokemon-screen-container">
+          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
+            <div className="display-header" style={{ backgroundColor: 'yellow' }}>Go catch some POKéMON!</div>
+          </div>
+        </div>
       );
     }
   }

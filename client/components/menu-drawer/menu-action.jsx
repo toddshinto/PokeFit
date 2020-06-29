@@ -72,7 +72,8 @@ export default class MenuAction extends React.Component {
         screen = <Release
           setAction={this.props.setAction}
           releasePokemon={this.releasePokemon}
-          closeDrawer={this.props.closeDrawer}/>;
+          closeDrawer={this.props.closeDrawer}
+          pokemon={this.state.pokemon}/>;
         break;
       case 'renameSuccess' :
         screen = <RenameSuccess
@@ -85,6 +86,7 @@ export default class MenuAction extends React.Component {
         screen = <ReleaseSuccess
           setAction={this.props.setAction}
           pokemon={this.props.pokemon.name}
+          setPokemonDetails={this.props.setPokemonDetails}
           closeDrawer={this.props.closeDrawer}/>;
         break;
       default:
