@@ -4,6 +4,7 @@ import ListItem from './item-list-item';
 
 export default class Backpack extends React.Component {
   render() {
+    console.log(this.state);
     const items = this.props.items;
     return (
       <div className="pokebox-body">
