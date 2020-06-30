@@ -22,18 +22,17 @@ ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
 ALTER TABLE ONLY public.pokemon DROP CONSTRAINT pokemon_v2_pk;
 ALTER TABLE ONLY public.pokeboxes DROP CONSTRAINT pokeboxes_pk;
 ALTER TABLE ONLY public.items DROP CONSTRAINT items_pk;
-ALTER TABLE ONLY public.backpack_items DROP CONSTRAINT "backpackItems_pk";
+ALTER TABLE ONLY public."backpackItems" DROP CONSTRAINT "backpackItems_pk";
 ALTER TABLE public.users ALTER COLUMN user_id DROP DEFAULT;
 ALTER TABLE public.pokeboxes ALTER COLUMN pokebox_id DROP DEFAULT;
-ALTER TABLE public.items ALTER COLUMN item_id DROP DEFAULT;
 ALTER TABLE public.backpack_items ALTER COLUMN backpack_id DROP DEFAULT;
 DROP SEQUENCE public."users_userId_seq";
 DROP TABLE public.users;
 DROP TABLE public.pokemon;
 DROP SEQUENCE public."pokeboxes_pokeboxId_seq";
 DROP TABLE public.pokeboxes;
-DROP SEQUENCE public."items_itemId_seq";
 DROP TABLE public.items;
+DROP TABLE public."backpackItems";
 DROP SEQUENCE public."backpackItems_backpackId_seq";
 DROP TABLE public.backpack_items;
 DROP FUNCTION public.trigger_set_timestamp();
@@ -120,37 +119,32 @@ ALTER SEQUENCE public."backpackItems_backpackId_seq" OWNED BY public.backpack_it
 
 
 --
--- Name: items; Type: TABLE; Schema: public; Owner: -
+-- Name: backpackItems; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.items (
-    item_id integer NOT NULL,
-    name character varying(20) NOT NULL,
-    item_type character varying(20) NOT NULL,
-    item_description text NOT NULL,
-    effect character varying(255) NOT NULL,
-    sprite character varying(255) NOT NULL
+CREATE TABLE public."backpackItems" (
+    "backpackId" integer DEFAULT nextval('public."backpackItems_backpackId_seq"'::regclass) NOT NULL,
+    "userId" integer NOT NULL,
+    "itemId" integer NOT NULL,
+    quantity integer NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
 --
--- Name: items_itemId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: items; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."items_itemId_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: items_itemId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public."items_itemId_seq" OWNED BY public.items.item_id;
+CREATE TABLE public.items (
+    item_id smallint NOT NULL,
+    name character varying(20) NOT NULL,
+    item_type character varying(20) NOT NULL,
+    item_short_desc character varying(255) NOT NULL,
+    item_long_desc character varying(255) NOT NULL,
+    item_eff_desc text NOT NULL,
+    sprite character varying(255) NOT NULL
+);
 
 
 --
@@ -254,13 +248,6 @@ ALTER TABLE ONLY public.backpack_items ALTER COLUMN backpack_id SET DEFAULT next
 
 
 --
--- Name: items item_id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.items ALTER COLUMN item_id SET DEFAULT nextval('public."items_itemId_seq"'::regclass);
-
-
---
 -- Name: pokeboxes pokebox_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -275,6 +262,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public."
 
 
 --
+-- Data for Name: backpackItems; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public."backpackItems" ("backpackId", "userId", "itemId", quantity, "createdAt", "updatedAt") FROM stdin;
+\.
+
+
+--
 -- Data for Name: backpack_items; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -286,7 +281,33 @@ COPY public.backpack_items (backpack_id, user_id, item_id, quantity, created_at,
 -- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.items (item_id, name, item_type, item_description, effect, sprite) FROM stdin;
+COPY public.items (item_id, name, item_type, item_short_desc, item_long_desc, item_eff_desc, sprite) FROM stdin;
+12	premier-ball	ball	Tries to catch a wild Pokémon.	A rare BALL made in commemoration of some event.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/premier-ball.png
+15	quick-ball	ball	Tries to catch a wild Pokémon. Success rate is 4× (Gen V: 5×), but only on the first turn.	A somewhat different Poké Ball that provides a better catch rate if it is used at the start of a wild encounter.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 4× on the first turn of a battle, but 1× any other time.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/quick-ball.png
+16	cherish-ball	ball	Tries to catch a wild Pokémon.	A quite rare Poké Ball that has been specially crafted to commemorate an occasion of some sort.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/cherish-ball.png
+1	master-ball	ball	Catches a wild Pokémon every time.	The best BALL that catches a POKéMON without fail.	Used in battle :   Catches a wild Pokémon without fail.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png
+2	ultra-ball	ball	Tries to catch a wild Pokémon.  Success rate is 2×.	A better BALL with a higher catch rate than a GREAT BALL.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 2×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png
+3	great-ball	ball	Tries to catch a wild Pokémon.  Success rate is 1.5×.	A good BALL with a higher catch rate than a POKé BALL.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1.5×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png
+4	poke-ball	ball	Tries to catch a wild Pokémon.	A tool used for catching wild POKéMON.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png
+5	safari-ball	ball	Tries to catch a wild Pokémon in the Great Marsh or Safari Zone.  Success rate is 1.5×.	A special BALL that is used only in the SAFARI ZONE.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1.5×.  This item can only be used in the great marsh or kanto safari zone.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/safari-ball.png
+6	net-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3× for water and bug Pokémon.	A BALL that works well on WATER- and BUG-type POKéMON.	Used in battle :   Attempts to catch a wild Pokémon.  If the wild Pokémon is water- or bug-type, this ball has a catch rate of 3×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/net-ball.png
+10	timer-ball	ball	Tries to catch a wild Pokémon. Success rate increases by 0.1× (Gen V: 0.3×) every turn, to a max of 4×.	More effective as more turns are taken in battle.	Used in battle :   Attempts to catch a wild Pokémon.  Has a catch rate of 1.1× on the first turn of the battle and increases by 0.1× every turn, to a maximum of 4× on turn 30.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/timer-ball.png
+11	luxury-ball	ball	Tries to catch a wild Pokémon.  Caught Pokémon start with 200 happiness.	A cozy BALL that makes POKéMON more friendly.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.  Whenever the caught Pokémon''s happiness increases, it increases by one extra point.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/luxury-ball.png
+7	dive-ball	ball	Tries to catch a wild Pokémon. Success rate is 3.5× when underwater, fishing, or surfing.	A BALL that works better on POKéMON on the ocean floor.	Used in battle :   Attempts to catch a wild Pokémon.  If the wild Pokémon was encountered by surfing or fishing, this ball has a catch rate of 3.5×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dive-ball.png
+8	nest-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3.9× for level 1 Pokémon, and drops steadily to 1× at level 30.	A BALL that works better on weaker POKéMON.	Used in battle :   Attempts to catch a wild Pokémon.  Has a catch rate of given by `(40 - level) / 10`, where `level` is the wild Pokémon''s level, to a maximum of 3.9× for level 1 Pokémon.  If the wild Pokémon''s level is higher than 30, this ball has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/nest-ball.png
+9	repeat-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3× for previously-caught Pokémon.	A BALL that works better on POKéMON caught before.	Used in battle :   Attempts to catch a wild Pokémon.  If the wild Pokémon''s species is marked as caught in the trainer''s Pokédex, this ball has a catch rate of 3×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/repeat-ball.png
+13	dusk-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3.5× at night and in caves.	A somewhat different Poké Ball that makes it easier to catch wild Pokémon at night or in dark places like caves.	Used in battle :   Attempts to catch a wild Pokémon.  If it''s currently nighttime or the wild Pokémon was encountered while walking in a cave, this ball has a catch rate of 3.5×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dusk-ball.png
+14	heal-ball	ball	Tries to catch a wild Pokémon.  Caught Pokémon are immediately healed.	Tries to catch a wild Pokémon.  Caught Pokémon are immediately healed.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.  The caught Pokémon''s HP is immediately restored, PP for all its moves is restored, and any status ailment is cured.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/heal-ball.png
+17	sitrus-berry	berry	Held: Consumed at 1/2 max HP to recover 1/4 max HP.	A hold item that restores 30 HP in battle.	Held in battle :   When the holder has 1/2 its max HP remaining or less, it consumes this item to restore 1/4 its max HP.  Used on a party Pokémon :   Restores 1/4 the Pokémon''s max HP.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/sitrus-berry.png
+18	leppa-berry	berry	Held: Consumed when a move runs out of PP to restore its PP by 10.	A hold item that restores 10 PP in battle.	Held in battle :   When the holder is out of PP for one of its moves, it consumes this item to restore 10 of that move''s PP.  Used on a party Pokémon :   Restores 10 PP for a selected move.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/leppa-berry.png
+19	rawst-berry	berry	Held: Consumed when burned to cure a burn.	A hold item that heals a burn in battle.	Held in battle :   When the holder is burned, it consumes this item to cure the burn.  Used on a party Pokémon :   Cures a burn.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rawst-berry.png
+20	oran-berry	berry	Held: Consumed at 1/2 max HP to recover 10 HP.	A hold item that restores 10 HP in battle.	Held in battle :   When the holder has 1/2 its max HP remaining or less, it consumes this item to restore 10 HP.  Used on a party Pokémon :   Restores 10 HP.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/oran-berry.png
+21	pecha-berry	berry	Held: Consumed when poisoned to cure poison.	A hold item that heals poisoning in battle.	Held in battle :   When the holder is poisoned, it consumes this item to cure the poison.  Used on a party Pokémon :   Cures poison.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/pecha-berry.png
+22	persim-berry	berry	Held: Consumed when confused to cure confusion.	讓寶可夢攜帶後， 可以治癒混亂。	Held in battle :   When the holder is confused, it consumes this item to cure the confusion.  Used on a party Pokémon :   Cures confusion.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/persim-berry.png
+23	lum-berry	berry	Held: Consumed to cure any status condition or confusion.	A hold item that heals status in battle.	Held in battle :   When the holder is afflicted with a major status ailment, it consumes this item to cure the ailment.  Used on a party Pokémon :   Cures any major status ailment.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lum-berry.png
+24	cheri-berry	berry	Held: Consumed when paralyzed to cure paralysis.	If held by a Pokémon, it recovers from paralysis.	Held in battle :   When the holder is paralyzed, it consumes this item to cure the paralysis.  Used on a party Pokémon :   Cures paralysis.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/cheri-berry.png
+25	chesto-berry	berry	Held: Consumed when asleep to cure sleep.	A hold item that awakens POKéMON in battle.	Held in battle :   When the holder is asleep, it consumes this item to wake up.  Used on a party Pokémon :   Cures sleep.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/chesto-berry.png
+26	aspear-berry	berry	Held: Consumed when frozen to cure frozen.	A hold item that defrosts POKéMON in battle.	Held in battle :   When the holder is frozen, it consumes this item to thaw itself.  Used on a party Pokémon :   Cures freezing.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/aspear-berry.png
 \.
 
 
@@ -295,16 +316,16 @@ COPY public.items (item_id, name, item_type, item_description, effect, sprite) F
 --
 
 COPY public.pokeboxes (pokebox_id, user_id, pokemon_id, name, created_at, updated_at, is_shiny) FROM stdin;
-1	2	1	Bulbasaur	2020-06-24 07:52:33.331801+00	2020-06-24 07:52:33.331801+00	\N
-2	2	4	Charmander	2020-06-24 07:53:09.859013+00	2020-06-24 07:53:09.859013+00	\N
-3	2	7	Squirtle	2020-06-24 07:53:18.274833+00	2020-06-24 07:53:18.274833+00	\N
-4	1	7	Turtle	2020-06-24 20:23:59.20849+00	2020-06-24 20:26:20.314579+00	\N
-5	1	7	Squirtle	2020-06-25 07:54:18.994215+00	2020-06-25 07:54:18.994215+00	\N
-6	1	7	Squirtle	2020-06-25 07:54:21.043486+00	2020-06-25 07:54:21.043486+00	\N
-7	1	7	Squirtle	2020-06-25 07:54:22.060805+00	2020-06-25 07:54:22.060805+00	\N
-10	6	1	Bulbasaur	2020-06-26 00:49:23.739248+00	2020-06-26 17:41:39.413317+00	\N
-9	6	4	Charmander	2020-06-26 00:49:18.082235+00	2020-06-26 17:41:51.82505+00	\N
-8	6	7	Squirtle	2020-06-26 00:49:08.630756+00	2020-06-26 17:41:54.144032+00	\N
+1	2	1	Bulbasaur	2020-06-24 00:52:33.331801-07	2020-06-24 00:52:33.331801-07	\N
+2	2	4	Charmander	2020-06-24 00:53:09.859013-07	2020-06-24 00:53:09.859013-07	\N
+3	2	7	Squirtle	2020-06-24 00:53:18.274833-07	2020-06-24 00:53:18.274833-07	\N
+4	1	7	Turtle	2020-06-24 13:23:59.20849-07	2020-06-24 13:26:20.314579-07	\N
+5	1	7	Squirtle	2020-06-25 00:54:18.994215-07	2020-06-25 00:54:18.994215-07	\N
+6	1	7	Squirtle	2020-06-25 00:54:21.043486-07	2020-06-25 00:54:21.043486-07	\N
+7	1	7	Squirtle	2020-06-25 00:54:22.060805-07	2020-06-25 00:54:22.060805-07	\N
+10	6	1	Bulbasaur	2020-06-25 17:49:23.739248-07	2020-06-26 10:41:39.413317-07	\N
+9	6	4	Charmander	2020-06-25 17:49:18.082235-07	2020-06-26 10:41:51.82505-07	\N
+8	6	7	Squirtle	2020-06-25 17:49:08.630756-07	2020-06-26 10:41:54.144032-07	\N
 \.
 
 
@@ -472,23 +493,23 @@ COPY public.pokemon (pokemon_id, name, type, type_secondary, sprite_front_defaul
 --
 
 COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, time_walked) FROM stdin;
-2	0	0	2020-06-24 20:53:49.892899+00	2020-06-27 00:07:32.496148+00	0
-3	0	0	2020-06-25 07:36:12.390305+00	2020-06-27 00:07:32.496148+00	0
-4	0	0	2020-06-25 07:36:14.63789+00	2020-06-27 00:07:32.496148+00	0
-1	3	6	2020-06-24 18:23:31.445757+00	2020-06-27 00:07:32.496148+00	0
-5	3	2	2020-06-25 18:32:21.109893+00	2020-06-27 00:07:32.496148+00	0
-6	0	0	2020-06-26 17:32:45.568468+00	2020-06-27 00:07:32.496148+00	0
-7	0	0	2020-06-26 18:26:57.796025+00	2020-06-27 00:07:32.496148+00	0
-8	0	0	2020-06-26 18:29:54.653006+00	2020-06-27 00:07:32.496148+00	0
-9	0	0	2020-06-26 18:32:35.153231+00	2020-06-27 00:07:32.496148+00	0
-10	0	0	2020-06-26 18:33:01.564755+00	2020-06-27 00:07:32.496148+00	0
-11	0	0	2020-06-26 18:34:16.658712+00	2020-06-27 00:07:32.496148+00	0
-12	0	0	2020-06-26 18:36:44.985178+00	2020-06-27 00:07:32.496148+00	0
-13	0	0	2020-06-26 18:56:58.476857+00	2020-06-27 00:07:32.496148+00	0
-14	0	0	2020-06-26 21:29:25.038443+00	2020-06-27 00:07:32.496148+00	0
-15	0	0	2020-06-27 00:19:52.392332+00	2020-06-27 00:19:52.392332+00	0
-16	0	0	2020-06-27 04:42:00.042219+00	2020-06-27 04:42:00.042219+00	0
-17	0	0	2020-06-27 04:42:54.712485+00	2020-06-27 04:42:54.712485+00	0
+2	0	0	2020-06-24 13:53:49.892899-07	2020-06-26 17:07:32.496148-07	0
+3	0	0	2020-06-25 00:36:12.390305-07	2020-06-26 17:07:32.496148-07	0
+4	0	0	2020-06-25 00:36:14.63789-07	2020-06-26 17:07:32.496148-07	0
+1	3	6	2020-06-24 11:23:31.445757-07	2020-06-26 17:07:32.496148-07	0
+5	3	2	2020-06-25 11:32:21.109893-07	2020-06-26 17:07:32.496148-07	0
+6	0	0	2020-06-26 10:32:45.568468-07	2020-06-26 17:07:32.496148-07	0
+7	0	0	2020-06-26 11:26:57.796025-07	2020-06-26 17:07:32.496148-07	0
+8	0	0	2020-06-26 11:29:54.653006-07	2020-06-26 17:07:32.496148-07	0
+9	0	0	2020-06-26 11:32:35.153231-07	2020-06-26 17:07:32.496148-07	0
+10	0	0	2020-06-26 11:33:01.564755-07	2020-06-26 17:07:32.496148-07	0
+11	0	0	2020-06-26 11:34:16.658712-07	2020-06-26 17:07:32.496148-07	0
+12	0	0	2020-06-26 11:36:44.985178-07	2020-06-26 17:07:32.496148-07	0
+13	0	0	2020-06-26 11:56:58.476857-07	2020-06-26 17:07:32.496148-07	0
+14	0	0	2020-06-26 14:29:25.038443-07	2020-06-26 17:07:32.496148-07	0
+15	0	0	2020-06-26 17:19:52.392332-07	2020-06-26 17:19:52.392332-07	0
+16	0	0	2020-06-26 21:42:00.042219-07	2020-06-26 21:42:00.042219-07	0
+17	0	0	2020-06-26 21:42:54.712485-07	2020-06-26 21:42:54.712485-07	0
 \.
 
 
@@ -497,13 +518,6 @@ COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, ti
 --
 
 SELECT pg_catalog.setval('public."backpackItems_backpackId_seq"', 1, false);
-
-
---
--- Name: items_itemId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public."items_itemId_seq"', 1, false);
 
 
 --
@@ -521,11 +535,11 @@ SELECT pg_catalog.setval('public."users_userId_seq"', 17, true);
 
 
 --
--- Name: backpack_items backpackItems_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: backpackItems backpackItems_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.backpack_items
-    ADD CONSTRAINT "backpackItems_pk" PRIMARY KEY (backpack_id);
+ALTER TABLE ONLY public."backpackItems"
+    ADD CONSTRAINT "backpackItems_pk" PRIMARY KEY ("backpackId");
 
 
 --
@@ -584,4 +598,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-

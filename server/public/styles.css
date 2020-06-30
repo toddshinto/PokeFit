@@ -232,10 +232,6 @@ font-family: "Pokemon";
   letter-spacing: 2px;
 }
 
-.glow-text {
-  text-shadow: 0px 2px 3px white;
-}
-
 .pokemon-rename:focus {
   border: none;
 }
@@ -273,6 +269,10 @@ cursor: pointer;
 transition: all .2s ease-in-out
 }
 
+.press-start-night {
+  color: rgb(201, 182, 216)
+}
+
 .press-start:hover {
   font-size: larger;
 }
@@ -288,6 +288,7 @@ margin-bottom: 10%;
 width: 57.13px;
 height: 70.62px;
 background-size: contain;
+background-repeat: no-repeat;
 }
 
 .pikachu-sprite-container {
@@ -451,20 +452,20 @@ align-items: center;
 cursor: pointer;
 }
 
-.backpack-button-icon,
-.pokebox-button-icon,
-.walk-button-icon {
+.backpack-button-container,
+.pokebox-button-container,
+.walk-button-container {
 transition: all .3s ease-in-out;
 }
 
-.backpack-button-icon:hover,
-.pokebox-button-icon:hover,
-.walk-button-icon:hover {
+.backpack-button-container:hover,
+.pokebox-button-container:hover,
+.walk-button-container:hover {
   transform: translate(2px, 2px)
 }
 
 .walk-button-icon:hover {
-  background-image: url('assets/images/ash-walk.gif')
+  background-image: url('assets/images/ash-walk.gif');
 }
 
 .walk-button-icon {
@@ -585,12 +586,7 @@ padding-top: 15px;
 
 .night-letters {
   word-spacing: 1px;
-  text-shadow:
-    -1px -1px 0 #000,
-     1px -1px 0 #000,
-    -1px  1px 0 #000,
-     1px  1px 0 #000;
-  color: white;
+  color: rgb(201, 182, 216)
 }
 
 .pokemon-desc {
