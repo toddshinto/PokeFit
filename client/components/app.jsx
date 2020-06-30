@@ -28,7 +28,11 @@ export default class App extends React.Component {
       backgroundImage: null,
       timeOfDay: null,
       opened: false,
-      action: null
+      action: null,
+      encounter: null,
+      wildPokemon: null,
+      foundItem: null,
+      encounterModal: false
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -45,6 +49,9 @@ export default class App extends React.Component {
     this.setAction = this.setAction.bind(this);
     this.getItems = this.getItems.bind(this);
     this.setItemDetails = this.setItemDetails.bind(this);
+    this.getEncounter = this.getEncounter.bide(this);
+    this.shuffle = this.shuffle.bind(this);
+    this.setEncounterModal = this.setEncounterModal.bind(this);
   }
 
   componentDidMount() {
@@ -69,7 +76,52 @@ export default class App extends React.Component {
         const tw = Math.round(timeDiff / 60000);
         this.setState({ sessionTimeWalked: tw });
       }, 60001);
+      this.getEncounter();
     }
+  }
+
+  shuffle(array) {
+    let currentIndex = array.length;
+    let tempValue = null;
+    let randomIndex = null;
+    while (currentIndex !== 0) {
+
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      tempValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = tempValue;
+    }
+    return array;
+  }
+
+  getEncounter() {
+    if (this.state.sessionTimeWalked % 3 === 0 && !this.state.encounter) {
+      const encounterOptions = this.shuffle(['item', 'item', 'pokemon', 'pokemon', 'pokemon']);
+      const thisEncounter = encounterOptions.pop();
+      this.setEncounter(thisEncounter);
+      const itemOptions = this.shuffle([4, 4, 4, 4, 4, 1, 23, 23, 23, 24]);
+      if (thisEncounter === 'item') {
+        fetch(`/api/items/${itemOptions.pop()}`)
+          .then(res => res.json())
+          .then(item => this.setState({ foundItem: item }));
+      } else {
+        const randomPokemon = Math.floor(Math.random() * 151);
+        fetch(`/api/pokemon/${randomPokemon}`)
+          .then(res => res.json())
+          .then(pokemon => this.setState({ wildPokemon: pokemon }));
+      }
+      this.setEncounterModal();
+
+    }
+  }
+
+  setEncounter(type) {
+    this.setState({ encounter: type });
+  }
+
+  setEncounterModal() {
+    this.setState({ encounterModal: !this.state.encounterModal });
   }
 
   getPokemon() {
