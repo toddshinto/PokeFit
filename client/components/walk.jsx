@@ -24,15 +24,11 @@ export default class Walk extends React.Component {
             </div>
             <div className="stats-text stats-text-walk-screen">
               <p>ENCOUNTERS:</p>
-              <p></p>
+              <p>{this.props.encounters}</p>
             </div>
             <div className="stats-text stats-text-walk-screen">
               <p>TIME WALKED:</p>
               <p>{this.props.timeWalked}</p>
-            </div>
-            <div className="stats-text stats-text-walk-screen">
-              <p>POKé BALLS:</p>
-              <p></p>
             </div>
           </div>
         </div>
