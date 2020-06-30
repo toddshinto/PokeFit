@@ -72,8 +72,12 @@ export default class App extends React.Component {
         const tw = Math.round(timeDiff / 60000);
         this.setState({ sessionTimeWalked: tw });
       }, 60001);
+      this.getEncounter();
     }
+
   }
+
+  getEncounter()
 
   getPokemon() {
     fetch('/api/pokeboxes')
@@ -184,6 +188,7 @@ export default class App extends React.Component {
         .then(res => res.json())
         .then(data => process.stdout.write(data));
     }
+
   }
 
   setPokemonDetails(index) {
