@@ -42,9 +42,9 @@ export default class itemDetails extends React.Component {
       );
     } else {
       return (
-        <div className="pokemon-screen-container">
-          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
-            <div className="display-header" style={{ backgroundColor: 'yellow' }}>Go find some ITEMS!</div>
+        <div className="pokedex-screen-container">
+          <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
+            <div className="top-display-header" style={{ backgroundColor: 'yellow' }}>Go find some ITEMS!</div>
           </div>
         </div>
       );
