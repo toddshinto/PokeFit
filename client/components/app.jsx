@@ -47,7 +47,7 @@ export default class App extends React.Component {
     this.setItemDetails = this.setItemDetails.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.getStats();
     this.getPokemon();
     this.getBackground();
