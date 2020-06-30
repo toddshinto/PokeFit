@@ -47,7 +47,7 @@ export default class App extends React.Component {
     this.setItemDetails = this.setItemDetails.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getStats();
     this.getPokemon();
     this.getBackground();
@@ -55,6 +55,9 @@ export default class App extends React.Component {
     const startTime = d.getTime();
     this.setState({ startTime });
     this.getItems();
+    if (!this.state.stats) {
+      this.setState({ stats: { milesWalked: 0, encounters: 0, timeWalked: 0 } });
+    }
   }
 
   getTimeWalked() {
@@ -80,7 +83,8 @@ export default class App extends React.Component {
         if (!this.state.pokemonDetails && pokemons.length > 0) {
           this.setPokemonDetails(0);
         }
-      });
+      })
+      .catch(error => console.error(error));
   }
 
   getItems() {
@@ -91,7 +95,8 @@ export default class App extends React.Component {
         if (!this.state.itemDetails && items.length > 0) {
           this.setItemDetails(0);
         }
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   getStartPosition() {
@@ -308,6 +313,7 @@ export default class App extends React.Component {
           timeWalked={this.state.sessionTimeWalked}
           stats={this.state.stats}
           setView={this.setView}
+          timeOfDay={this.state.timeOfDay}
           backgroundImage={this.state.backgroundImage} />;
         break;
       case 'pokebox':

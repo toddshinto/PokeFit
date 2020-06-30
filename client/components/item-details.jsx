@@ -21,16 +21,22 @@ export default class itemDetails extends React.Component {
     if (item) {
       details = (
         <div className='pokemon-desc'>
-          <div>short Desc: {item.shortDesc}</div>
+          <div>{item.shortDesc}</div>
           <div>Quantity: {item.quantity}</div>
         </div>
       );
       return (
-        <div className="item-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }} >
-          <div className="pokemon-name">{item.name}</div>
-          <div className="item-second-row">
-            <div className="item-picture" style={{ backgroundImage: `url(${item.sprite})` }}></div>
-            {details}
+        <div className="pokedex-screen-container">
+          <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }} >
+            <div className="top-screen-first-row">
+              <div className="top-screen-title to-capitalize">{item.name}</div>
+            </div>
+            <div className="top-screen-second-row">
+              <div className="top-screen-picture">
+                <div className="item-picture" style={{ backgroundImage: `url(${item.sprite})` }} />
+              </div>
+              {details}
+            </div>
           </div>
         </div>
       );

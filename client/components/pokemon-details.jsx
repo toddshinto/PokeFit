@@ -49,9 +49,9 @@ export default class PokemonDetails extends React.Component {
           break;
       }
       return (
-        <div className="pokemon-screen-container">
-          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }} >
-            <div className="first-row">
+        <div className="pokedex-screen-container">
+          <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }} >
+            <div className="top-screen-first-row">
               <Menu pokemon={pokemon}
                 setView={this.props.setView}
                 getPokemon={this.props.getPokemon}
@@ -63,13 +63,13 @@ export default class PokemonDetails extends React.Component {
                 opened={this.props.opened}
                 setPokemonDetails={this.props.setPokemonDetails}
                 action={this.props.action}/>
-              <div className="pokemon-name">{pokemon.name}</div>
+              <div className="top-screen-title">{pokemon.name}</div>
             </div>
-            <div className="second-row" onClick={() => {
+            <div className="top-screen-second-row" onClick={() => {
               this.props.setAction(null);
               this.props.closeDrawer();
             }}>
-              <div className="pokemon-picture" style={{ backgroundImage: `url(${pokemon.spriteFrontDefault})` }} />
+              <div className="top-screen-picture" style={{ backgroundImage: `url(${pokemon.spriteFrontDefault})` }} />
               {details}
             </div>
           </div>
@@ -77,9 +77,9 @@ export default class PokemonDetails extends React.Component {
       );
     } else {
       return (
-        <div className="pokemon-screen-container">
-          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
-            <div className="display-header" style={{ backgroundColor: 'yellow' }}>Go catch some POKéMON!</div>
+        <div className="pokedex-screen-container">
+          <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
+            <div className="top-display-header" style={{ backgroundColor: 'yellow' }}>Go catch some POKéMON!</div>
           </div>
         </div>
       );
