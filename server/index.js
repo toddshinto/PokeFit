@@ -255,6 +255,24 @@ app.get('/api/backpack-items', (req, res, next) => {
     });
 });
 
+app.post('/api/pokeboxes', (req, res, next) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'userId required ' });
+  }
+  const pokemonId = req.body.pokemon_id;
+  const name = req.body.name;
+  const sql = `
+  insert into pokeboxes (pokemon_id, user_id, name)
+  values ($1, $2, $3)
+  returning *
+  `;
+  const params = [pokemonId, userId, name];
+  db.query(sql, params)
+    .then(result => res.status(200).json(result.rows[0]))
+    .catch(err => next(err));
+});
+
 app.get('/api/health-check', (req, res, next) => {
   db.query('select \'successfully connected\' as "message"')
     .then(result => res.json(result.rows[0]))

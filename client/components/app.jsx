@@ -50,6 +50,7 @@ export default class App extends React.Component {
     this.setItemDetails = this.setItemDetails.bind(this);
     this.attemptCatch = this.attemptCatch.bind(this);
     this.attemptBerry = this.attemptBerry.bind(this);
+    this.captureSuccess = this.captureSuccess.bind(this);
   }
 
   componentDidMount() {
@@ -193,6 +194,33 @@ export default class App extends React.Component {
 
   attemptCatch(ball) {
     // console.log(ball) jake inserts code here;
+    const randomRoll = Math.floor(Math.random() * 300) + 1;
+    const captureRate = this.state.wildPokemon.capture_rate;
+    const berry = this.state.berries;
+    if (ball.item_id === 1) {
+      this.captureSuccess();
+    } else {
+      if (randomRoll - berry <= captureRate) {
+        this.captureSuccess();
+      }
+    }
+  }
+
+  captureSuccess() {
+    const pokemon = this.state.wildPokemon;
+    fetch('/api/pokeboxes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(pokemon)
+    })
+      .then(res => res.json())
+      .then(data => {
+        process.stdout.write(data);
+        this.setView('walk');
+        this.setState({ wildPokemon: null });
+      });
   }
 
   attemptBerry(berry) {
