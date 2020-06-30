@@ -185,16 +185,19 @@ app.get('/api/backpack-items', (req, res, next) => {
     return res.status(400).json({ error: 'userId required' });
   }
   const sql = `
-    select  "backpack_id",
-            "item_id",
-            "quantity"
-      from  "backpack_items"
-     where  "userId" = $1
+    select  "i"."item_short_desc" as "shortDesc",
+            "i"."item_long_desc" as "longDesc",
+            "quantity",
+            "i"."name",
+            "i"."sprite"
+      from  "backpack_items" as "bi"
+      join "items" as "i" using (item_id)
+     where  "user_id" = $1
   `;
   const params = [userId];
   db.query(sql, params)
     .then(result => {
-      return res.status(201).json(result.rows[0]);
+      return res.status(201).json(result.rows);
     })
     .catch(err => {
       console.error(err);

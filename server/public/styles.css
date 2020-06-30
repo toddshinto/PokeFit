@@ -571,6 +571,19 @@ position: relative;
 padding-top: 15px;
 }
 
+.item-display-screen {
+width: 340px;
+height: 199px;
+background: #a84909;
+border-radius: 30px;
+background-repeat: no-repeat;
+background-size: cover;
+border: 2px solid black;
+box-shadow: inset 10px 6px 9px rgba(0, 0, 0, 0.5);
+position: relative;
+padding-top: 15px;
+}
+
 .pokemon-name {
   font-family: "Pokemon";
   font-size: 14px;
@@ -620,12 +633,29 @@ display: flex;
 position: relative;
 height: 100px;
 }
+.item-second-row {
+display: flex;
+position: relative;
+justify-content: space-between;
+height: 100px;
+}
+
 
 .pokemon-picture {
   background-repeat: no-repeat;
   background-size: cover;
   width: 175px;
   height: 175px;
+  position: relative;
+  left: 5px;
+  top: 0px;
+}
+
+.item-picture {
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100px;
+  height: 100px;
   position: relative;
   left: 5px;
   top: 0px;

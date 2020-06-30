@@ -14,7 +14,9 @@ export default class App extends React.Component {
       view: 'start',
       stats: null,
       pokemons: [],
+      items: [],
       pokemonDetails: null,
+      itemDetails: null,
       startLat: null,
       startLon: null,
       currLat: null,
@@ -41,6 +43,8 @@ export default class App extends React.Component {
     this.openDrawer = this.openDrawer.bind(this);
     this.closeDrawer = this.closeDrawer.bind(this);
     this.setAction = this.setAction.bind(this);
+    this.getItems = this.getItems.bind(this);
+    this.setItemDetails = this.setItemDetails.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +54,7 @@ export default class App extends React.Component {
     const d = new Date();
     const startTime = d.getTime();
     this.setState({ startTime });
+    this.getItems();
   }
 
   getTimeWalked() {
@@ -74,6 +79,17 @@ export default class App extends React.Component {
         this.setState({ pokemons });
         if (!this.state.pokemonDetails && pokemons.length > 0) {
           this.setPokemonDetails(0);
+        }
+      });
+  }
+
+  getItems() {
+    fetch('/api/backpack-items')
+      .then(response => response.json())
+      .then(items => {
+        this.setState({ items });
+        if (!this.state.itemDetails && items.length > 0) {
+          this.setItemDetails(0);
         }
       });
   }
@@ -169,6 +185,13 @@ export default class App extends React.Component {
     const pokemons = this.state.pokemons;
     if (pokemons) {
       this.setState({ pokemonDetails: pokemons[index] });
+    }
+  }
+
+  setItemDetails(index) {
+    const items = this.state.items;
+    if (items) {
+      this.setState({ itemDetails: items[index] });
     }
   }
 
@@ -271,7 +294,14 @@ export default class App extends React.Component {
           pokemons={this.state.pokemons} />;
         break;
       case 'backpack':
-        display = <Backpack setView={this.setView} />;
+        display = <Backpack
+          items={this.state.items}
+          itemDetails={this.state.itemDetails}
+          setItemDetails={this.setItemDetails}
+          setView={this.setView}
+          timeOfDay={this.state.timeOfDay}
+          backgroundImage={this.state.backgroundImage}
+        />;
         break;
       case 'walk':
         display = <Walk
