@@ -24,19 +24,19 @@ export default class Walk extends React.Component {
             <div className="stats">
               <div className="stats-text stats-text-walk-screen">
                 <div className="stats-label">MILES WALKED: </div>
-                <div>{s.milesWalked > 0 ? s.milesWalked : 0} </div>
+                <div className="stats-number">{s.milesWalked > 0 ? s.milesWalked : 0} </div>
               </div>
               <div className="stats-text stats-text-walk-screen">
                 <div className="stats-label">ENCOUNTERS: </div>
-                <div> </div>
+                <div className="stats-number"> </div>
               </div>
               <div className="stats-text stats-text-walk-screen">
                 <div className="stats-label">TIME WALKED: </div>
-                <div>{this.props.timeWalked} </div>
+                <div className="stats-number">{this.props.timeWalked} </div>
               </div>
               <div className="stats-text stats-text-walk-screen">
                 <div className="stats-label">POKé BALLS: </div>
-                <div> </div>
+                <div className="stats-number"> </div>
               </div>
             </div>
           </div>

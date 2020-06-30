@@ -346,10 +346,16 @@ padding: 0px 20px;
 position: relative;
 }
 .stats-label {
-  width: 70%;
+  width: 50%;
 }
+
+.stats-number {
+  width: 50%;
+  text-align: center;
+}
+
 .stats-text-walk-screen {
-  width: 80%;
+  width: 100%;
   text-align: right;
 }
 
@@ -597,11 +603,11 @@ height: 100%;
   color: rgb(201, 182, 216)
 }
 
-.pokemon-desc {
+.pokemon-desc{
   font-family: "Pokemon";
   font-size: 12px;
   line-height: 1.6;
-  text-align: left;
+  text-align: top left;
   word-spacing: 1px;
   text-shadow:
     -1px -1px 0 #000,
@@ -609,13 +615,13 @@ height: 100%;
     -1px  1px 0 #000,
      1px  1px 0 #000;
   color: white;
-  display:flex;
-  flex-flow: column;
   width: 50%;
   padding-left: 2px;
+  display:flex;
+  flex-flow: column;
+  justify-content: center;
   height: 90%;
   position: relative;
-  justify-content: center;
   overflow: hidden;
   overflow-y: scroll;
   left: -10px;
@@ -715,7 +721,7 @@ background-size: contain;
 }
 
 .stats {
-  width: 80%;
+  width: 100%;
   display: flex;
   height: 80%;
   justify-content: space-evenly;
@@ -729,4 +735,19 @@ background-size: contain;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .stats-label, .button-text {
+    font-size: 10px;
+  }
+  .stats-number {
+    font-size: 11px
+  }
+}
+
+@media (max-height: 800px) {
+  .pokemon-desc {
+    justify-content: flex-start
+  }
 }
