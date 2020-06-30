@@ -22,7 +22,6 @@ ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
 ALTER TABLE ONLY public.pokemon DROP CONSTRAINT pokemon_v2_pk;
 ALTER TABLE ONLY public.pokeboxes DROP CONSTRAINT pokeboxes_pk;
 ALTER TABLE ONLY public.items DROP CONSTRAINT items_pk;
-ALTER TABLE ONLY public."backpackItems" DROP CONSTRAINT "backpackItems_pk";
 ALTER TABLE public.users ALTER COLUMN user_id DROP DEFAULT;
 ALTER TABLE public.pokeboxes ALTER COLUMN pokebox_id DROP DEFAULT;
 ALTER TABLE public.backpack_items ALTER COLUMN backpack_id DROP DEFAULT;
@@ -32,7 +31,6 @@ DROP TABLE public.pokemon;
 DROP SEQUENCE public."pokeboxes_pokeboxId_seq";
 DROP TABLE public.pokeboxes;
 DROP TABLE public.items;
-DROP TABLE public."backpackItems";
 DROP SEQUENCE public."backpackItems_backpackId_seq";
 DROP TABLE public.backpack_items;
 DROP FUNCTION public.trigger_set_timestamp();
@@ -119,20 +117,6 @@ ALTER SEQUENCE public."backpackItems_backpackId_seq" OWNED BY public.backpack_it
 
 
 --
--- Name: backpackItems; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public."backpackItems" (
-    "backpackId" integer DEFAULT nextval('public."backpackItems_backpackId_seq"'::regclass) NOT NULL,
-    "userId" integer NOT NULL,
-    "itemId" integer NOT NULL,
-    quantity integer NOT NULL,
-    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
-);
-
-
---
 -- Name: items; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -143,7 +127,8 @@ CREATE TABLE public.items (
     item_short_desc character varying(255) NOT NULL,
     item_long_desc character varying(255) NOT NULL,
     item_eff_desc text NOT NULL,
-    sprite character varying(255) NOT NULL
+    sprite character varying(255) NOT NULL,
+    effect smallint
 );
 
 
@@ -262,18 +247,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public."
 
 
 --
--- Data for Name: backpackItems; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public."backpackItems" ("backpackId", "userId", "itemId", quantity, "createdAt", "updatedAt") FROM stdin;
-\.
-
-
---
 -- Data for Name: backpack_items; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.backpack_items (backpack_id, user_id, item_id, quantity, created_at, updated_at) FROM stdin;
+1	18	1	1	2020-06-30 09:36:46.958717+00	2020-06-30 09:36:46.958717+00
+2	18	2	10	2020-06-30 09:36:52.831408+00	2020-06-30 09:36:52.831408+00
+3	18	3	15	2020-06-30 09:36:56.808536+00	2020-06-30 09:36:56.808536+00
+4	18	18	15	2020-06-30 19:50:38.101128+00	2020-06-30 19:50:38.101128+00
 \.
 
 
@@ -281,33 +262,33 @@ COPY public.backpack_items (backpack_id, user_id, item_id, quantity, created_at,
 -- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.items (item_id, name, item_type, item_short_desc, item_long_desc, item_eff_desc, sprite) FROM stdin;
-12	premier-ball	ball	Tries to catch a wild Pokémon.	A rare BALL made in commemoration of some event.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/premier-ball.png
-15	quick-ball	ball	Tries to catch a wild Pokémon. Success rate is 4× (Gen V: 5×), but only on the first turn.	A somewhat different Poké Ball that provides a better catch rate if it is used at the start of a wild encounter.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 4× on the first turn of a battle, but 1× any other time.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/quick-ball.png
-16	cherish-ball	ball	Tries to catch a wild Pokémon.	A quite rare Poké Ball that has been specially crafted to commemorate an occasion of some sort.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/cherish-ball.png
-1	master-ball	ball	Catches a wild Pokémon every time.	The best BALL that catches a POKéMON without fail.	Used in battle :   Catches a wild Pokémon without fail.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png
-2	ultra-ball	ball	Tries to catch a wild Pokémon.  Success rate is 2×.	A better BALL with a higher catch rate than a GREAT BALL.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 2×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png
-3	great-ball	ball	Tries to catch a wild Pokémon.  Success rate is 1.5×.	A good BALL with a higher catch rate than a POKé BALL.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1.5×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png
-4	poke-ball	ball	Tries to catch a wild Pokémon.	A tool used for catching wild POKéMON.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png
-5	safari-ball	ball	Tries to catch a wild Pokémon in the Great Marsh or Safari Zone.  Success rate is 1.5×.	A special BALL that is used only in the SAFARI ZONE.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1.5×.  This item can only be used in the great marsh or kanto safari zone.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/safari-ball.png
-6	net-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3× for water and bug Pokémon.	A BALL that works well on WATER- and BUG-type POKéMON.	Used in battle :   Attempts to catch a wild Pokémon.  If the wild Pokémon is water- or bug-type, this ball has a catch rate of 3×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/net-ball.png
-10	timer-ball	ball	Tries to catch a wild Pokémon. Success rate increases by 0.1× (Gen V: 0.3×) every turn, to a max of 4×.	More effective as more turns are taken in battle.	Used in battle :   Attempts to catch a wild Pokémon.  Has a catch rate of 1.1× on the first turn of the battle and increases by 0.1× every turn, to a maximum of 4× on turn 30.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/timer-ball.png
-11	luxury-ball	ball	Tries to catch a wild Pokémon.  Caught Pokémon start with 200 happiness.	A cozy BALL that makes POKéMON more friendly.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.  Whenever the caught Pokémon''s happiness increases, it increases by one extra point.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/luxury-ball.png
-7	dive-ball	ball	Tries to catch a wild Pokémon. Success rate is 3.5× when underwater, fishing, or surfing.	A BALL that works better on POKéMON on the ocean floor.	Used in battle :   Attempts to catch a wild Pokémon.  If the wild Pokémon was encountered by surfing or fishing, this ball has a catch rate of 3.5×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dive-ball.png
-8	nest-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3.9× for level 1 Pokémon, and drops steadily to 1× at level 30.	A BALL that works better on weaker POKéMON.	Used in battle :   Attempts to catch a wild Pokémon.  Has a catch rate of given by `(40 - level) / 10`, where `level` is the wild Pokémon''s level, to a maximum of 3.9× for level 1 Pokémon.  If the wild Pokémon''s level is higher than 30, this ball has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/nest-ball.png
-9	repeat-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3× for previously-caught Pokémon.	A BALL that works better on POKéMON caught before.	Used in battle :   Attempts to catch a wild Pokémon.  If the wild Pokémon''s species is marked as caught in the trainer''s Pokédex, this ball has a catch rate of 3×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/repeat-ball.png
-13	dusk-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3.5× at night and in caves.	A somewhat different Poké Ball that makes it easier to catch wild Pokémon at night or in dark places like caves.	Used in battle :   Attempts to catch a wild Pokémon.  If it''s currently nighttime or the wild Pokémon was encountered while walking in a cave, this ball has a catch rate of 3.5×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dusk-ball.png
-14	heal-ball	ball	Tries to catch a wild Pokémon.  Caught Pokémon are immediately healed.	Tries to catch a wild Pokémon.  Caught Pokémon are immediately healed.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.  The caught Pokémon''s HP is immediately restored, PP for all its moves is restored, and any status ailment is cured.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/heal-ball.png
-17	sitrus-berry	berry	Held: Consumed at 1/2 max HP to recover 1/4 max HP.	A hold item that restores 30 HP in battle.	Held in battle :   When the holder has 1/2 its max HP remaining or less, it consumes this item to restore 1/4 its max HP.  Used on a party Pokémon :   Restores 1/4 the Pokémon''s max HP.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/sitrus-berry.png
-18	leppa-berry	berry	Held: Consumed when a move runs out of PP to restore its PP by 10.	A hold item that restores 10 PP in battle.	Held in battle :   When the holder is out of PP for one of its moves, it consumes this item to restore 10 of that move''s PP.  Used on a party Pokémon :   Restores 10 PP for a selected move.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/leppa-berry.png
-19	rawst-berry	berry	Held: Consumed when burned to cure a burn.	A hold item that heals a burn in battle.	Held in battle :   When the holder is burned, it consumes this item to cure the burn.  Used on a party Pokémon :   Cures a burn.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rawst-berry.png
-20	oran-berry	berry	Held: Consumed at 1/2 max HP to recover 10 HP.	A hold item that restores 10 HP in battle.	Held in battle :   When the holder has 1/2 its max HP remaining or less, it consumes this item to restore 10 HP.  Used on a party Pokémon :   Restores 10 HP.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/oran-berry.png
-21	pecha-berry	berry	Held: Consumed when poisoned to cure poison.	A hold item that heals poisoning in battle.	Held in battle :   When the holder is poisoned, it consumes this item to cure the poison.  Used on a party Pokémon :   Cures poison.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/pecha-berry.png
-22	persim-berry	berry	Held: Consumed when confused to cure confusion.	讓寶可夢攜帶後， 可以治癒混亂。	Held in battle :   When the holder is confused, it consumes this item to cure the confusion.  Used on a party Pokémon :   Cures confusion.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/persim-berry.png
-23	lum-berry	berry	Held: Consumed to cure any status condition or confusion.	A hold item that heals status in battle.	Held in battle :   When the holder is afflicted with a major status ailment, it consumes this item to cure the ailment.  Used on a party Pokémon :   Cures any major status ailment.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lum-berry.png
-24	cheri-berry	berry	Held: Consumed when paralyzed to cure paralysis.	If held by a Pokémon, it recovers from paralysis.	Held in battle :   When the holder is paralyzed, it consumes this item to cure the paralysis.  Used on a party Pokémon :   Cures paralysis.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/cheri-berry.png
-25	chesto-berry	berry	Held: Consumed when asleep to cure sleep.	A hold item that awakens POKéMON in battle.	Held in battle :   When the holder is asleep, it consumes this item to wake up.  Used on a party Pokémon :   Cures sleep.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/chesto-berry.png
-26	aspear-berry	berry	Held: Consumed when frozen to cure frozen.	A hold item that defrosts POKéMON in battle.	Held in battle :   When the holder is frozen, it consumes this item to thaw itself.  Used on a party Pokémon :   Cures freezing.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/aspear-berry.png
+COPY public.items (item_id, name, item_type, item_short_desc, item_long_desc, item_eff_desc, sprite, effect) FROM stdin;
+12	premier-ball	ball	Tries to catch a wild Pokémon.	A rare BALL made in commemoration of some event.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/premier-ball.png	\N
+15	quick-ball	ball	Tries to catch a wild Pokémon. Success rate is 4× (Gen V: 5×), but only on the first turn.	A somewhat different Poké Ball that provides a better catch rate if it is used at the start of a wild encounter.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 4× on the first turn of a battle, but 1× any other time.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/quick-ball.png	\N
+16	cherish-ball	ball	Tries to catch a wild Pokémon.	A quite rare Poké Ball that has been specially crafted to commemorate an occasion of some sort.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/cherish-ball.png	\N
+1	master-ball	ball	Catches a wild Pokémon every time.	The best BALL that catches a POKéMON without fail.	Used in battle :   Catches a wild Pokémon without fail.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png	\N
+2	ultra-ball	ball	Tries to catch a wild Pokémon.  Success rate is 2×.	A better BALL with a higher catch rate than a GREAT BALL.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 2×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png	\N
+3	great-ball	ball	Tries to catch a wild Pokémon.  Success rate is 1.5×.	A good BALL with a higher catch rate than a POKé BALL.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1.5×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png	\N
+4	poke-ball	ball	Tries to catch a wild Pokémon.	A tool used for catching wild POKéMON.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png	\N
+5	safari-ball	ball	Tries to catch a wild Pokémon in the Great Marsh or Safari Zone.  Success rate is 1.5×.	A special BALL that is used only in the SAFARI ZONE.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1.5×.  This item can only be used in the great marsh or kanto safari zone.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/safari-ball.png	\N
+6	net-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3× for water and bug Pokémon.	A BALL that works well on WATER- and BUG-type POKéMON.	Used in battle :   Attempts to catch a wild Pokémon.  If the wild Pokémon is water- or bug-type, this ball has a catch rate of 3×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/net-ball.png	\N
+10	timer-ball	ball	Tries to catch a wild Pokémon. Success rate increases by 0.1× (Gen V: 0.3×) every turn, to a max of 4×.	More effective as more turns are taken in battle.	Used in battle :   Attempts to catch a wild Pokémon.  Has a catch rate of 1.1× on the first turn of the battle and increases by 0.1× every turn, to a maximum of 4× on turn 30.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/timer-ball.png	\N
+11	luxury-ball	ball	Tries to catch a wild Pokémon.  Caught Pokémon start with 200 happiness.	A cozy BALL that makes POKéMON more friendly.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.  Whenever the caught Pokémon''s happiness increases, it increases by one extra point.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/luxury-ball.png	\N
+7	dive-ball	ball	Tries to catch a wild Pokémon. Success rate is 3.5× when underwater, fishing, or surfing.	A BALL that works better on POKéMON on the ocean floor.	Used in battle :   Attempts to catch a wild Pokémon.  If the wild Pokémon was encountered by surfing or fishing, this ball has a catch rate of 3.5×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dive-ball.png	\N
+8	nest-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3.9× for level 1 Pokémon, and drops steadily to 1× at level 30.	A BALL that works better on weaker POKéMON.	Used in battle :   Attempts to catch a wild Pokémon.  Has a catch rate of given by `(40 - level) / 10`, where `level` is the wild Pokémon''s level, to a maximum of 3.9× for level 1 Pokémon.  If the wild Pokémon''s level is higher than 30, this ball has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/nest-ball.png	\N
+9	repeat-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3× for previously-caught Pokémon.	A BALL that works better on POKéMON caught before.	Used in battle :   Attempts to catch a wild Pokémon.  If the wild Pokémon''s species is marked as caught in the trainer''s Pokédex, this ball has a catch rate of 3×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/repeat-ball.png	\N
+13	dusk-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3.5× at night and in caves.	A somewhat different Poké Ball that makes it easier to catch wild Pokémon at night or in dark places like caves.	Used in battle :   Attempts to catch a wild Pokémon.  If it''s currently nighttime or the wild Pokémon was encountered while walking in a cave, this ball has a catch rate of 3.5×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dusk-ball.png	\N
+14	heal-ball	ball	Tries to catch a wild Pokémon.  Caught Pokémon are immediately healed.	Tries to catch a wild Pokémon.  Caught Pokémon are immediately healed.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.  The caught Pokémon''s HP is immediately restored, PP for all its moves is restored, and any status ailment is cured.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/heal-ball.png	\N
+17	sitrus-berry	berry	Held: Consumed at 1/2 max HP to recover 1/4 max HP.	A hold item that restores 30 HP in battle.	Held in battle :   When the holder has 1/2 its max HP remaining or less, it consumes this item to restore 1/4 its max HP.  Used on a party Pokémon :   Restores 1/4 the Pokémon''s max HP.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/sitrus-berry.png	\N
+18	leppa-berry	berry	Held: Consumed when a move runs out of PP to restore its PP by 10.	A hold item that restores 10 PP in battle.	Held in battle :   When the holder is out of PP for one of its moves, it consumes this item to restore 10 of that move''s PP.  Used on a party Pokémon :   Restores 10 PP for a selected move.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/leppa-berry.png	\N
+19	rawst-berry	berry	Held: Consumed when burned to cure a burn.	A hold item that heals a burn in battle.	Held in battle :   When the holder is burned, it consumes this item to cure the burn.  Used on a party Pokémon :   Cures a burn.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rawst-berry.png	\N
+20	oran-berry	berry	Held: Consumed at 1/2 max HP to recover 10 HP.	A hold item that restores 10 HP in battle.	Held in battle :   When the holder has 1/2 its max HP remaining or less, it consumes this item to restore 10 HP.  Used on a party Pokémon :   Restores 10 HP.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/oran-berry.png	\N
+21	pecha-berry	berry	Held: Consumed when poisoned to cure poison.	A hold item that heals poisoning in battle.	Held in battle :   When the holder is poisoned, it consumes this item to cure the poison.  Used on a party Pokémon :   Cures poison.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/pecha-berry.png	\N
+22	persim-berry	berry	Held: Consumed when confused to cure confusion.	讓寶可夢攜帶後， 可以治癒混亂。	Held in battle :   When the holder is confused, it consumes this item to cure the confusion.  Used on a party Pokémon :   Cures confusion.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/persim-berry.png	\N
+25	chesto-berry	berry	Held: Consumed when asleep to cure sleep.	A hold item that awakens POKéMON in battle.	Held in battle :   When the holder is asleep, it consumes this item to wake up.  Used on a party Pokémon :   Cures sleep.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/chesto-berry.png	\N
+26	aspear-berry	berry	Held: Consumed when frozen to cure frozen.	A hold item that defrosts POKéMON in battle.	Held in battle :   When the holder is frozen, it consumes this item to thaw itself.  Used on a party Pokémon :   Cures freezing.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/aspear-berry.png	\N
+23	lum-berry	berry	Held: Consumed to cure any status condition or confusion.	A hold item that heals status in battle.	Held in battle :   When the holder is afflicted with a major status ailment, it consumes this item to cure the ailment.  Used on a party Pokémon :   Cures any major status ailment.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lum-berry.png	30
+24	cheri-berry	berry	Held: Consumed when paralyzed to cure paralysis.	If held by a Pokémon, it recovers from paralysis.	Held in battle :   When the holder is paralyzed, it consumes this item to cure the paralysis.  Used on a party Pokémon :   Cures paralysis.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/cheri-berry.png	90
 \.
 
 
@@ -326,6 +307,11 @@ COPY public.pokeboxes (pokebox_id, user_id, pokemon_id, name, created_at, update
 10	6	1	Bulbasaur	2020-06-26 00:49:23.739248+00	2020-06-26 17:41:39.413317+00	\N
 9	6	4	Charmander	2020-06-26 00:49:18.082235+00	2020-06-26 17:41:51.82505+00	\N
 8	6	7	Squirtle	2020-06-26 00:49:08.630756+00	2020-06-26 17:41:54.144032+00	\N
+14	18	150	Mewtwo	2020-06-30 04:57:00.859897+00	2020-06-30 04:57:53.003785+00	\N
+13	18	149	Dragonite	2020-06-30 04:56:57.967563+00	2020-06-30 04:58:00.177286+00	\N
+15	18	86	Seel	2020-06-30 04:57:07.912109+00	2020-06-30 04:58:07.738982+00	\N
+12	18	53	Persian	2020-06-30 04:56:54.179918+00	2020-06-30 04:58:16.871816+00	\N
+11	18	7	Squirtle	2020-06-30 04:56:49.830426+00	2020-06-30 05:01:21.835299+00	\N
 \.
 
 
@@ -510,6 +496,8 @@ COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, ti
 15	0	0	2020-06-27 00:19:52.392332+00	2020-06-27 00:19:52.392332+00	0
 16	0	0	2020-06-27 04:42:00.042219+00	2020-06-27 04:42:00.042219+00	0
 17	0	0	2020-06-27 04:42:54.712485+00	2020-06-27 04:42:54.712485+00	0
+18	0	0	2020-06-30 00:18:07.31492+00	2020-06-30 00:18:07.31492+00	0
+19	0	0	2020-06-30 17:59:53.788886+00	2020-06-30 17:59:53.788886+00	0
 \.
 
 
@@ -517,29 +505,21 @@ COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, ti
 -- Name: backpackItems_backpackId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."backpackItems_backpackId_seq"', 1, false);
+SELECT pg_catalog.setval('public."backpackItems_backpackId_seq"', 4, true);
 
 
 --
 -- Name: pokeboxes_pokeboxId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 10, true);
+SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 15, true);
 
 
 --
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 17, true);
-
-
---
--- Name: backpackItems backpackItems_pk; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."backpackItems"
-    ADD CONSTRAINT "backpackItems_pk" PRIMARY KEY ("backpackId");
+SELECT pg_catalog.setval('public."users_userId_seq"', 19, true);
 
 
 --

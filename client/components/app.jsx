@@ -4,6 +4,7 @@ import Start from './start';
 import Backpack from './backpack';
 import Walk from './walk';
 import Pokebox from './pokebox';
+import Encounter from './encounter';
 import Header from './header';
 import Footer from './footer';
 import ItemModal from './item-modal';
@@ -36,6 +37,8 @@ export default class App extends React.Component {
       foundItem: null,
       encounterModal: false,
       totalEncounters: 0
+      wildPokemon: null,
+      berries: 0
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -56,6 +59,9 @@ export default class App extends React.Component {
     this.shuffle = this.shuffle.bind(this);
     this.setEncounterModal = this.setEncounterModal.bind(this);
     this.setEncounter = this.setEncounter.bind(this);
+    this.attemptCatch = this.attemptCatch.bind(this);
+    this.attemptBerry = this.attemptBerry.bind(this);
+    this.captureSuccess = this.captureSuccess.bind(this);
   }
 
   componentDidMount() {
@@ -66,6 +72,9 @@ export default class App extends React.Component {
     const startTime = d.getTime();
     this.setState({ startTime });
     this.getItems();
+    if (!this.state.stats) {
+      this.setState({ stats: { milesWalked: 0, encounters: 0, timeWalked: 0 } });
+    }
   }
 
   getTimeWalked() {
@@ -136,7 +145,8 @@ export default class App extends React.Component {
         if (!this.state.pokemonDetails && pokemons.length > 0) {
           this.setPokemonDetails(0);
         }
-      });
+      })
+      .catch(error => console.error(error));
   }
 
   getItems() {
@@ -147,7 +157,8 @@ export default class App extends React.Component {
         if (!this.state.itemDetails && items.length > 0) {
           this.setItemDetails(0);
         }
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   getStartPosition() {
@@ -235,6 +246,41 @@ export default class App extends React.Component {
         .then(res => res.json())
         .then(data => process.stdout.write(data));
     }
+  }
+
+  attemptCatch(ball) {
+    // console.log(ball) jake inserts code here;
+    const randomRoll = Math.floor(Math.random() * 300) + 1;
+    const captureRate = this.state.wildPokemon.capture_rate;
+    const berry = this.state.berries;
+    if (ball.item_id === 1) {
+      this.captureSuccess();
+    } else {
+      if (randomRoll - berry <= captureRate) {
+        this.captureSuccess();
+      }
+    }
+  }
+
+  captureSuccess() {
+    const pokemon = this.state.wildPokemon;
+    fetch('/api/pokeboxes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(pokemon)
+    })
+      .then(res => res.json())
+      .then(data => {
+        process.stdout.write(data);
+        this.setView('walk');
+        this.setState({ wildPokemon: null });
+      });
+  }
+
+  attemptBerry(berry) {
+    this.setState({ berries: this.state.berries + berry.effect });
   }
 
   setPokemonDetails(index) {
@@ -366,6 +412,7 @@ export default class App extends React.Component {
           stats={this.state.stats}
           setView={this.setView}
           encounters={this.state.totalEncounters}
+          timeOfDay={this.state.timeOfDay}
           backgroundImage={this.state.backgroundImage} />;
         break;
       case 'pokebox':
@@ -384,6 +431,15 @@ export default class App extends React.Component {
           getPokemon={this.getPokemon}
         />;
         break;
+      case 'encounter':
+        display = <Encounter
+          items={this.state.items}
+          wildPokemon={this.state.wildPokemon}
+          timeOfDay={this.state.timeOfDay}
+          attemptCatch={this.attemptCatch}
+          attemptBerry={this.attemptBerry}
+          setView={this.setView}
+        />;
     }
     if (this.state.encounter === 'item') {
       modal = <ItemModal
@@ -405,7 +461,7 @@ export default class App extends React.Component {
         ? display
         : <div className="background-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
           {modal}
-          <Header />
+          <Header setView={this.setView}/>
           {display}
           <Footer
             view={this.state.view}
