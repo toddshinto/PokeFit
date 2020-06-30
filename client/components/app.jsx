@@ -4,6 +4,7 @@ import Start from './start';
 import Backpack from './backpack';
 import Walk from './walk';
 import Pokebox from './pokebox';
+import Encounter from './encounter';
 import Header from './header';
 import Footer from './footer';
 
@@ -28,7 +29,9 @@ export default class App extends React.Component {
       backgroundImage: null,
       timeOfDay: null,
       opened: false,
-      action: null
+      action: null,
+      wildPokemon: null,
+      berries: 0
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -45,6 +48,8 @@ export default class App extends React.Component {
     this.setAction = this.setAction.bind(this);
     this.getItems = this.getItems.bind(this);
     this.setItemDetails = this.setItemDetails.bind(this);
+    this.attemptCatch = this.attemptCatch.bind(this);
+    this.attemptBerry = this.attemptBerry.bind(this);
   }
 
   componentDidMount() {
@@ -184,6 +189,14 @@ export default class App extends React.Component {
         .then(res => res.json())
         .then(data => process.stdout.write(data));
     }
+  }
+
+  attemptCatch(ball) {
+    // console.log(ball) jake inserts code here;
+  }
+
+  attemptBerry(berry) {
+    this.setState({ berries: this.state.berries + berry.effect });
   }
 
   setPokemonDetails(index) {
@@ -332,12 +345,21 @@ export default class App extends React.Component {
           getPokemon={this.getPokemon}
         />;
         break;
+      case 'encounter':
+        display = <Encounter
+          items={this.state.items}
+          wildPokemon={this.state.wildPokemon}
+          timeOfDay={this.state.timeOfDay}
+          attemptCatch={this.attemptCatch}
+          attemptBerry={this.attemptBerry}
+          setView={this.setView}
+        />;
     }
     return (
       this.state.view === 'home' || this.state.view === 'start'
         ? display
         : <div className="background-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-          <Header />
+          <Header setView={this.setView}/>
           {display}
           <Footer
             view={this.state.view}
