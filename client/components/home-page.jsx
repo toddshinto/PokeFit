@@ -10,7 +10,7 @@ export default class HomePage extends React.Component {
     }
     return (
       <>
-        <div className="main-background" style={{ backgroundImage: `url(assets/images/${this.props.timeOfDay}-bg.gif)` }}>
+        <div className="main-background" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
           <div className="pokefit-logo">
             <img src="/assets/images/pokefit-shadow.png" alt="pokefit logo" className="pokefit-logo" />
           </div>
