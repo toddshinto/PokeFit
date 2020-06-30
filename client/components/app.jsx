@@ -7,6 +7,8 @@ import Pokebox from './pokebox';
 import Encounter from './encounter';
 import Header from './header';
 import Footer from './footer';
+import ItemModal from './item-modal';
+import PokemonModal from './pokemon-modal';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,6 +32,11 @@ export default class App extends React.Component {
       timeOfDay: null,
       opened: false,
       action: null,
+      encounter: null,
+      wildPokemon: null,
+      foundItem: null,
+      encounterModal: false,
+      totalEncounters: 0
       wildPokemon: null,
       berries: 0
     };
@@ -48,6 +55,10 @@ export default class App extends React.Component {
     this.setAction = this.setAction.bind(this);
     this.getItems = this.getItems.bind(this);
     this.setItemDetails = this.setItemDetails.bind(this);
+    this.getEncounter = this.getEncounter.bind(this);
+    this.shuffle = this.shuffle.bind(this);
+    this.setEncounterModal = this.setEncounterModal.bind(this);
+    this.setEncounter = this.setEncounter.bind(this);
     this.attemptCatch = this.attemptCatch.bind(this);
     this.attemptBerry = this.attemptBerry.bind(this);
     this.captureSuccess = this.captureSuccess.bind(this);
@@ -77,8 +88,53 @@ export default class App extends React.Component {
         timeDiff = currentTime - startTime;
         const tw = Math.round(timeDiff / 60000);
         this.setState({ sessionTimeWalked: tw });
+        if (this.state.sessionTimeWalked % 3 === 0 && !this.state.encounter) {
+          this.getEncounter();
+        }
       }, 60001);
     }
+  }
+
+  shuffle(array) {
+    let currentIndex = array.length;
+    let tempValue = null;
+    let randomIndex = null;
+    while (currentIndex !== 0) {
+
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      tempValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = tempValue;
+    }
+    return array;
+  }
+
+  getEncounter() {
+
+    const encounterOptions = this.shuffle(['item', 'item', 'pokemon', 'pokemon', 'pokemon']);
+    const thisEncounter = encounterOptions.pop();
+    this.setEncounter(thisEncounter);
+    const itemOptions = this.shuffle([4, 4, 4, 4, 4, 1, 23, 23, 23, 24]);
+    if (thisEncounter === 'item') {
+      fetch(`/api/items/${itemOptions.pop()}`)
+        .then(res => res.json())
+        .then(item => this.setState({ foundItem: item }));
+    } else {
+      const randomPokemon = Math.floor(Math.random() * 151);
+      fetch(`/api/pokemon/${randomPokemon}`)
+        .then(res => res.json())
+        .then(pokemon => this.setState({ wildPokemon: pokemon }));
+    }
+    this.setEncounterModal();
+  }
+
+  setEncounter(type) {
+    this.setState({ encounter: type });
+  }
+
+  setEncounterModal() {
+    this.setState({ encounterModal: !this.state.encounterModal });
   }
 
   getPokemon() {
@@ -295,21 +351,21 @@ export default class App extends React.Component {
       case (13):
       case (14):
       case (15):
-      case (16):
         backgroundImage = 'afternoon';
         break;
+      case (16):
       case (17):
-      case (18):
         backgroundImage = 'late-afternoon';
         break;
+      case (18):
       case (19):
-      case (20):
         backgroundImage = 'evening';
         break;
+      case (20):
       case (21):
-      case (22):
         backgroundImage = 'late-evening';
         break;
+      case (22):
       case (23):
       case (24):
         backgroundImage = 'night';
@@ -320,6 +376,7 @@ export default class App extends React.Component {
 
   render() {
     let display = null;
+    let modal = null;
     switch (this.state.view) {
       case 'start':
         display = <Start
@@ -354,6 +411,7 @@ export default class App extends React.Component {
           timeWalked={this.state.sessionTimeWalked}
           stats={this.state.stats}
           setView={this.setView}
+          encounters={this.state.totalEncounters}
           timeOfDay={this.state.timeOfDay}
           backgroundImage={this.state.backgroundImage} />;
         break;
@@ -383,10 +441,26 @@ export default class App extends React.Component {
           setView={this.setView}
         />;
     }
+    if (this.state.encounter === 'item') {
+      modal = <ItemModal
+        item={this.state.foundItem}
+        setEncounterModal={this.setEncounterModal}
+        view={this.state.view}
+        setView={this.setView}
+      />;
+    } else if (this.state.encounter === 'pokemon') {
+      modal = <PokemonModal
+        pokemon={this.state.wildPokemon}
+        view={this.state.view}
+        setView={this.setView}
+        setEncounterModal={this.setEncounterModal}
+      />;
+    }
     return (
       this.state.view === 'home' || this.state.view === 'start'
         ? display
         : <div className="background-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
+          {modal}
           <Header setView={this.setView}/>
           {display}
           <Footer
