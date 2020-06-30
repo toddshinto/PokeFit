@@ -169,12 +169,8 @@ app.get('/api/pokemon/:pokemonId', (req, res, next) => {
 
 app.get('/api/items/:itemId', (req, res, next) => {
   const itemId = req.params.itemId;
-  const quantity = req.body.quantity;
   if (!itemId) {
     return res.status(400).json({ error: 'invalid itemId' });
-  }
-  if (!quantity) {
-    return res.status(400).json({ error: 'quantity required' });
   }
   const sql = `
      select  *
@@ -184,7 +180,7 @@ app.get('/api/items/:itemId', (req, res, next) => {
   const params = [itemId];
   db.query(sql, params)
     .then(result => {
-      return res.status(200).json({ ...result.rows[0], quantity });
+      return res.status(200).json(result.rows[0]);
     })
     .catch(err => {
       console.error(err);
@@ -241,7 +237,9 @@ app.get('/api/backpack-items', (req, res, next) => {
             "i"."item_long_desc" as "longDesc",
             "quantity",
             "i"."name",
-            "i"."sprite"
+            "i"."sprite",
+            "i"."item_type" as "type",
+            "i"."item_id"
       from  "backpack_items" as "bi"
       join "items" as "i" using (item_id)
      where  "user_id" = $1

@@ -64,6 +64,8 @@ export default class App extends React.Component {
     this.setAction = this.setAction.bind(this);
     this.getItems = this.getItems.bind(this);
     this.setItemDetails = this.setItemDetails.bind(this);
+    this.attemptCatch = this.attemptCatch.bind(this);
+    this.attemptBerry = this.attemptBerry.bind(this);
   }
 
   componentDidMount() {
@@ -203,6 +205,14 @@ export default class App extends React.Component {
         .then(res => res.json())
         .then(data => process.stdout.write(data));
     }
+  }
+
+  attemptCatch(ball) {
+    console.log(ball);
+  }
+
+  attemptBerry(berry) {
+    console.log(berry);
   }
 
   setPokemonDetails(index) {
@@ -353,8 +363,12 @@ export default class App extends React.Component {
         break;
       case 'encounter':
         display = <Encounter
+          items={this.state.items}
           wildPokemon={this.state.wildPokemon}
           timeOfDay={this.state.timeOfDay}
+          attemptCatch={this.attemptCatch}
+          attemptBerry={this.attemptBerry}
+          setView={this.setView}
         />;
     }
     return (
