@@ -19,7 +19,7 @@ export default class HomePage extends React.Component {
             <div className="pokeball-icon top-left"></div>
             <div className="pokeball-icon bottom-right"></div>
             <div className="pokeball-icon bottom-left"></div>
-            <div className={'stats-board'}>
+            <div className="stats-board">
               <div className="stats-text">
                 <p>MILES WALKED</p>
                 <p>{s.milesWalked}</p>
