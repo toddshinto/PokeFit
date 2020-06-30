@@ -46,6 +46,7 @@ export default class Encounter extends React.Component {
     if (this.state.catchMenu) {
       pokeballList = (
         <div className="catch-menu">
+          <div className="exit" onClick={this.closeMenus}>X</div>
           {this.props.items.map(item =>
             <PokeballListItem
               key={this.props.items.indexOf(item)}
@@ -57,6 +58,7 @@ export default class Encounter extends React.Component {
     if (this.state.itemMenu) {
       pokeballList = (
         <div className="catch-menu">
+          <div className="exit" onClick={this.closeMenus}>X</div>
           {this.props.items.map(item =>
             <BerryListItem
               key={this.props.items.indexOf(item)}

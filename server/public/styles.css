@@ -182,11 +182,23 @@ position: relative;
   color: white;
 }
 
+.exit {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  color: red;
+  width: 10px;
+  height: 10px;
+  background-color: white;
+}
+
 .catch-menu {
   position: absolute;
   background-color: white;
   border: 2px solid black;
   width: 75%;
+  height: 75%;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -708,7 +720,8 @@ height: 100px;
 
 .list-item {
   cursor: pointer;
-  padding: 5px;
+  padding: 10px;
+  border-radius: 25px;
 }
 
 .list-item:hover {
@@ -734,6 +747,7 @@ height: 100px;
   text-align: left;
   line-height: 35px;
   padding-left: 50px;
+  padding-right: 50px;
   overflow: hidden;
   overflow-y: scroll;
   height: 80%;
