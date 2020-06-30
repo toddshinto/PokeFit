@@ -142,6 +142,52 @@ app.get('/api/pokeboxes', (req, res, next) => {
     });
 });
 
+app.get('/api/pokemon/:pokemonId', (req, res, next) => {
+  const pokemonId = req.params.pokemonId;
+  if (!pokemonId) {
+    return res.status(400).json({ error: 'invalid pokemonId' });
+  }
+  const sql = `
+     select  *
+       from  "pokemon"
+      where  "pokemon_id" = $1
+  `;
+  const params = [pokemonId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length > 0) {
+        return res.status(200).json(result.rows[0]);
+      } else {
+        return res.status(500).json({ error: 'unexpected errrrr' });
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    });
+});
+
+app.get('/api/items/:itemId', (req, res, next) => {
+  const itemId = req.params.itemId;
+  if (!itemId) {
+    return res.status(400).json({ error: 'invalid itemId' });
+  }
+  const sql = `
+     select  *
+       from  items
+      where  item_id = $1
+  `;
+  const params = [itemId];
+  db.query(sql, params)
+    .then(result => {
+      return res.status(200).json(result.rows[0]);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occurred. Item not found' });
+    });
+});
+
 app.delete('/api/pokeboxes', (req, res, next) => {
   const pokeboxId = req.body.pokeboxId;
   const sql = `
@@ -191,7 +237,9 @@ app.get('/api/backpack-items', (req, res, next) => {
             "i"."item_long_desc" as "longDesc",
             "quantity",
             "i"."name",
-            "i"."sprite"
+            "i"."sprite",
+            "i"."item_type" as "type",
+            "i"."item_id"
       from  "backpack_items" as "bi"
       join "items" as "i" using (item_id)
      where  "user_id" = $1
@@ -205,6 +253,24 @@ app.get('/api/backpack-items', (req, res, next) => {
       console.error(err);
       res.status(500).json({ error: 'An unexpected error occurred' });
     });
+});
+
+app.post('/api/pokeboxes', (req, res, next) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'userId required ' });
+  }
+  const pokemonId = req.body.pokemon_id;
+  const name = req.body.name;
+  const sql = `
+  insert into pokeboxes (pokemon_id, user_id, name)
+  values ($1, $2, $3)
+  returning *
+  `;
+  const params = [pokemonId, userId, name];
+  db.query(sql, params)
+    .then(result => res.status(200).json(result.rows[0]))
+    .catch(err => next(err));
 });
 
 app.get('/api/health-check', (req, res, next) => {

@@ -4,7 +4,8 @@ export default class Footer extends React.Component {
   render() {
     let button1;
     let button2;
-    switch (this.props.view) {
+    const view = this.props.view;
+    switch (view) {
       case 'pokebox' :
         button1 = 'backpack';
         button2 = 'walk';
@@ -17,7 +18,7 @@ export default class Footer extends React.Component {
         button1 = 'pokebox';
         button2 = 'walk';
     }
-    return (
+    let footer = (
       <div className="pokebox-footer">
         <div className={`${button1}-button-container`} onClick={() => this.props.setView(button1)}>
           <div className={`${button1}-button-icon button-icon`} />
@@ -26,6 +27,18 @@ export default class Footer extends React.Component {
           <div className={`${button2}-button-icon button-icon`} />
         </div>
       </div>
+    );
+    if (view === 'encounter') {
+      footer = (
+        <div className="pokebox-footer">
+          <div className="encounter-footer-container">
+            <div className="encounter-footer-button" />
+          </div>
+        </div>
+      );
+    }
+    return (
+      footer
     );
   }
 }
