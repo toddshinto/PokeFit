@@ -22,7 +22,6 @@ ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
 ALTER TABLE ONLY public.pokemon DROP CONSTRAINT pokemon_v2_pk;
 ALTER TABLE ONLY public.pokeboxes DROP CONSTRAINT pokeboxes_pk;
 ALTER TABLE ONLY public.items DROP CONSTRAINT items_pk;
-ALTER TABLE ONLY public."backpackItems" DROP CONSTRAINT "backpackItems_pk";
 ALTER TABLE public.users ALTER COLUMN user_id DROP DEFAULT;
 ALTER TABLE public.pokeboxes ALTER COLUMN pokebox_id DROP DEFAULT;
 ALTER TABLE public.backpack_items ALTER COLUMN backpack_id DROP DEFAULT;
@@ -32,7 +31,6 @@ DROP TABLE public.pokemon;
 DROP SEQUENCE public."pokeboxes_pokeboxId_seq";
 DROP TABLE public.pokeboxes;
 DROP TABLE public.items;
-DROP TABLE public."backpackItems";
 DROP SEQUENCE public."backpackItems_backpackId_seq";
 DROP TABLE public.backpack_items;
 DROP FUNCTION public.trigger_set_timestamp();
@@ -116,20 +114,6 @@ CREATE SEQUENCE public."backpackItems_backpackId_seq"
 --
 
 ALTER SEQUENCE public."backpackItems_backpackId_seq" OWNED BY public.backpack_items.backpack_id;
-
-
---
--- Name: backpackItems; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public."backpackItems" (
-    "backpackId" integer DEFAULT nextval('public."backpackItems_backpackId_seq"'::regclass) NOT NULL,
-    "userId" integer NOT NULL,
-    "itemId" integer NOT NULL,
-    quantity integer NOT NULL,
-    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
-);
 
 
 --
@@ -262,18 +246,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public."
 
 
 --
--- Data for Name: backpackItems; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public."backpackItems" ("backpackId", "userId", "itemId", quantity, "createdAt", "updatedAt") FROM stdin;
-\.
-
-
---
 -- Data for Name: backpack_items; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.backpack_items (backpack_id, user_id, item_id, quantity, created_at, updated_at) FROM stdin;
+1	18	1	1	2020-06-30 09:36:46.958717+00	2020-06-30 09:36:46.958717+00
+2	18	2	10	2020-06-30 09:36:52.831408+00	2020-06-30 09:36:52.831408+00
+3	18	3	15	2020-06-30 09:36:56.808536+00	2020-06-30 09:36:56.808536+00
 \.
 
 
@@ -326,6 +305,11 @@ COPY public.pokeboxes (pokebox_id, user_id, pokemon_id, name, created_at, update
 10	6	1	Bulbasaur	2020-06-26 00:49:23.739248+00	2020-06-26 17:41:39.413317+00	\N
 9	6	4	Charmander	2020-06-26 00:49:18.082235+00	2020-06-26 17:41:51.82505+00	\N
 8	6	7	Squirtle	2020-06-26 00:49:08.630756+00	2020-06-26 17:41:54.144032+00	\N
+14	18	150	Mewtwo	2020-06-30 04:57:00.859897+00	2020-06-30 04:57:53.003785+00	\N
+13	18	149	Dragonite	2020-06-30 04:56:57.967563+00	2020-06-30 04:58:00.177286+00	\N
+15	18	86	Seel	2020-06-30 04:57:07.912109+00	2020-06-30 04:58:07.738982+00	\N
+12	18	53	Persian	2020-06-30 04:56:54.179918+00	2020-06-30 04:58:16.871816+00	\N
+11	18	7	Squirtle	2020-06-30 04:56:49.830426+00	2020-06-30 05:01:21.835299+00	\N
 \.
 
 
@@ -510,6 +494,7 @@ COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, ti
 15	0	0	2020-06-27 00:19:52.392332+00	2020-06-27 00:19:52.392332+00	0
 16	0	0	2020-06-27 04:42:00.042219+00	2020-06-27 04:42:00.042219+00	0
 17	0	0	2020-06-27 04:42:54.712485+00	2020-06-27 04:42:54.712485+00	0
+18	0	0	2020-06-30 00:18:07.31492+00	2020-06-30 00:18:07.31492+00	0
 \.
 
 
@@ -517,29 +502,21 @@ COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, ti
 -- Name: backpackItems_backpackId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."backpackItems_backpackId_seq"', 1, false);
+SELECT pg_catalog.setval('public."backpackItems_backpackId_seq"', 3, true);
 
 
 --
 -- Name: pokeboxes_pokeboxId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 10, true);
+SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 15, true);
 
 
 --
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 17, true);
-
-
---
--- Name: backpackItems backpackItems_pk; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."backpackItems"
-    ADD CONSTRAINT "backpackItems_pk" PRIMARY KEY ("backpackId");
+SELECT pg_catalog.setval('public."users_userId_seq"', 18, true);
 
 
 --
