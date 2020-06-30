@@ -142,6 +142,31 @@ app.get('/api/pokeboxes', (req, res, next) => {
     });
 });
 
+app.get('/api/pokemon/:pokemonId', (req, res, next) => {
+  const pokemonId = req.params.pokemonId;
+  const userId = req.session.userId;
+  if (!pokemonId) {
+    return res.status(400).json({ error: 'invalid pokemonId' });
+  }
+  if (!userId) {
+    return res.status(400).json({ error: 'invalid userId' });
+  }
+  const sql = `
+      select  *
+       from  "pokemon"
+      where  "pokemon_id" = $1
+  `;
+  const params = [pokemonId];
+  db.query(sql, params)
+    .then(result => {
+      return res.status(201).json(result.rows[0]);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    });
+});
+
 app.delete('/api/pokeboxes', (req, res, next) => {
   const pokeboxId = req.body.pokeboxId;
   const sql = `
