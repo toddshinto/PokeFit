@@ -155,7 +155,11 @@ app.get('/api/pokemon/:pokemonId', (req, res, next) => {
   const params = [pokemonId];
   db.query(sql, params)
     .then(result => {
-      return res.status(200).json(result.rows[0]);
+      if (result.rows.length > 0) {
+        return res.status(200).json(result.rows[0]);
+      } else {
+        return res.status(500).json({ error: 'unexpected errrrr' });
+      }
     })
     .catch(err => {
       console.error(err);
