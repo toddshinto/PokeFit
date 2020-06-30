@@ -720,6 +720,22 @@ font-family: "Pokemon";
 font-size: 14px;
 }
 
+.encounter-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%
+}
+
+.encounter-button {
+  border: 1px solid black;
+  width: 60%;
+  padding: 15px 0;
+  text-align: center;
+  border-radius: 25px;
+}
+
 .ash-walk-screen {
 background-repeat: no-repeat;
 background-image: url('assets/images/ash-walk.gif');
