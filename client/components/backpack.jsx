@@ -7,17 +7,17 @@ export default class Backpack extends React.Component {
     console.log(this.state);
     const items = this.props.items;
     return (
-      <div className="pokebox-body">
+      <div className="pokedex-body">
         <ItemDetails
           timeOfDay={this.props.timeOfDay}
           backgroundImage={this.props.backgroundImage}
           item={this.props.itemDetails} />
-        <div className="pokebox-screen-container">
-          <div className="pokebox-rectangle-screen">
-            <div className="pokebox-headline">
+        <div className="pokedex-screen-container">
+          <div className="pokedex-rectangle-screen">
+            <div className="pokedex-headline">
               BACKPACK
             </div>
-            <div className="pokemon-list">
+            <div className="pokemon-list to-capitalize">
               {items.length > 1
                 ? items.map(item =>
                   <ListItem
