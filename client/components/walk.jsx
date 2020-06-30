@@ -24,7 +24,7 @@ export default class Walk extends React.Component {
             </div>
             <div className="stats-text stats-text-walk-screen">
               <p>ENCOUNTERS:</p>
-              <p></p>
+              <p>{s.encounters > 0 ? s.encounters : 0}</p>
             </div>
             <div className="stats-text stats-text-walk-screen">
               <p>TIME WALKED:</p>
