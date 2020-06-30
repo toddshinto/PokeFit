@@ -7,6 +7,7 @@ margin: 0 auto;
 width: 375px;
 height: 667px;
 letter-spacing: 0.1em;
+background-color: #DA1332;
 }
 
 
@@ -45,11 +46,6 @@ height: 114px;
 
 }
 
-.buttons-container {
-display: flex;
-justify-content: space-evenly;
-position: relative;
-}
 
 .stats-screen-container {
 background-color: white;
@@ -175,23 +171,51 @@ background-image: url(./server/public/assets/images/ash1.png);
 background-position: center;
 }
 
+.pokebox-header {
+  width: 100%;
+  height: 5%;
+  background-color: #DA1332;
+  padding-top: 10px;
+}
 
-.red-background {
+
+.pokebox-body {
 background-color: #DA1332;
 display: flex;
 flex-direction: column;
 justify-content: space-evenly;
 width: 100%;
-height: 100%;
+height: 80%;
+align-items: center;
+padding-top: 0;
+margin-top: 0;
 }
+
+.pokebox-footer {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 11%;
+  background-color: #DA1332;
+  padding-bottom: 20px;
+}
+
+.buttons-container {
+display: flex;
+justify-content: space-evenly;
+position: relative;
+}
+
+
 
 .pokebox-top-buttons-container {
   display: flex;
   flex-direction: row;
-  width: 30%;
+  width: 90%;
   height: auto;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin: 0 auto;
+  align-items: center;
 }
 
 .button {
@@ -200,14 +224,25 @@ cursor: pointer;
 border: 2px solid black;
 }
 
+.right-side-buttons {
+  display: flex;
+  align-items: center;
+  width: 160px;
+  height: auto;
+  justify-content: space-evenly;
+}
+
+
 .triangle-button {
-box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
 width: 0;
 height: 0;
-border-top: 25px solid transparent;
-border-bottom: 25px solid transparent;
-border-right: 25px solid #F1BB2F;
+border: 0 solid transparent;
+border-top-width: 15px;
+border-bottom-width: 15px;
+border-right: 15px solid #F1BB2F;
 }
+
+
 
 .yellow-circle-button {
   height: 30px;
@@ -227,26 +262,30 @@ border-right: 25px solid #F1BB2F;
 
 
 .outer-white-circle {
-  height: 40px;
-  width: 40px;
-  background-color: white;
+  height: 50px;
+  width: 50px;
+  background-color:white;
   border-radius: 50%;
   display: inline-block;
-  border-style: double;
-  border-width: 10px;
+  border-style: solid;
+  border-width: 1px;
+  position: relative;
 }
 
 
 .inner-blue-circle {
-  height: 38px;
-  width: 32px;
+  height: 35px;
+  width: 35px;
   background-color: #33ACFB;
   border-radius: 50%;
   display: inline-block;
-  position: absolute;
   z-index: 0;
   border-style: solid;
   border-width: 1px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 
 .pokemon-screen-container {
@@ -313,7 +352,6 @@ height: 100px;
 }
 
 .pokebox-screen-container {
-padding-left: 15px;
 }
 
 .pokebox-headline {
@@ -332,7 +370,6 @@ width: 339.78px;
 height: 230.62px;
 background: #FFFFFF;
 border: 2px solid #000000;
-box-sizing: border-box;
 box-shadow: inset 10px 6px 4px rgba(0, 0, 0, 0.5);
 font-family: "Pokemon";
 font-size: 14px;

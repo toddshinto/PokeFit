@@ -659,3 +659,22 @@ box-shadow: inset 10px 6px 4px rgba(0, 0, 0, 0.5);
 font-family: "Pokemon";
 font-size: 14px;
 }
+
+.ash-walk-screen {
+background-repeat: no-repeat;
+background-image: url('assets/images/ash-walk.gif');
+width: 57.13px;
+height: 70.62px;
+background-size: contain;
+margin-left: 45%;
+margin-top: 35%;
+}
+
+.stats-walk-screen {
+  padding-top: 7%;
+  padding-left: 7%;
+}
+
+.stats-text-walk-screen {
+  width:255px;
+}
