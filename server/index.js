@@ -165,8 +165,12 @@ app.get('/api/pokemon/:pokemonId', (req, res, next) => {
 
 app.get('/api/items/:itemId', (req, res, next) => {
   const itemId = req.params.itemId;
+  const quantity = req.body.quantity;
   if (!itemId) {
     return res.status(400).json({ error: 'invalid itemId' });
+  }
+  if (!quantity) {
+    return res.status(400).json({ error: 'quantity required' });
   }
   const sql = `
      select  *
@@ -176,7 +180,7 @@ app.get('/api/items/:itemId', (req, res, next) => {
   const params = [itemId];
   db.query(sql, params)
     .then(result => {
-      return res.status(200).json(result.rows[0]);
+      return res.status(200).json({ ...result.rows[0], quantity });
     })
     .catch(err => {
       console.error(err);
