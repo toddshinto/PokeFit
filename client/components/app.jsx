@@ -36,8 +36,7 @@ export default class App extends React.Component {
       wildPokemon: null,
       foundItem: null,
       encounterModal: false,
-      totalEncounters: 0
-      wildPokemon: null,
+      totalEncounters: 0,
       berries: 0
     };
     this.setView = this.setView.bind(this);
