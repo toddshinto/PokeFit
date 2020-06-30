@@ -571,6 +571,13 @@ height: 100%;
   border: 2px solid black;
 }
 
+.pokemon-encounter {
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom center;
+}
 
 .top-display-header {
   position: absolute;

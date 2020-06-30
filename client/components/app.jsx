@@ -4,6 +4,7 @@ import Start from './start';
 import Backpack from './backpack';
 import Walk from './walk';
 import Pokebox from './pokebox';
+import Encounter from './encounter';
 import Header from './header';
 import Footer from './footer';
 
@@ -11,7 +12,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'start',
+      view: 'encounter',
       stats: null,
       pokemons: [],
       items: [],
@@ -28,7 +29,25 @@ export default class App extends React.Component {
       backgroundImage: null,
       timeOfDay: null,
       opened: false,
-      action: null
+      action: null,
+      wildPokemon: {
+        capture_rate: 45,
+        flavor_text: 'After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth.',
+        flavor_text_new: 'SQUIRTLE’s shell is not merely used for protection. The shell’s rounded shape and the grooves on its surface help minimize resistance in water, enabling this POKéMON to swim at high speeds.',
+        growth_rate: 'medium-slow',
+        habitat: 'waters-edge',
+        height: 5,
+        name: 'squirtle',
+        pokemon_id: 7,
+        species: 'Tiny Turtle Pokémon',
+        sprite_back_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/7.png',
+        sprite_back_shiny: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/7.png',
+        sprite_front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png',
+        sprite_front_shiny: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/7.png',
+        type: 'water',
+        type_secondary: null,
+        weight: 90
+      }
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -332,6 +351,11 @@ export default class App extends React.Component {
           getPokemon={this.getPokemon}
         />;
         break;
+      case 'encounter':
+        display = <Encounter
+          wildPokemon={this.state.wildPokemon}
+          timeOfDay={this.state.timeOfDay}
+        />;
     }
     return (
       this.state.view === 'home' || this.state.view === 'start'
