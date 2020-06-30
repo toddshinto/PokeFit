@@ -40,8 +40,10 @@ app.get('/api/users', (req, res, next) => {
         if (result.rows.length < 1) {
           db.query(newUser)
             .then(result => {
-              req.session.userId = result.rows[0].userId;
-              return res.status(201).json(result.rows[0]);
+              if (result.rows.length > 0) {
+                req.session.userId = result.rows[0].userId;
+                return res.status(201).json(result.rows[0]);
+              }
             })
             .catch(err => next(err));
 

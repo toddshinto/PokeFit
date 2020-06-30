@@ -7,13 +7,15 @@ export default class Walk extends React.Component {
   }
 
   render() {
-    const background = this.props.backgroundImage;
-    const s = this.props.stats;
+    let s;
+    this.props.stats ? s = this.props.stats : s = { milesWalked: 0, encounters: 0 };
     return (
-      <div className="pokebox-body">
-        <div className="pokebox-screen-container">
-          <div className="pokemon-display-screen" style={{ backgroundImage: `url(${background})` }}>
-            <div className="ash-walk-screen"></div>
+      <div className="pokedex-body">
+        <div className="pokedex-screen-container">
+          <div className="pokedex-display-screen" style={{ backgroundImage: `url(assets/images/${this.props.timeOfDay}-bg.gif)` }}>
+            <div className="ash-walk-screen-container">
+              <div className="ash-walk-screen" />
+            </div>
           </div>
         </div>
         <div className="pokebox-screen-container">

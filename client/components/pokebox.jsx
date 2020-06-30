@@ -6,7 +6,7 @@ export default class Pokebox extends React.Component {
   render() {
     const pokemons = this.props.pokemons;
     return (
-      <div className="pokebox-body">
+      <div className="pokedex-body">
         <PokemonDetails
           openDrawer={this.props.openDrawer}
           closeDrawer={this.props.closeDrawer}
@@ -19,9 +19,9 @@ export default class Pokebox extends React.Component {
           setPokemonDetails={this.props.setPokemonDetails}
           backgroundImage={this.props.backgroundImage}
           setView={this.props.setView}/>
-        <div className="pokebox-screen-container" >
-          <div className="pokebox-rectangle-screen">
-            <div className="pokebox-headline">POKéBOX</div>
+        <div className="pokedex-screen-container" >
+          <div className="pokedex-rectangle-screen">
+            <div className="pokedex-headline">POKéBOX</div>
             <div className="pokemon-list">
               { pokemons.length > 0
                 ? pokemons.map(pokemon =>
