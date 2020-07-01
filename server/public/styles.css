@@ -990,7 +990,7 @@ background-image: url('assets/images/ash-walk.gif');
 
 @media (max-width: 600px) {
   .stats-label, .button-text, .modal-title, .modal-button,
-  .modal-body-title, .list-item {
+  .modal-body-title, .list-item, .pokemon-desc {
     font-size: 10px;
   }
   .stats-number, .backpack-item-name-flex, .backpack-item-name {
@@ -1004,6 +1004,12 @@ background-image: url('assets/images/ash-walk.gif');
   }
   .pokedex-footer, .pokedex-header {
     border-radius: 0;
+  }
+}
+
+@media (max-width: 453px) {
+  .weight {
+    font-size: 8px;
   }
 }
 
