@@ -110,7 +110,7 @@ export default class App extends React.Component {
             this.getEncounter();
           }
         }
-      }, 60000);
+      }, 100000);
     }
   }
 
@@ -361,6 +361,7 @@ export default class App extends React.Component {
   setView(view) {
     this.setState({ view });
     this.getTimeWalked();
+    this.getPokemon();
   }
 
   openDrawer() {
@@ -549,13 +550,15 @@ export default class App extends React.Component {
     return (
       this.state.view === 'home' || this.state.view === 'start'
         ? display
-        : <div className="background-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-          <Header setView={this.setView}/>
-          {modal}
-          {display}
-          <Footer
-            view={this.state.view}
-            setView={this.setView} />
+        : <div className="background-container-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
+          <div className="background-container" >
+            <Header setView={this.setView}/>
+            {modal}
+            {display}
+            <Footer
+              view={this.state.view}
+              setView={this.setView} />
+          </div>
         </div>
     );
   }
