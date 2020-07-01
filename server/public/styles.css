@@ -75,6 +75,7 @@ position: relative;
   width: 25px;
   height: 25px;
   margin-right: 5px;
+  background-position: center;
 }
 
 .pokedex-header {
@@ -284,6 +285,7 @@ position: relative;
   font-size: 14px;
   height: 15%;
   display: flex;
+  text-align: center;
   align-items: center;
   justify-content: center;
   border-bottom: 4px solid black;
@@ -312,6 +314,7 @@ position: relative;
   width: 100%;
   position: absolute;
   top: 10px;
+  text-align: center;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -476,7 +479,7 @@ padding: 0px 20px;
 position: relative;
 }
 .stats-label {
-  width: 50%;
+  width: 60%;
 }
 
 .stats-number {
@@ -868,7 +871,6 @@ height: 100px;
 
 .backpack-list {
   text-align: left;
-  line-height: 35px;
   padding-left: 15px;
   padding-right: 15px;
   overflow: hidden;
@@ -878,15 +880,20 @@ height: 100px;
 
 .item-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
 .backpack-item-entry {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .backpack-item-quantity {
-  align-self: end
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pokedex-rectangle-screen {
@@ -980,6 +987,9 @@ background-image: url('assets/images/ash-walk.gif');
 }
 .item-number {
   margin-right: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .backpack-item-name-flex {
@@ -989,21 +999,34 @@ background-image: url('assets/images/ash-walk.gif');
 }
 
 @media (max-width: 600px) {
-  .stats-label, .button-text, .modal-title, .modal-button,
-  .modal-body-title, .list-item {
-    font-size: 10px;
+  .stats-label, .button-text, .modal-title, .modal-button, .backpack-item-name-flex,
+  .modal-body-title, .list-item, .pokemon-desc, .backpack-item-entry, .backpack-item-name {
+    font-size: 9px;
   }
-  .stats-number, .backpack-item-name-flex, .backpack-item-name {
+  .stats-label {
+    padding-left: 14px;
+    white-space: nowrap
+  }
+  .stats-number,   {
     font-size: 11px
   }
   .action-body {
     font-size: 8px;
   }
-  .list-item {
-    padding: 5px;
+  .list-item, .backpack-item-entry-flex {
+    padding: 8px 5px;
   }
   .pokedex-footer, .pokedex-header {
     border-radius: 0;
+  }
+  .pokemon-list, .backpack-item-entry {
+    line-height: 8px;
+  }
+}
+
+@media (max-width: 453px) {
+  .weight {
+    font-size: 8px;
   }
 }
 

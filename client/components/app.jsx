@@ -579,7 +579,9 @@ export default class App extends React.Component {
         ? display
         : <div className="background-container-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
           <div className="background-container" >
-            <Header setView={this.setView}/>
+            <Header
+              setView={this.setView}
+              resetState={this.resetState}/>
             {modal}
             {display}
             <Footer

@@ -19,6 +19,10 @@ export default class PokemonDetails extends React.Component {
   render() {
     const pokemon = this.props.pokemon;
     const viewDetails = this.state.viewDetails;
+    const height = (this.props.pokemon.height / 3.048);
+    const feet = Math.floor(height);
+    const inches = Math.round((height - feet) * 12);
+    const weight = Math.round((this.props.pokemon.weight / 4.536));
     let details;
     if (pokemon) {
       switch (viewDetails) {
@@ -27,8 +31,8 @@ export default class PokemonDetails extends React.Component {
             <div className="pokemon-desc" onClick={() => this.changeView('description')}>
               <div>{pokemon.species}</div>
               <div className='to-capitalize'>Type: {pokemon.type}</div>
-              <div>Height: {pokemon.height}</div>
-              <div>Weight: {pokemon.weight}</div>
+              <div>{`Height: ${feet}'${inches}''`}</div>
+              <div >{'Weight: '}<span className='weight'>{weight} lbs.</span></div>
             </div>
           );
           break;
