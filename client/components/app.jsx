@@ -25,7 +25,7 @@ export default class App extends React.Component {
       currLat: null,
       currLon: null,
       currMilesWalked: null,
-      sessionTimeWalked: 0,
+      sessionTimeWalked: 1,
       startTime: 0,
       locationError: null,
       backgroundImage: null,
@@ -57,10 +57,12 @@ export default class App extends React.Component {
     this.getEncounter = this.getEncounter.bind(this);
     this.shuffle = this.shuffle.bind(this);
     this.setEncounterModal = this.setEncounterModal.bind(this);
+    this.setEncounterModalOff = this.setEncounterModalOff.bind(this);
     this.setEncounter = this.setEncounter.bind(this);
     this.attemptCatch = this.attemptCatch.bind(this);
     this.attemptBerry = this.attemptBerry.bind(this);
     this.captureSuccess = this.captureSuccess.bind(this);
+    this.setEncounterOn = this.setEncounter.bind(this);
   }
 
   componentDidMount() {
@@ -101,7 +103,6 @@ export default class App extends React.Component {
     let tempValue = null;
     let randomIndex = null;
     while (currentIndex !== 0) {
-
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
       tempValue = array[currentIndex];
@@ -112,20 +113,18 @@ export default class App extends React.Component {
   }
 
   getEncounter() {
-
     const encounterOptions = this.shuffle(['item', 'item', 'pokemon', 'pokemon', 'pokemon']);
     const thisEncounter = encounterOptions.pop();
-    this.setEncounter(thisEncounter);
     const itemOptions = this.shuffle([4, 4, 4, 4, 4, 1, 23, 23, 23, 24]);
     if (thisEncounter === 'item') {
       fetch(`/api/items/${itemOptions.pop()}`)
         .then(res => res.json())
-        .then(item => this.setState({ foundItem: item }));
-    } else {
+        .then(item => this.setState({ foundItem: item, encounter: thisEncounter }));
+    } else if (thisEncounter === 'pokemon') {
       const randomPokemon = Math.floor(Math.random() * 151);
       fetch(`/api/pokemon/${randomPokemon}`)
         .then(res => res.json())
-        .then(pokemon => this.setState({ wildPokemon: pokemon }));
+        .then(pokemon => this.setState({ wildPokemon: pokemon, encounter: thisEncounter }));
     }
     this.setEncounterModal();
   }
@@ -134,8 +133,12 @@ export default class App extends React.Component {
     this.setState({ encounter: type });
   }
 
+  setEncounterModalOff() {
+    this.setState({ encounterModal: false });
+  }
+
   setEncounterModal() {
-    this.setState({ encounterModal: !this.state.encounterModal });
+    this.setState({ encounterModal: true });
   }
 
   getPokemon() {
@@ -275,14 +278,17 @@ export default class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        process.stdout.write(data);
         this.setView('walk');
-        this.setState({ wildPokemon: null });
+        this.setEncounter(null);
+        this.setEncounterModalOff();
+        this.setState({ wildPokemon: null, berries: 0 });
+        this.getPokemon();
       });
   }
 
   attemptBerry(berry) {
-    this.setState({ berries: this.state.berries + berry.effect });
+    console.log(berry);
+    this.setState({ berries: this.state.berries + Number(berry.effect) });
   }
 
   setPokemonDetails(index) {
@@ -446,17 +452,21 @@ export default class App extends React.Component {
     if (this.state.encounter === 'item') {
       modal = <ItemModal
         item={this.state.foundItem}
-        setEncounterModal={this.setEncounterModal}
+        setEncounterModalOff={this.setEncounterModalOff}
         view={this.state.view}
         setView={this.setView}
+        setEncounter={this.setEncounter}
       />;
     } else if (this.state.encounter === 'pokemon') {
       modal = <PokemonModal
         pokemon={this.state.wildPokemon}
         view={this.state.view}
         setView={this.setView}
-        setEncounterModal={this.setEncounterModal}
+        setEncounterModalOff={this.setEncounterModalOff}
+        setEncounter={this.setEncounter}
       />;
+    } else {
+      modal = <></>;
     }
     return (
       this.state.view === 'home' || this.state.view === 'start'
