@@ -87,9 +87,9 @@ export default class App extends React.Component {
         const d = new Date();
         currentTime = d.getTime();
         timeDiff = currentTime - startTime;
-        const tw = Math.round(timeDiff / 60000);
+        const tw = Math.round(timeDiff / 10000);
         this.setState({ sessionTimeWalked: tw });
-        if (this.state.sessionTimeWalked % 3 === 0 && !this.state.encounter) {
+        if (this.state.sessionTimeWalked % 1 === 0 && !this.state.encounter) {
           this.getEncounter();
         }
       }, 60001);
@@ -287,7 +287,6 @@ export default class App extends React.Component {
   }
 
   attemptBerry(berry) {
-    console.log(berry);
     this.setState({ berries: this.state.berries + Number(berry.effect) });
   }
 
