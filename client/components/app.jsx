@@ -493,6 +493,7 @@ export default class App extends React.Component {
           attemptCatch={this.attemptCatch}
           attemptBerry={this.attemptBerry}
           setView={this.setView}
+          resetState={this.resetState}
           getItems={this.getItems}
         />;
     }
