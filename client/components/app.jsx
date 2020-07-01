@@ -550,13 +550,15 @@ export default class App extends React.Component {
     return (
       this.state.view === 'home' || this.state.view === 'start'
         ? display
-        : <div className="background-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-          <Header setView={this.setView}/>
-          {modal}
-          {display}
-          <Footer
-            view={this.state.view}
-            setView={this.setView} />
+        : <div className="background-container-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
+          <div className="background-container" >
+            <Header setView={this.setView}/>
+            {modal}
+            {display}
+            <Footer
+              view={this.state.view}
+              setView={this.setView} />
+          </div>
         </div>
     );
   }

@@ -6,15 +6,28 @@ body {
 margin: 0 auto;
 width: 100vw;
 height: 100vh;
-max-width: 1920px;
-max-height: 1080px;
+max-width: 2560px;
+max-height: 1440px;
 min-height: 640px;
 min-width: 340px;
 letter-spacing: 0.2em;
 font-family: "Pokemon";
+display: flex;
+justify-content: center;
+align-items: center;
 transition: all .3 ease-in-out;
 }
 
+.background-container-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom;
+}
 
 
 .background-container {
@@ -23,6 +36,8 @@ transition: all .3 ease-in-out;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-width: 720px;
+  max-height: 1024px;
   align-items: center;
   background-position: bottom center;
 }
@@ -37,7 +52,7 @@ transition: all .3 ease-in-out;
   margin-top: -5px;
   width: 100%;
   box-sizing: border-box;
-  max-width: 720px;
+  max-width: 1024px;
   border-left: 5px solid black;
   border-right: 5px solid black;
 }
@@ -72,7 +87,7 @@ position: relative;
   padding-top: 15px;
   box-sizing: border-box;
   background-color: #DA1332;
-  max-width: 720px;
+  max-width: 1024px;
   z-index: 800;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
@@ -95,7 +110,7 @@ position: relative;
   width: 100%;
   height: 18%;
   box-sizing: border-box;
-  max-width: 720px;
+  max-width: 1024px;
   background-color: #DA1332;
   display: flex;
   flex-direction: row;
@@ -986,6 +1001,9 @@ background-image: url('assets/images/ash-walk.gif');
   }
   .list-item {
     padding: 5px;
+  }
+  .pokedex-footer, .pokedex-header {
+    border-radius: 0;
   }
 }
 
