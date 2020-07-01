@@ -110,7 +110,7 @@ export default class App extends React.Component {
             this.getEncounter();
           }
         }
-      }, 1000);
+      }, 60000);
     }
   }
 
