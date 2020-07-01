@@ -242,7 +242,7 @@ app.put('/api/backpack-items', (req, res, next) => {
     insert into backpack_items (user_id, item_id, quantity)
     values ($1, $2, $3)
     on conflict (user_id, item_id) do update
-    set quantity=$3
+    set quantity=backpack_items.quantity + $3
     returning *
   `;
   const params = [userId, itemId, quantity];
@@ -253,6 +253,30 @@ app.put('/api/backpack-items', (req, res, next) => {
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'An unexpected error occurred' });
+    });
+});
+
+app.put('/api/backpack-items/use', (req, res, next) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'userId required' });
+  }
+  const itemId = req.body.item_id;
+  const sql = `
+    update  backpack_items
+       set  quantity = quantity - 1
+     where  user_id = $1
+       and  item_id = $2
+       and  quantity > 0
+  `;
+  const params = [userId, itemId];
+  db.query(sql, params)
+    .then(result => {
+      return res.status(200).json({ succes: 'item use success' });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occured, SIR.' });
     });
 });
 

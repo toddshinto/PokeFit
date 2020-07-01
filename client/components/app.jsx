@@ -9,6 +9,9 @@ import Header from './header';
 import Footer from './footer';
 import ItemModal from './item-modal';
 import PokemonModal from './pokemon-modal';
+import CaptureSuccessModal from './capture-success-modal';
+import CaptureFailModal from './capture-fail-modal';
+import BerryUsedModal from './berry-used-modal';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -25,19 +28,21 @@ export default class App extends React.Component {
       currLat: null,
       currLon: null,
       currMilesWalked: null,
-      sessionTimeWalked: 1,
+      sessionTimeWalked: 0,
       startTime: 0,
       locationError: null,
       backgroundImage: null,
       timeOfDay: null,
       opened: false,
       action: null,
-      encounter: null,
+      encounterType: null,
       wildPokemon: null,
       foundItem: null,
       encounterModal: false,
       totalEncounters: 0,
-      berries: 0
+      berries: 0,
+      timeSinceLastEncounter: 0,
+      captureSucces: false
     };
     this.setView = this.setView.bind(this);
     this.getStats = this.getStats.bind(this);
@@ -56,13 +61,13 @@ export default class App extends React.Component {
     this.setItemDetails = this.setItemDetails.bind(this);
     this.getEncounter = this.getEncounter.bind(this);
     this.shuffle = this.shuffle.bind(this);
-    this.setEncounterModal = this.setEncounterModal.bind(this);
-    this.setEncounterModalOff = this.setEncounterModalOff.bind(this);
-    this.setEncounter = this.setEncounter.bind(this);
+    this.resetState = this.resetState.bind(this);
+    this.setEncounterType = this.setEncounterType.bind(this);
     this.attemptCatch = this.attemptCatch.bind(this);
     this.attemptBerry = this.attemptBerry.bind(this);
     this.captureSuccess = this.captureSuccess.bind(this);
-    this.setEncounterOn = this.setEncounter.bind(this);
+    this.takeItem = this.takeItem.bind(this);
+    this.toggleEncounterModal = this.toggleEncounterModal.bind(this);
   }
 
   componentDidMount() {
@@ -78,6 +83,16 @@ export default class App extends React.Component {
     }
   }
 
+  resetState() {
+    this.setState({
+      wildPokemon: null,
+      berries: 0,
+      foundItem: null,
+      timeSinceLastEncounter: 0,
+      encounterType: null
+    });
+  }
+
   getTimeWalked() {
     if (!this.state.timeWalked) {
       const startTime = this.state.startTime;
@@ -87,13 +102,15 @@ export default class App extends React.Component {
         const d = new Date();
         currentTime = d.getTime();
         timeDiff = currentTime - startTime;
-        const tw = Math.round(timeDiff / 10000);
+        const tw = Math.round(timeDiff / 60000);
         this.setState({ sessionTimeWalked: tw });
-        if (this.state.sessionTimeWalked % 1 === 0 && !this.state.encounter) {
-          this.getEncounter();
+        if (!this.state.encounterType) {
+          this.setState({ timeSinceLastEncounter: (this.state.timeSinceLastEncounter + 1) });
+          if (this.state.timeSinceLastEncounter > 2) {
+            this.getEncounter();
+          }
         }
-      }, 60001);
-      this.getEncounter();
+      }, 1000);
     }
 
   }
@@ -114,31 +131,24 @@ export default class App extends React.Component {
 
   getEncounter() {
     const encounterOptions = this.shuffle(['item', 'item', 'pokemon', 'pokemon', 'pokemon']);
-    const thisEncounter = encounterOptions.pop();
-    const itemOptions = this.shuffle([4, 4, 4, 4, 4, 1, 23, 23, 23, 24]);
-    if (thisEncounter === 'item') {
-      fetch(`/api/items/${itemOptions.pop()}`)
+    const thisEncounterType = encounterOptions.pop();
+    const quantity = Math.floor(Math.random() * 5) + 1;
+    const itemOptions = Math.floor(Math.random() * 26) + 1;
+    this.setState({ totalEncounters: this.state.totalEncounters + 1 });
+    if (thisEncounterType === 'item') {
+      fetch(`/api/items/${itemOptions}`)
         .then(res => res.json())
-        .then(item => this.setState({ foundItem: item, encounter: thisEncounter }));
-    } else if (thisEncounter === 'pokemon') {
+        .then(item => this.setState({ foundItem: { ...item, quantity }, encounterType: thisEncounterType, encounterModal: true }));
+    } else if (thisEncounterType === 'pokemon') {
       const randomPokemon = Math.floor(Math.random() * 151);
       fetch(`/api/pokemon/${randomPokemon}`)
         .then(res => res.json())
-        .then(pokemon => this.setState({ wildPokemon: pokemon, encounter: thisEncounter }));
+        .then(pokemon => this.setState({ wildPokemon: pokemon, encounterType: thisEncounterType, encounterModal: true }));
     }
-    this.setEncounterModal();
   }
 
-  setEncounter(type) {
-    this.setState({ encounter: type });
-  }
-
-  setEncounterModalOff() {
-    this.setState({ encounterModal: false });
-  }
-
-  setEncounterModal() {
-    this.setState({ encounterModal: true });
+  setEncounterType(type) {
+    this.setState({ encounterType: type });
   }
 
   getPokemon() {
@@ -254,15 +264,27 @@ export default class App extends React.Component {
   }
 
   attemptCatch(ball) {
-    // console.log(ball) jake inserts code here;
+    const multiplier = ball.effect;
     const randomRoll = Math.floor(Math.random() * 300) + 1;
     const captureRate = this.state.wildPokemon.capture_rate;
     const berry = this.state.berries;
+    fetch('/api/backpack-items/use', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ball)
+    })
+      .then(this.getItems())
+      .catch(err => console.error(err));
     if (ball.item_id === 1) {
       this.captureSuccess();
     } else {
-      if (randomRoll - berry <= captureRate) {
+      if (randomRoll - berry <= (captureRate * multiplier)) {
         this.captureSuccess();
+      } else {
+        this.setState({ encounterType: 'capture-fail' });
+        this.toggleEncounterModal();
       }
     }
   }
@@ -278,16 +300,38 @@ export default class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        this.setView('walk');
-        this.setEncounter(null);
-        this.setEncounterModalOff();
-        this.setState({ wildPokemon: null, berries: 0 });
-        this.getPokemon();
+        this.setState({ encounterType: 'capture-success' });
+        this.toggleEncounterModal();
+      });
+  }
+
+  takeItem() {
+    const item = this.state.foundItem;
+    fetch('/api/backpack-items', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item)
+    })
+      .then(() => {
+        this.resetState();
+        this.getItems();
       });
   }
 
   attemptBerry(berry) {
-    this.setState({ berries: this.state.berries + Number(berry.effect) });
+    fetch('/api/backpack-items/use', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(berry)
+    })
+      .then(this.getItems())
+      .catch(err => console.error(err));
+    this.setState({ berries: this.state.berries + Number(berry.effect), encounterType: 'used-berry' });
+    this.toggleEncounterModal();
   }
 
   setPokemonDetails(index) {
@@ -302,6 +346,10 @@ export default class App extends React.Component {
     if (items) {
       this.setState({ itemDetails: items[index] });
     }
+  }
+
+  toggleEncounterModal() {
+    this.setState({ encounterModal: !this.state.encounterModal });
   }
 
   getStats() {
@@ -446,33 +494,64 @@ export default class App extends React.Component {
           attemptCatch={this.attemptCatch}
           attemptBerry={this.attemptBerry}
           setView={this.setView}
+          getItems={this.getItems}
         />;
     }
-    if (this.state.encounter === 'item') {
-      modal = <ItemModal
-        item={this.state.foundItem}
-        setEncounterModalOff={this.setEncounterModalOff}
-        view={this.state.view}
-        setView={this.setView}
-        setEncounter={this.setEncounter}
-      />;
-    } else if (this.state.encounter === 'pokemon') {
-      modal = <PokemonModal
-        pokemon={this.state.wildPokemon}
-        view={this.state.view}
-        setView={this.setView}
-        setEncounterModalOff={this.setEncounterModalOff}
-        setEncounter={this.setEncounter}
-      />;
-    } else {
-      modal = <></>;
+    switch (this.state.encounterType) {
+      case 'item' :
+        if (this.state.encounterModal) {
+          modal = <ItemModal
+            item={this.state.foundItem}
+            resetState={this.resetState}
+            takeItem={this.takeItem}
+          />;
+        }
+        break;
+      case 'pokemon' :
+        if (this.state.encounterModal) {
+          modal = <PokemonModal
+            setView={this.setView}
+            pokemon={this.state.wildPokemon}
+            resetState={this.resetState}
+            toggleEncounterModal={this.toggleEncounterModal}
+          />;
+        }
+        break;
+      case 'capture-success' :
+        if (this.state.encounterModal) {
+          modal = <CaptureSuccessModal
+            getPokemon={this.getPokemon}
+            pokemon={this.state.wildPokemon}
+            resetState={this.resetState}
+            toggleEncounterModal={this.toggleEncounterModal}
+            setView={this.setView}
+          />;
+        }
+        break;
+      case 'capture-fail' :
+        if (this.state.encounterModal) {
+          modal = <CaptureFailModal
+            pokemon={this.state.wildPokemon}
+            toggleEncounterModal={this.toggleEncounterModal}
+            setEncounterType={this.setEncounterType}
+          />;
+        }
+        break;
+      case 'used-berry' :
+        if (this.state.encounterModal) {
+          modal = <BerryUsedModal
+            pokemon={this.state.wildPokemon}
+            toggleEncounterModal={this.toggleEncounterModal}
+            setEncounterType={this.setEncounterType}
+          />;
+        }
     }
     return (
       this.state.view === 'home' || this.state.view === 'start'
         ? display
         : <div className="background-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-          {modal}
           <Header setView={this.setView}/>
+          {modal}
           {display}
           <Footer
             view={this.state.view}

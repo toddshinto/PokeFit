@@ -21,7 +21,7 @@ export default class itemDetails extends React.Component {
     if (item) {
       details = (
         <div className='pokemon-desc'>
-          <div>{item.shortDesc}</div>
+          <div>{item.longDesc}</div>
           <div>Quantity: {item.quantity}</div>
         </div>
       );

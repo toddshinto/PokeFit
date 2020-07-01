@@ -86,7 +86,10 @@ export default class Encounter extends React.Component {
           <div className="pokedex-screen-container">
             <div className="pokedex-rectangle-screen" id="rectangle-screen">
               <div className="encounter-actions">
-                <div className="encounter-button" onClick={this.toggleMenu}>
+                <div className="encounter-button" onClick={() => {
+                  this.toggleMenu();
+                  this.props.getItems();
+                }}>
                 CATCH
                 </div>
                 {pokeballList}
