@@ -476,7 +476,7 @@ padding: 0px 20px;
 position: relative;
 }
 .stats-label {
-  width: 50%;
+  width: 60%;
 }
 
 .stats-number {
@@ -992,6 +992,10 @@ background-image: url('assets/images/ash-walk.gif');
   .stats-label, .button-text, .modal-title, .modal-button,
   .modal-body-title, .list-item, .pokemon-desc {
     font-size: 10px;
+  }
+  .stats-label {
+    padding-left: 14px;
+    white-space: nowrap
   }
   .stats-number, .backpack-item-name-flex, .backpack-item-name {
     font-size: 11px
