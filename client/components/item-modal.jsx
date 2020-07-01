@@ -2,21 +2,22 @@ import React from 'react';
 
 export default class ItemModal extends React.Component {
   render() {
-    const quantity = Math.floor(Math.random() * 5) + 1;
     return (
       <div className="modal-container">
-        <div className="modal-title">you found {quantity}{' '}{this.props.item.name} !!!</div>
-        <div className="modal-image-container">
-          <img src={this.props.item.sprite} alt={this.props.item.name}/>
+        <div
+          className="modal-title to-capitalize"
+          style={{ backgroundColor: 'yellow' }}>You found {this.props.item.quantity}{' '}{this.props.item.name} !!!</div>
+        <div className="modal-body">
+          <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.item.sprite})` }} />
+          <div className="modal-button-container">
+            <div onClick={() => {
+              this.props.takeItem();
+            }} className="answer modal-button">TAKE</div>
+            <div onClick={() => {
+              this.props.resetState();
+            }} className="answer modal-button">LEAVE</div>
+          </div>
         </div>
-        <button onClick={() => {
-          this.props.setView('backpack');
-          this.props.setEncounterModal();
-        }} className="modal-button">TAKE</button>
-        <button onClick={() => {
-          this.props.setView(this.props.view);
-          this.props.setEncounterModal();
-        }} className="modal-button">LEAVE</button>
       </div>
     );
   }

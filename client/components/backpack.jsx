@@ -16,7 +16,7 @@ export default class Backpack extends React.Component {
             <div className="pokedex-headline">
               BACKPACK
             </div>
-            <div className="pokemon-list to-capitalize">
+            <div className="backpack-list to-capitalize">
               {items.length > 1
                 ? items.map(item =>
                   <ListItem
