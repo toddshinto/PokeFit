@@ -224,6 +224,35 @@ app.put('/api/pokeboxes', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       return res.status(200).json(result.rows[0]);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    });
+});
+
+app.put('/api/backpack-items', (req, res, next) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'userId required' });
+  }
+  const quantity = req.body.quantity;
+  const itemId = req.body.item_id;
+  const sql = `
+    insert into backpack_items (user_id, item_id, quantity)
+    values ($1, $2, $3)
+    on conflict (user_id, item_id) do update
+    set quantity=$3
+    returning *
+  `;
+  const params = [userId, itemId, quantity];
+  db.query(sql, params)
+    .then(result => {
+      return res.status(200).json(result.rows[0]);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occurred' });
     });
 });
 

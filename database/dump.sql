@@ -18,10 +18,13 @@ SET row_security = off;
 
 DROP TRIGGER set_timestamp ON public.users;
 DROP TRIGGER set_timestamp ON public.pokeboxes;
+DROP TRIGGER set_timestamp ON public.backpack_items;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
 ALTER TABLE ONLY public.pokemon DROP CONSTRAINT pokemon_v2_pk;
 ALTER TABLE ONLY public.pokeboxes DROP CONSTRAINT pokeboxes_pk;
 ALTER TABLE ONLY public.items DROP CONSTRAINT items_pk;
+ALTER TABLE ONLY public.backpack_items DROP CONSTRAINT backpack_items_user_id_item_id_key;
+ALTER TABLE ONLY public.backpack_items DROP CONSTRAINT "backpackItems_pk";
 ALTER TABLE public.users ALTER COLUMN user_id DROP DEFAULT;
 ALTER TABLE public.pokeboxes ALTER COLUMN pokebox_id DROP DEFAULT;
 ALTER TABLE public.backpack_items ALTER COLUMN backpack_id DROP DEFAULT;
@@ -31,7 +34,7 @@ DROP TABLE public.pokemon;
 DROP SEQUENCE public."pokeboxes_pokeboxId_seq";
 DROP TABLE public.pokeboxes;
 DROP TABLE public.items;
-DROP SEQUENCE public."backpackItems_backpackId_seq";
+DROP SEQUENCE public.backpack_items_backpack_id_seq;
 DROP TABLE public.backpack_items;
 DROP FUNCTION public.trigger_set_timestamp();
 DROP EXTENSION plpgsql;
@@ -97,10 +100,10 @@ CREATE TABLE public.backpack_items (
 
 
 --
--- Name: backpackItems_backpackId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: backpack_items_backpack_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."backpackItems_backpackId_seq"
+CREATE SEQUENCE public.backpack_items_backpack_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -110,10 +113,10 @@ CREATE SEQUENCE public."backpackItems_backpackId_seq"
 
 
 --
--- Name: backpackItems_backpackId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: backpack_items_backpack_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."backpackItems_backpackId_seq" OWNED BY public.backpack_items.backpack_id;
+ALTER SEQUENCE public.backpack_items_backpack_id_seq OWNED BY public.backpack_items.backpack_id;
 
 
 --
@@ -229,7 +232,7 @@ ALTER SEQUENCE public."users_userId_seq" OWNED BY public.users.user_id;
 -- Name: backpack_items backpack_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.backpack_items ALTER COLUMN backpack_id SET DEFAULT nextval('public."backpackItems_backpackId_seq"'::regclass);
+ALTER TABLE ONLY public.backpack_items ALTER COLUMN backpack_id SET DEFAULT nextval('public.backpack_items_backpack_id_seq'::regclass);
 
 
 --
@@ -251,10 +254,8 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public."
 --
 
 COPY public.backpack_items (backpack_id, user_id, item_id, quantity, created_at, updated_at) FROM stdin;
-1	18	1	1	2020-06-30 09:36:46.958717+00	2020-06-30 09:36:46.958717+00
-2	18	2	10	2020-06-30 09:36:52.831408+00	2020-06-30 09:36:52.831408+00
-3	18	3	15	2020-06-30 09:36:56.808536+00	2020-06-30 09:36:56.808536+00
-4	18	18	15	2020-06-30 19:50:38.101128+00	2020-06-30 19:50:38.101128+00
+1	1	1	3	2020-07-01 05:15:31.846827+00	2020-07-01 05:28:49.336916+00
+5	1	4	30	2020-07-01 05:33:10.87361+00	2020-07-01 05:33:16.863525+00
 \.
 
 
@@ -312,6 +313,22 @@ COPY public.pokeboxes (pokebox_id, user_id, pokemon_id, name, created_at, update
 15	18	86	Seel	2020-06-30 04:57:07.912109+00	2020-06-30 04:58:07.738982+00	\N
 12	18	53	Persian	2020-06-30 04:56:54.179918+00	2020-06-30 04:58:16.871816+00	\N
 11	18	7	Squirtle	2020-06-30 04:56:49.830426+00	2020-06-30 05:01:21.835299+00	\N
+16	18	46	paras	2020-06-30 23:22:17.945331+00	2020-06-30 23:22:17.945331+00	\N
+17	18	137	porygon	2020-06-30 23:48:20.528681+00	2020-06-30 23:48:20.528681+00	\N
+18	18	88	grimer	2020-06-30 23:53:22.858368+00	2020-06-30 23:53:22.858368+00	\N
+19	18	51	dugtrio	2020-06-30 23:54:49.67352+00	2020-06-30 23:54:49.67352+00	\N
+20	18	104	cubone	2020-06-30 23:55:19.514605+00	2020-06-30 23:55:19.514605+00	\N
+21	18	71	victreebel	2020-07-01 00:00:11.72177+00	2020-07-01 00:00:11.72177+00	\N
+22	18	28	sandslash	2020-07-01 00:08:20.752496+00	2020-07-01 00:08:20.752496+00	\N
+23	18	51	dugtrio	2020-07-01 00:09:38.313734+00	2020-07-01 00:09:38.313734+00	\N
+24	18	18	pidgeot	2020-07-01 00:16:22.678968+00	2020-07-01 00:16:22.678968+00	\N
+25	18	48	venonat	2020-07-01 00:35:20.562918+00	2020-07-01 00:35:20.562918+00	\N
+26	18	131	lapras	2020-07-01 00:36:20.536552+00	2020-07-01 00:36:20.536552+00	\N
+27	18	63	abra	2020-07-01 00:37:16.262849+00	2020-07-01 00:37:16.262849+00	\N
+28	18	94	gengar	2020-07-01 00:39:12.334818+00	2020-07-01 00:39:12.334818+00	\N
+29	18	85	dodrio	2020-07-01 00:40:44.947442+00	2020-07-01 00:40:44.947442+00	\N
+30	18	120	staryu	2020-07-01 00:50:29.539254+00	2020-07-01 00:50:29.539254+00	\N
+31	18	73	tentacruel	2020-07-01 04:57:24.60873+00	2020-07-01 04:57:24.60873+00	\N
 \.
 
 
@@ -502,17 +519,17 @@ COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, ti
 
 
 --
--- Name: backpackItems_backpackId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: backpack_items_backpack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."backpackItems_backpackId_seq"', 4, true);
+SELECT pg_catalog.setval('public.backpack_items_backpack_id_seq', 6, true);
 
 
 --
 -- Name: pokeboxes_pokeboxId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 15, true);
+SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 31, true);
 
 
 --
@@ -520,6 +537,22 @@ SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 15, true);
 --
 
 SELECT pg_catalog.setval('public."users_userId_seq"', 19, true);
+
+
+--
+-- Name: backpack_items backpackItems_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.backpack_items
+    ADD CONSTRAINT "backpackItems_pk" PRIMARY KEY (backpack_id);
+
+
+--
+-- Name: backpack_items backpack_items_user_id_item_id_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.backpack_items
+    ADD CONSTRAINT backpack_items_user_id_item_id_key UNIQUE (user_id, item_id);
 
 
 --
@@ -552,6 +585,13 @@ ALTER TABLE ONLY public.pokemon
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pk PRIMARY KEY (user_id);
+
+
+--
+-- Name: backpack_items set_timestamp; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.backpack_items FOR EACH ROW EXECUTE PROCEDURE public.trigger_set_timestamp();
 
 
 --
