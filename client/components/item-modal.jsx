@@ -4,8 +4,12 @@ export default class ItemModal extends React.Component {
   render() {
     return (
       <div className="modal-container">
+        <div className="pokeball-icon top-right"></div>
+        <div className="pokeball-icon top-left"></div>
+        <div className="pokeball-icon bottom-right"></div>
+        <div className="pokeball-icon bottom-left"></div>
         <div
-          className="modal-title to-capitalize"
+          className="modal-title to-uppercase"
           style={{ backgroundColor: 'yellow' }}>You found {this.props.item.quantity}{' '}{this.props.item.name} !!!</div>
         <div className="modal-body">
           <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.item.sprite})` }} />

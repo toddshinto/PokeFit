@@ -11,12 +11,13 @@ import ItemModal from './item-modal';
 import PokemonModal from './pokemon-modal';
 import CaptureSuccessModal from './capture-success-modal';
 import CaptureFailModal from './capture-fail-modal';
+import BerryUsedModal from './berry-used-modal';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'walk',
+      view: 'start',
       stats: null,
       pokemons: [],
       items: [],
@@ -109,7 +110,7 @@ export default class App extends React.Component {
             this.getEncounter();
           }
         }
-      }, 60000);
+      }, 1000);
     }
   }
 
@@ -265,13 +266,14 @@ export default class App extends React.Component {
     const randomRoll = Math.floor(Math.random() * 300) + 1;
     const captureRate = this.state.wildPokemon.capture_rate;
     const berry = this.state.berries;
-    fetch('/api/backpack-items', {
+    fetch('/api/backpack-items/use', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(ball)
     })
+      .then(this.getItems())
       .catch(err => console.error(err));
     if (ball.item_id === 1) {
       this.captureSuccess();
@@ -325,8 +327,10 @@ export default class App extends React.Component {
       },
       body: JSON.stringify(berry)
     })
+      .then(this.getItems())
       .catch(err => console.error(err));
-    this.setState({ berries: this.state.berries + Number(berry.effect) });
+    this.setState({ berries: this.state.berries + Number(berry.effect), encounterType: 'used-berry' });
+    this.toggleEncounterModal();
   }
 
   setPokemonDetails(index) {
@@ -489,6 +493,7 @@ export default class App extends React.Component {
           attemptCatch={this.attemptCatch}
           attemptBerry={this.attemptBerry}
           setView={this.setView}
+          getItems={this.getItems}
         />;
     }
     switch (this.state.encounterType) {
@@ -525,6 +530,15 @@ export default class App extends React.Component {
       case 'capture-fail' :
         if (this.state.encounterModal) {
           modal = <CaptureFailModal
+            pokemon={this.state.wildPokemon}
+            toggleEncounterModal={this.toggleEncounterModal}
+            setEncounterType={this.setEncounterType}
+          />;
+        }
+        break;
+      case 'used-berry' :
+        if (this.state.encounterModal) {
+          modal = <BerryUsedModal
             pokemon={this.state.wildPokemon}
             toggleEncounterModal={this.toggleEncounterModal}
             setEncounterType={this.setEncounterType}
