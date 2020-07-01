@@ -1013,3 +1013,9 @@ background-image: url('assets/images/ash-walk.gif');
     padding-top: 10px;
   }
 }
+
+@media (max-height: 1440px) {
+  .background-container {
+    background-size: cover
+  }
+}
