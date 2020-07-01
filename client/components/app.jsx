@@ -110,7 +110,7 @@ export default class App extends React.Component {
             this.getEncounter();
           }
         }
-      }, 60000);
+      }, 1000);
     }
   }
 
@@ -305,7 +305,7 @@ export default class App extends React.Component {
 
   takeItem() {
     const item = this.state.foundItem;
-    fetch('/api/backpack-items/use', {
+    fetch('/api/backpack-items', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

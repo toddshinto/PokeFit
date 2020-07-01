@@ -255,15 +255,16 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public."
 
 COPY public.backpack_items (backpack_id, user_id, item_id, quantity, created_at, updated_at) FROM stdin;
 7	1	2	3	2020-07-01 06:16:44.711792+00	2020-07-01 06:16:44.711792+00
-15	18	1	4	2020-07-01 08:38:20.209137+00	2020-07-01 08:39:54.841187+00
 5	1	4	27	2020-07-01 05:33:10.87361+00	2020-07-01 10:20:41.144015+00
 1	1	1	9	2020-07-01 05:15:31.846827+00	2020-07-01 10:27:14.348421+00
 21	18	24	0	2020-07-01 09:43:21.142422+00	2020-07-01 10:48:33.995135+00
 24	18	3	3	2020-07-01 10:00:58.166567+00	2020-07-01 10:50:51.185791+00
-11	18	4	4	2020-07-01 08:01:53.098366+00	2020-07-01 10:55:02.598145+00
-27	18	15	8	2020-07-01 10:09:09.896413+00	2020-07-01 10:55:06.557839+00
 25	18	22	0	2020-07-01 10:07:36.292335+00	2020-07-01 11:02:22.161609+00
-10	18	23	18	2020-07-01 08:01:44.918337+00	2020-07-01 11:23:02.617551+00
+10	18	23	17	2020-07-01 08:01:44.918337+00	2020-07-01 17:03:56.044265+00
+27	18	15	7	2020-07-01 10:09:09.896413+00	2020-07-01 17:04:06.21499+00
+15	18	1	3	2020-07-01 08:38:20.209137+00	2020-07-01 17:34:06.164731+00
+35	18	14	5	2020-07-01 17:43:13.046515+00	2020-07-01 17:43:13.046515+00
+11	18	4	1	2020-07-01 08:01:53.098366+00	2020-07-01 17:44:25.411763+00
 \.
 
 
@@ -272,7 +273,6 @@ COPY public.backpack_items (backpack_id, user_id, item_id, quantity, created_at,
 --
 
 COPY public.items (item_id, name, item_type, item_short_desc, item_long_desc, item_eff_desc, sprite, effect) FROM stdin;
-1	master-ball	ball	Catches a wild Pokémon every time.	The best BALL that catches a POKéMON without fail.	Used in battle :   Catches a wild Pokémon without fail.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png	\N
 3	great-ball	ball	Tries to catch a wild Pokémon.  Success rate is 1.5×.	A good BALL with a higher catch rate than a POKé BALL.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1.5×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png	2
 16	cherish-ball	ball	Tries to catch a wild Pokémon.	A quite rare Poké Ball that has been specially crafted to commemorate an occasion of some sort.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/cherish-ball.png	1
 2	ultra-ball	ball	Tries to catch a wild Pokémon.  Success rate is 2×.	A better BALL with a higher catch rate than a GREAT BALL.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 2×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png	2
@@ -286,6 +286,7 @@ COPY public.items (item_id, name, item_type, item_short_desc, item_long_desc, it
 11	luxury-ball	ball	Tries to catch a wild Pokémon.  Caught Pokémon start with 200 happiness.	A cozy BALL that makes POKéMON more friendly.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.  Whenever the caught Pokémon''s happiness increases, it increases by one extra point.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/luxury-ball.png	2
 13	dusk-ball	ball	Tries to catch a wild Pokémon.  Success rate is 3.5× at night and in caves.	A somewhat different Poké Ball that makes it easier to catch wild Pokémon at night or in dark places like caves.	Used in battle :   Attempts to catch a wild Pokémon.  If it''s currently nighttime or the wild Pokémon was encountered while walking in a cave, this ball has a catch rate of 3.5×.  Otherwise, it has a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dusk-ball.png	2
 14	heal-ball	ball	Tries to catch a wild Pokémon.  Caught Pokémon are immediately healed.	Tries to catch a wild Pokémon.  Caught Pokémon are immediately healed.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.  The caught Pokémon''s HP is immediately restored, PP for all its moves is restored, and any status ailment is cured.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/heal-ball.png	1
+1	master-ball	ball	Catches a wild Pokémon every time.	The best BALL that catches a POKéMON without fail.	Used in battle :   Catches a wild Pokémon without fail.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png	100
 18	leppa-berry	berry	Held: Consumed when a move runs out of PP to restore its PP by 10.	It takes longer to grow than Berries such as Cheri. The smaller Berries taste better.	Held in battle :   When the holder is out of PP for one of its moves, it consumes this item to restore 10 of that move''s PP.  Used on a party Pokémon :   Restores 10 PP for a selected move.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/leppa-berry.png	15
 19	rawst-berry	berry	Held: Consumed when burned to cure a burn.	If the leaves grow longer and curlier than average, this Berry will have a somewhat-bitter taste.	Held in battle :   When the holder is burned, it consumes this item to cure the burn.  Used on a party Pokémon :   Cures a burn.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rawst-berry.png	20
 12	premier-ball	ball	Tries to catch a wild Pokémon.	A rare BALL made in commemoration of some event.	Used in battle :   Attempts to catch a wild Pokémon, using a catch rate of 1×.      If used in a trainer battle, nothing happens and the ball is lost.	https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/premier-ball.png	1
@@ -357,6 +358,8 @@ COPY public.pokeboxes (pokebox_id, user_id, pokemon_id, name, created_at, update
 49	18	100	voltorb	2020-07-01 10:40:27.420732+00	2020-07-01 10:40:27.420732+00	\N
 50	18	19	rattata	2020-07-01 10:44:14.070503+00	2020-07-01 10:44:14.070503+00	\N
 51	18	112	rhydon	2020-07-01 10:53:13.073956+00	2020-07-01 10:53:13.073956+00	\N
+52	18	113	chansey	2020-07-01 17:04:06.214681+00	2020-07-01 17:04:06.214681+00	\N
+53	18	145	zapdos	2020-07-01 17:33:49.540839+00	2020-07-01 17:33:49.540839+00	\N
 \.
 
 
@@ -550,14 +553,14 @@ COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, ti
 -- Name: backpack_items_backpack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.backpack_items_backpack_id_seq', 34, true);
+SELECT pg_catalog.setval('public.backpack_items_backpack_id_seq', 36, true);
 
 
 --
 -- Name: pokeboxes_pokeboxId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 51, true);
+SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 53, true);
 
 
 --
