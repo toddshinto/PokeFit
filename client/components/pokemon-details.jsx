@@ -63,7 +63,7 @@ export default class PokemonDetails extends React.Component {
                 opened={this.props.opened}
                 setPokemonDetails={this.props.setPokemonDetails}
                 action={this.props.action}/>
-              <div className="top-screen-title">{pokemon.name}</div>
+              <div className="top-screen-title to-uppercase">{pokemon.name}</div>
             </div>
             <div className="top-screen-second-row" onClick={() => {
               this.props.setAction(null);
