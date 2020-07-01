@@ -112,7 +112,6 @@ export default class App extends React.Component {
         }
       }, 1000);
     }
-
   }
 
   shuffle(array) {
@@ -260,7 +259,6 @@ export default class App extends React.Component {
         .then(res => res.json())
         .then(data => process.stdout.write(data));
     }
-
   }
 
   attemptCatch(ball) {
