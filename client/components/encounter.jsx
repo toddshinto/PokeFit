@@ -86,17 +86,29 @@ export default class Encounter extends React.Component {
           <div className="pokedex-screen-container">
             <div className="pokedex-rectangle-screen" id="rectangle-screen">
               <div className="encounter-actions">
-                <div className="encounter-button" onClick={() => {
-                  this.toggleMenu();
-                  this.props.getItems();
-                }}>
+                <div
+                  className="encounter-button"
+                  onClick={() => {
+                    this.toggleMenu();
+                    this.props.getItems();
+                  }}>
                 CATCH
                 </div>
                 {pokeballList}
-                <div className="encounter-button" onClick={this.toggleItemMenu}>
+                <div
+                  className="encounter-button"
+                  onClick={() => {
+                    this.toggleItemMenu();
+                    this.props.getItems();
+                  }}>
                 ITEMS
                 </div>
-                <div className="encounter-button" onClick={() => this.props.setView('walk')}>
+                <div
+                  className="encounter-button"
+                  onClick={ () => {
+                    this.props.setView('walk');
+                    this.props.resetState();
+                  }}>
                 RUN
                 </div>
               </div>

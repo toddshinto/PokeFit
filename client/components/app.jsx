@@ -110,7 +110,7 @@ export default class App extends React.Component {
             this.getEncounter();
           }
         }
-      }, 1000);
+      }, 60000);
     }
   }
 
@@ -492,6 +492,7 @@ export default class App extends React.Component {
           attemptCatch={this.attemptCatch}
           attemptBerry={this.attemptBerry}
           setView={this.setView}
+          resetState={this.resetState}
           getItems={this.getItems}
         />;
     }

@@ -10,7 +10,7 @@ export default class ItemModal extends React.Component {
         <div className="pokeball-icon bottom-left"></div>
         <div
           className="modal-title to-uppercase"
-          style={{ backgroundColor: 'yellow' }}>You found {this.props.item.quantity}{' '}{this.props.item.name} !!!</div>
+          style={{ backgroundColor: 'yellow' }}>You found {this.props.item.quantity}{' '}{this.props.item.name}!</div>
         <div className="modal-body">
           <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.item.sprite})` }} />
           <div className="modal-button-container">
