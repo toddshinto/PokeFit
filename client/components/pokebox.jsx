@@ -5,7 +5,7 @@ import PokemonDetails from './pokemon-details';
 export default class Pokebox extends React.Component {
   constructor(props) {
     super(props);
-    this.pokemons = this.props.pokemons.reverse();
+    this.pokemons = this.props.pokemons;
   }
 
   render() {
