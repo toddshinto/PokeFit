@@ -105,11 +105,11 @@ export default class App extends React.Component {
         this.setState({ sessionTimeWalked: tw });
         if (!this.state.encounterType) {
           this.setState({ timeSinceLastEncounter: (this.state.timeSinceLastEncounter + 1) });
-          if (this.state.timeSinceLastEncounter > 5) {
+          if (this.state.timeSinceLastEncounter > 2) {
             this.getEncounter();
           }
         }
-      }, 1000);
+      }, 60000);
     }
   }
 
