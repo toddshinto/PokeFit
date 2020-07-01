@@ -3,7 +3,7 @@ import React from 'react';
 export default class CaptureFailModal extends React.Component {
   constructor(props) {
     super(props);
-    this.randomIndex = Math.floor(Math.random() * 5);
+    this.randomIndex = Math.floor(Math.random() * 17);
   }
 
   render() {
