@@ -22,6 +22,7 @@ transition: all .3 ease-in-out;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-position: bottom center;
 }
 
 .pokedex-body {
