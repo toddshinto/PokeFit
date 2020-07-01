@@ -12,6 +12,8 @@ import PokemonModal from './pokemon-modal';
 import CaptureSuccessModal from './capture-success-modal';
 import CaptureFailModal from './capture-fail-modal';
 import BerryUsedModal from './berry-used-modal';
+import TookItemModal from './took-item-modal';
+import LeftItemModal from './left-item-modal';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -110,7 +112,7 @@ export default class App extends React.Component {
             this.getEncounter();
           }
         }
-      }, 100000);
+      }, 60000);
     }
   }
 
@@ -314,7 +316,6 @@ export default class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        this.resetState();
         this.getItems();
       });
   }
@@ -499,12 +500,33 @@ export default class App extends React.Component {
         />;
     }
     switch (this.state.encounterType) {
-      case 'item' :
+      case 'item':
         if (this.state.encounterModal) {
           modal = <ItemModal
             item={this.state.foundItem}
             resetState={this.resetState}
             takeItem={this.takeItem}
+            setEncounterType={this.setEncounterType}
+            toggleEncounterModal={this.toggleEncounterModal}
+          />;
+        }
+        break;
+      case 'took-item':
+        if (this.state.encounterModal) {
+          modal = <TookItemModal
+            item={this.state.foundItem}
+            resetState={this.resetState}
+            toggleEncounterModal={this.toggleEncounterModal}
+            setView={this.setView}
+          />;
+        }
+        break;
+      case 'left-item':
+        if (this.state.encounterModal) {
+          modal = <LeftItemModal
+            item={this.state.foundItem}
+            resetState={this.resetState}
+            toggleEncounterModal={this.toggleEncounterModal}
           />;
         }
         break;
