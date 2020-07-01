@@ -38,8 +38,8 @@ transition: all .3 ease-in-out;
   width: 100%;
   box-sizing: border-box;
   max-width: 720px;
-  border-left: 2px solid black;
-  border-right: 2px solid black;
+  border-left: 5px solid black;
+  border-right: 5px solid black;
 }
 
 
@@ -68,9 +68,11 @@ position: relative;
   background-color: #DA1332;
   max-width: 720px;
   z-index: 800;
-  border-top: 2px solid black;
-  border-left: 2px solid black;
-  border-right: 2px solid black;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  border-top: 5px solid black;
+  border-left: 5px solid black;
+  border-right: 5px solid black;
 }
 
 .modal-button-container{
@@ -93,9 +95,11 @@ position: relative;
   flex-direction: row;
   justify-content: space-evenly;
   padding-bottom: 10px;
-  border-bottom: 2px solid black;
-  border-left: 2px solid black;
-  border-right: 2px solid black;
+  border-bottom: 5px solid black;
+  border-left: 5px solid black;
+  border-right: 5px solid black;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 .menu-triangle, .menu-triangle-opened {
