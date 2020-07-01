@@ -8,11 +8,23 @@ export default class CaptureFailModal extends React.Component {
 
   render() {
     const message = [
-      '...laughs at you?',
-      'looks antsy.',
+      '...laughs at you!',
+      'looks antsy',
       'is waiting for you',
       'is not hot dog',
-      'wants to be the very best'
+      'wants to be the very best',
+      'is gone without a trace',
+      'says better luck next time kiddo',
+      'says smell ya later',
+      'says is that the best you can do?',
+      'says you\'re killing me smalls',
+      'says sashay away',
+      'is so over you',
+      'was the one that got away',
+      'says my grandma throws better than you',
+      'cackles maniacally',
+      'says too bad you don\t have a master ball',
+      'rolls eyes'
     ];
     return (
       <div className="modal-container" onClick={() => this.props.toggleEncounterModal()}>

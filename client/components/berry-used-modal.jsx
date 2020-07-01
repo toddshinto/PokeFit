@@ -12,7 +12,8 @@ export default class BerryUsedModal extends React.Component {
       'looks full',
       'is gaining some weight',
       'has an incredible appetite',
-      'wants some more...'
+      'wants some more...',
+      'says mmm'
     ];
 
     return (
