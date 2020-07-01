@@ -30,7 +30,7 @@ export default class Footer extends React.Component {
     );
     if (view === 'encounter') {
       footer = (
-        <div className="pokebox-footer">
+        <div className="pokedex-footer">
           <div className="encounter-footer-container">
             <div className="encounter-footer-button" />
           </div>
