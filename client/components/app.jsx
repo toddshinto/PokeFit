@@ -102,7 +102,7 @@ export default class App extends React.Component {
         const d = new Date();
         currentTime = d.getTime();
         timeDiff = currentTime - startTime;
-        const tw = Math.round(timeDiff / 10000);
+        const tw = Math.round(timeDiff / 60000);
         this.setState({ sessionTimeWalked: tw });
         if (!this.state.encounterType) {
           this.setState({ timeSinceLastEncounter: (this.state.timeSinceLastEncounter + 1) });
