@@ -3,7 +3,7 @@ import React from 'react';
 export default class PokeballListItem extends React.Component {
   render() {
     const item = this.props.item;
-    if (item.type === 'berry') {
+    if (item.type === 'berry' || item.quantity < 1) {
       return <></>;
     } else {
       return (
