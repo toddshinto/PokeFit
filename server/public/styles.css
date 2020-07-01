@@ -207,7 +207,7 @@ position: relative;
   color: white;
 }
 
-.exit {
+.exit, .exit-sm {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -215,7 +215,11 @@ position: relative;
   color: red;
   width: 10px;
   height: 10px;
-  background-color: white;
+}
+
+.exit-sm {
+  font-size: 10px;
+  color: black;
 }
 
 .catch-menu {
@@ -231,8 +235,9 @@ position: relative;
 }
 
 .action-modal {
-  width: 300px;
-  height: 80px;
+  width: 80%;
+  height: 40%;
+  min-width: 280px;
   background-color: white;
   border: 3px solid black;
   position: absolute;
@@ -315,13 +320,14 @@ position: relative;
   justify-content: space-evenly;
   display: flex;
   font-size: 10px;
+  text-align: center;
 }
 
 .action-body-message {
   display: flex;
   flex-direction: column;
   padding: 5px 10px 10px 10px;
-  line-height: 8px;
+  line-height: 12px;
 }
 
 .answer {
@@ -974,6 +980,9 @@ background-image: url('assets/images/ash-walk.gif');
   }
   .stats-number, .backpack-item-name-flex, .backpack-item-name {
     font-size: 11px
+  }
+  .action-body {
+    font-size: 8px;
   }
   .list-item {
     padding: 5px;

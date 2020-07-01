@@ -110,7 +110,7 @@ export default class App extends React.Component {
             this.getEncounter();
           }
         }
-      }, 60000);
+      }, 100000);
     }
   }
 
@@ -361,6 +361,7 @@ export default class App extends React.Component {
   setView(view) {
     this.setState({ view });
     this.getTimeWalked();
+    this.getPokemon();
   }
 
   openDrawer() {
