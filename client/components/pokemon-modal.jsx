@@ -10,12 +10,12 @@ export default class PokemonModal extends React.Component {
         </div>
         <div className="button-container">
           <button onClick={() => {
+            this.props.setEncounterModalOff();
             this.props.setView('encounter');
-            this.props.setEncounterModal();
           }} className="modal-button">FIGHT</button>
           <button onClick={() => {
+            this.props.setEncounterModalOff();
             this.props.setView(this.props.view);
-            this.props.setEncounterModal();
           }} className="modal-button">RUN</button>
         </div>
       </div>
