@@ -12,6 +12,8 @@ import PokemonModal from './pokemon-modal';
 import CaptureSuccessModal from './capture-success-modal';
 import CaptureFailModal from './capture-fail-modal';
 import BerryUsedModal from './berry-used-modal';
+import TookItemModal from './took-item-modal';
+import LeftItemModal from './left-item-modal';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -312,8 +314,13 @@ export default class App extends React.Component {
       },
       body: JSON.stringify(item)
     })
+<<<<<<< HEAD
       .then(() => {
         this.resetState();
+=======
+      .then(res => res.json())
+      .then(data => {
+>>>>>>> 3928358af7b6512002e450df68e012da2fd73e94
         this.getItems();
       });
   }
@@ -360,6 +367,7 @@ export default class App extends React.Component {
   setView(view) {
     this.setState({ view });
     this.getTimeWalked();
+    this.getPokemon();
   }
 
   openDrawer() {
@@ -497,12 +505,33 @@ export default class App extends React.Component {
         />;
     }
     switch (this.state.encounterType) {
-      case 'item' :
+      case 'item':
         if (this.state.encounterModal) {
           modal = <ItemModal
             item={this.state.foundItem}
             resetState={this.resetState}
             takeItem={this.takeItem}
+            setEncounterType={this.setEncounterType}
+            toggleEncounterModal={this.toggleEncounterModal}
+          />;
+        }
+        break;
+      case 'took-item':
+        if (this.state.encounterModal) {
+          modal = <TookItemModal
+            item={this.state.foundItem}
+            resetState={this.resetState}
+            toggleEncounterModal={this.toggleEncounterModal}
+            setView={this.setView}
+          />;
+        }
+        break;
+      case 'left-item':
+        if (this.state.encounterModal) {
+          modal = <LeftItemModal
+            item={this.state.foundItem}
+            resetState={this.resetState}
+            toggleEncounterModal={this.toggleEncounterModal}
           />;
         }
         break;
@@ -548,13 +577,15 @@ export default class App extends React.Component {
     return (
       this.state.view === 'home' || this.state.view === 'start'
         ? display
-        : <div className="background-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-          <Header setView={this.setView}/>
-          {modal}
-          {display}
-          <Footer
-            view={this.state.view}
-            setView={this.setView} />
+        : <div className="background-container-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
+          <div className="background-container" >
+            <Header setView={this.setView}/>
+            {modal}
+            {display}
+            <Footer
+              view={this.state.view}
+              setView={this.setView} />
+          </div>
         </div>
     );
   }
