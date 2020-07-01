@@ -56,6 +56,12 @@ box-shadow: inset 0px 0px 8px 2px rgba(0, 0, 0, 0.5);
 position: relative;
 }
 
+.icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+}
+
 .pokedex-header {
   display: flex;
   flex-direction: row;
@@ -954,12 +960,18 @@ background-image: url('assets/images/ash-walk.gif');
   margin-right: 10px;
 }
 
+.backpack-item-name-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 600px) {
   .stats-label, .button-text, .modal-title, .modal-button,
   .modal-body-title, .list-item {
     font-size: 10px;
   }
-  .stats-number, .backpack-item-name {
+  .stats-number, .backpack-item-name-flex, .backpack-item-name {
     font-size: 11px
   }
   .list-item {
