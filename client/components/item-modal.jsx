@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class EncounterModal extends React.Component {
+export default class ItemModal extends React.Component {
   render() {
     const quantity = Math.floor(Math.random() * 5) + 1;
     return (

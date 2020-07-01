@@ -239,7 +239,8 @@ app.get('/api/backpack-items', (req, res, next) => {
             "i"."name",
             "i"."sprite",
             "i"."item_type" as "type",
-            "i"."item_id"
+            "i"."item_id",
+            "i"."effect"
       from  "backpack_items" as "bi"
       join "items" as "i" using (item_id)
      where  "user_id" = $1
