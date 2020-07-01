@@ -14,6 +14,7 @@ export default class Walk extends React.Component {
         <div className="pokedex-screen-container">
           <div className="pokedex-display-screen" style={{ backgroundImage: `url(assets/images/${this.props.timeOfDay}-bg.gif)` }}>
             <div className="ash-walk-screen-container">
+              <div className="pikachu-walk-screen" />
               <div className="ash-walk-screen" />
             </div>
           </div>

@@ -3,7 +3,7 @@ import React from 'react';
 export default class Header extends React.Component {
   render() {
     return (
-      <div className='pokebox-header'>
+      <div className='pokedex-header'>
         <div className="triangle-button" onClick={() => this.props.setView('home')}/>
         <div className="right-side-buttons">
           <div className="button yellow-circle-button" />

@@ -8,12 +8,15 @@ export default class PokeballListItem extends React.Component {
     } else {
       return (
         <div
-          className="pokeball-list-item list-item to-capitalize"
+          className="pokeball-list-item list-item to-uppercase item-row"
           onClick={() => this.props.throwBall(item)}>
           <div
-            className="pokeball-list-item-image"
+            className="pokeball-list-item-image item-number"
             style={{ backgroundImage: `url(${item.sprite})` }} />
-          <div>{item.name}</div>
+          <div className="backpack-item-entry">
+            <div className='backpack-item-name'>{item.name}</div>
+            <div className='backpack-item-quantity' style={{ textTransform: 'lowercase' }}>x{item.quantity}</div>
+          </div>
         </div>
       );
     }
