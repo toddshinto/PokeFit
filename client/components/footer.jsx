@@ -28,16 +28,7 @@ export default class Footer extends React.Component {
     //     </div>
     //   </div>
     // );
-    // if (view === 'encounter') {
-    //   footer = (
-    //     <div className="pokedex-footer">
-    //       <div className="encounter-footer-container">
-    //         <div className="encounter-footer-button" />
-    //       </div>
-    //     </div>
-    //   );
-    // }
-    return (
+    let footer = (
       <div className="pokedex-footer">
         <div className={'pokebox-button-container'} onClick={() => this.props.setView('pokebox')}>
           <div className={'pokebox-button-icon button-icon'} />
@@ -49,6 +40,18 @@ export default class Footer extends React.Component {
           <div className={'walk-button-icon button-icon'} />
         </div>
       </div>
+    );
+    if (this.props.view === 'encounter') {
+      footer = (
+        <div className="pokedex-footer">
+          <div className="encounter-footer-container">
+            <div className="encounter-footer-button" />
+          </div>
+        </div>
+      );
+    }
+    return (
+      footer
     );
   }
 }
