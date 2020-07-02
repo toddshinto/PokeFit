@@ -314,13 +314,8 @@ export default class App extends React.Component {
       },
       body: JSON.stringify(item)
     })
-<<<<<<< HEAD
-      .then(() => {
-        this.resetState();
-=======
       .then(res => res.json())
       .then(data => {
->>>>>>> 3928358af7b6512002e450df68e012da2fd73e94
         this.getItems();
       });
   }
