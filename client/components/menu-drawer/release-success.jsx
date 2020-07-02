@@ -16,6 +16,7 @@ export default class ReleaseSuccess extends React.Component {
             this.props.setPokemonDetails(0);
           }}>
             <div className='action-body-message'>{'Okay... Bye-bye '}<span className="to-uppercase">{this.props.pokemon}!</span>{'\n  See you around...'}</div>
+            <div className='action-body-message'>{`Okay... Bye-bye ${this.props.pokemon}! \n See you around...`}</div>
           </div>
         </div>
       </div>
