@@ -7,6 +7,11 @@ export default class Walk extends React.Component {
   }
 
   render() {
+    const date = new Date();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    if (hours < 10) { hours = '0' + hours; }
+    if (minutes < 10) { minutes = '0' + minutes; }
     let s;
     this.props.stats ? s = this.props.stats : s = { milesWalked: 0, encounters: 0 };
     return (
@@ -37,7 +42,7 @@ export default class Walk extends React.Component {
               </div>
               <div className="stats-text stats-text-walk-screen">
                 <div className="stats-label">CURRENT TIME: </div>
-                <div className="stats-number">{new Date().getHours()} : {new Date().getMinutes()}</div>
+                <div className="stats-number">{hours}:{minutes}</div>
               </div>
             </div>
           </div>
