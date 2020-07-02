@@ -75,12 +75,10 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.getStats();
-    this.getPokemon();
     this.getBackground();
     const d = new Date();
     const startTime = d.getTime();
     this.setState({ startTime });
-    this.getItems();
     if (!this.state.stats) {
       this.setState({ stats: { milesWalked: 0, encounters: 0, timeWalked: 0 } });
     }
@@ -446,6 +444,8 @@ export default class App extends React.Component {
           timeOfDay={this.state.timeOfDay}
           backgroundImage={this.state.backgroundImage}
           setView={this.setView}
+          getItems={this.getItems}
+          getPokemon={this.getPokemon}
           getStartPosition={this.getStartPosition}
           getCurrentPosition={this.getCurrentPosition}
         />;
@@ -523,6 +523,7 @@ export default class App extends React.Component {
           modal = <TookItemModal
             item={this.state.foundItem}
             resetState={this.resetState}
+            getItems={this.getItems}
             toggleEncounterModal={this.toggleEncounterModal}
             setView={this.setView}
           />;

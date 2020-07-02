@@ -16,6 +16,8 @@ export default class Start extends React.Component {
         </div>
         <div onClick={() => {
           this.props.setView('home');
+          this.props.getItems();
+          this.props.getPokemon();
           this.props.getCurrentPosition();
           this.props.getStartPosition();
         }} className={`press-start ${pressStartNight}`}>PRESS START</div>

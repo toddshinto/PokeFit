@@ -17,6 +17,7 @@ export default class TookItemModal extends React.Component {
           <div className="modal-button-container">
             <div onClick={() => {
               this.props.resetState();
+              this.props.getItems();
               this.props.toggleEncounterModal();
             }} className="answer modal-button">CONTINUE</div>
           </div>
