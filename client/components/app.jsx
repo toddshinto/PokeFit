@@ -205,7 +205,10 @@ export default class App extends React.Component {
   getCurrentPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
-        position => this.setState({ currLat: position.coords.latitude, currLon: position.coords.longitude })
+        position => {
+          this.setState({ currLat: position.coords.latitude, currLon: position.coords.longitude });
+          this.calculateDistance();
+        }
         , error => {
           switch (error.code) {
             case (0):
