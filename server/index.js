@@ -14,7 +14,7 @@ app.use(sessionMiddleware);
 app.use(express.json());
 
 app.get('/api/users', (req, res, next) => {
-  const userId = req.session.userId;
+  const userId = req.session.pokefitUserId;
   const newUser = `
             insert into  "users" ("miles_walked", "encounters", "time_walked")
                  values   (0, 0, 0)
@@ -45,7 +45,7 @@ app.get('/api/users', (req, res, next) => {
           db.query(newUser)
             .then(result2 => {
               if (result2.rows.length > 0) {
-                req.session.userId = result2.rows[0].userId;
+                req.session.pokefitUserId = result2.rows[0].userId;
                 const itemParams = [result2.rows[0].userId, 4, 15];
                 db.query(givePokeballs, itemParams)
                   .then(result => {
@@ -65,7 +65,7 @@ app.get('/api/users', (req, res, next) => {
   } else {
     db.query(newUser)
       .then(result => {
-        req.session.userId = result.rows[0].userId;
+        req.session.pokefitUserId = result.rows[0].userId;
         const itemParams = [result.rows[0].userId, 4, 15];
         db.query(givePokeballs, itemParams)
           .then(result => {
@@ -82,7 +82,7 @@ app.get('/api/users', (req, res, next) => {
 app.put('/api/users', (req, res, next) => {
   const milesWalked = req.body.milesWalked;
   const encounters = req.body.encounters;
-  const userId = req.session.userId;
+  const userId = req.session.pokefitUserId;
   const timeWalked = req.body.timeWalked;
   if (!milesWalked) {
     return res.status(400).json({ error: 'miles_walked required' });
@@ -108,8 +108,8 @@ app.put('/api/users', (req, res, next) => {
   const params = [userId, milesWalked, encounters, timeWalked];
   db.query(sql, params)
     .then(result => {
-      if (!req.session.userId) {
-        req.session.userId = result.rows[0].userId;
+      if (!req.session.pokefitUserId) {
+        req.session.pokefitUserId = result.rows[0].userId;
       }
       req.session.cookie.expires = new Date(Date.now() + 315360000000);
       req.session.cookie.maxAge = 315360000000;
@@ -122,7 +122,7 @@ app.put('/api/users', (req, res, next) => {
 });
 
 app.get('/api/pokeboxes', (req, res, next) => {
-  const userId = req.session.userId;
+  const userId = req.session.pokefitUserId;
   const sql = `
     select  "pb"."pokebox_id" as "pokeboxId",
             "pb"."name",
@@ -264,7 +264,7 @@ app.put('/api/pokeboxes', (req, res, next) => {
 });
 
 app.put('/api/backpack-items', (req, res, next) => {
-  const userId = req.session.userId;
+  const userId = req.session.pokefitUserId;
   if (!userId) {
     return res.status(400).json({ error: 'userId required' });
   }
@@ -289,7 +289,7 @@ app.put('/api/backpack-items', (req, res, next) => {
 });
 
 app.put('/api/backpack-items/use', (req, res, next) => {
-  const userId = req.session.userId;
+  const userId = req.session.pokefitUserId;
   if (!userId) {
     return res.status(400).json({ error: 'userId required' });
   }
@@ -313,7 +313,7 @@ app.put('/api/backpack-items/use', (req, res, next) => {
 });
 
 app.get('/api/backpack-items', (req, res, next) => {
-  const userId = req.session.userId;
+  const userId = req.session.pokefitUserId;
   const sql = `
     select  "i"."item_short_desc" as "shortDesc",
             "i"."item_long_desc" as "longDesc",
@@ -339,7 +339,7 @@ app.get('/api/backpack-items', (req, res, next) => {
 });
 
 app.post('/api/pokeboxes', (req, res, next) => {
-  const userId = req.session.userId;
+  const userId = req.session.pokefitUserId;
   if (!userId) {
     return res.status(400).json({ error: 'userId required ' });
   }
