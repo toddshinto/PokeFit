@@ -569,6 +569,7 @@ export default class App extends React.Component {
           />;
         }
     }
+
     return (
       this.state.view === 'home' || this.state.view === 'start'
         ? display
