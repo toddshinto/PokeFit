@@ -44,7 +44,7 @@ export default class Menu extends React.Component {
             </div>
           )
           : <></>}
-        {this.props.action ? <MenuAction action={this.props.action} pokemon={this.props.pokemon} closeDrawer={this.props.closeDrawer} setAction={this.props.setAction} setPokemonDetails={this.props.setPokemonDetails} setView={this.props.setView}/> : <></>}
+        {this.props.action ? <MenuAction getPokemon={this.props.getPokemon} action={this.props.action} pokemon={this.props.pokemon} closeDrawer={this.props.closeDrawer} setAction={this.props.setAction} setPokemonDetails={this.props.setPokemonDetails} setView={this.props.setView}/> : <></>}
       </>
     );
   }

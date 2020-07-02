@@ -44,7 +44,7 @@ export default class itemDetails extends React.Component {
       return (
         <div className="pokedex-screen-container">
           <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
-            <div className="top-display-header" style={{ backgroundColor: 'yellow' }}>Go find some ITEMS!</div>
+            <div className="top-display-header" style={{ backgroundColor: 'yellow' }}>GO FIND SOME ITEMS!</div>
           </div>
         </div>
       );
