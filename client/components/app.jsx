@@ -19,7 +19,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'walk',
+      view: 'pokebox',
       stats: null,
       pokemons: [],
       items: [],
@@ -113,7 +113,7 @@ export default class App extends React.Component {
             this.getEncounter();
           }
         }
-      }, 60000);
+      }, 1000);
     }
   }
 
@@ -279,12 +279,12 @@ export default class App extends React.Component {
       .then(this.getItems())
       .catch(err => console.error(err));
     if (ball.item_id === 1) {
-      this.setState({ wildPokemon: { ...this.state.wildPokemon, ballSprite: ball.sprite, ballId: ball.item_id } });
-      this.captureSuccess();
+      const caughtPokemon = { ...this.state.wildPokemon, ballSprite: ball.sprite, itemId: ball.item_id };
+      this.captureSuccess(caughtPokemon);
     } else {
       if (randomRoll - berry <= (captureRate * multiplier)) {
-        this.setState({ wildPokemon: { ...this.state.wildPokemon, ballSprite: ball.sprite, ballId: ball.item_id } });
-        this.captureSuccess();
+        const caughtPokemon = { ...this.state.wildPokemon, ballSprite: ball.sprite, itemId: ball.item_id };
+        this.captureSuccess(caughtPokemon);
       } else {
         this.setState({ encounterType: 'capture-fail' });
         this.toggleEncounterModal();
@@ -292,14 +292,13 @@ export default class App extends React.Component {
     }
   }
 
-  captureSuccess() {
-    const pokemon = this.state.wildPokemon;
+  captureSuccess(caughtPokemon) {
     fetch('/api/pokeboxes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(pokemon)
+      body: JSON.stringify(caughtPokemon)
     })
       .then(res => res.json())
       .then(data => {

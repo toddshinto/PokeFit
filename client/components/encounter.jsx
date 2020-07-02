@@ -74,7 +74,7 @@ export default class Encounter extends React.Component {
           <div className="pokedex-screen-container">
             <div className="pokedex-display-screen" style={{ backgroundImage: `url(assets/images/${this.props.timeOfDay}-bg.gif)` }}>
               <div className="top-screen-first-row">
-                <div className="top-screen-title to-capitalize">
+                <div className="top-screen-title to-uppercase">
                   {wildPokemon.name}
                 </div>
               </div>

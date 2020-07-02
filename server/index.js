@@ -42,12 +42,13 @@ app.get('/api/users', (req, res, next) => {
             .then(result => {
               if (result.rows.length > 0) {
                 req.session.userId = result.rows[0].userId;
-                return result;
+                return res.status(200).result.rows[0];
               }
             })
             .catch(err => next(err));
+        } else {
+          return res.status(202).json(result.rows[0]);
         }
-        return res.status(202).json(result.rows[0]);
       })
       .catch(err => next(err));
   } else {
@@ -104,12 +105,11 @@ app.put('/api/users', (req, res, next) => {
 
 app.get('/api/pokeboxes', (req, res, next) => {
   const userId = req.session.userId;
-  // if (!userId) {
-  //   return res.status(400).json({ error: 'userId required' });
-  // }
   const sql = `
     select  "pb"."pokebox_id" as "pokeboxId",
             "pb"."name",
+            "pb"."ball_sprite" as "ballSprite",
+            "pb"."item_id" as "itemId",
             "p"."type",
             "p"."type_secondary" as "typeSecondary",
             "p"."height",
@@ -296,9 +296,6 @@ app.put('/api/backpack-items/use', (req, res, next) => {
 
 app.get('/api/backpack-items', (req, res, next) => {
   const userId = req.session.userId;
-  // if (!userId) {
-  //   return res.status(400).json({ error: 'userId required' });
-  // }
   const sql = `
     select  "i"."item_short_desc" as "shortDesc",
             "i"."item_long_desc" as "longDesc",
@@ -330,12 +327,14 @@ app.post('/api/pokeboxes', (req, res, next) => {
   }
   const pokemonId = req.body.pokemonId;
   const name = req.body.name;
+  const itemId = req.body.itemId;
+  const ballSprite = req.body.ballSprite;
   const sql = `
-  insert into pokeboxes (pokemon_id, user_id, name)
-  values ($1, $2, $3)
+  insert into pokeboxes (pokemon_id, user_id, name, item_id, ball_sprite)
+  values ($1, $2, $3, $4, $5)
   returning *
   `;
-  const params = [pokemonId, userId, name];
+  const params = [pokemonId, userId, name, itemId, ballSprite];
   db.query(sql, params)
     .then(result => res.status(200).json(result.rows[0]))
     .catch(err => next(err));

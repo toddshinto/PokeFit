@@ -67,6 +67,7 @@ export default class PokemonDetails extends React.Component {
                 opened={this.props.opened}
                 setPokemonDetails={this.props.setPokemonDetails}
                 action={this.props.action}/>
+              <div className='pokemon-ball-title' style={{ backgroundImage: `url(${pokemon.ballSprite})` }} />
               <div className="top-screen-title to-uppercase">{pokemon.name}</div>
             </div>
             <div className="top-screen-second-row" onClick={() => {
@@ -83,7 +84,7 @@ export default class PokemonDetails extends React.Component {
       return (
         <div className="pokedex-screen-container">
           <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
-            <div className="top-display-header" style={{ backgroundColor: 'yellow' }}>Go catch some POKéMON!</div>
+            <div className="top-display-header" style={{ backgroundColor: 'yellow' }}>GO CATCH SOME POKéMON!</div>
           </div>
         </div>
       );

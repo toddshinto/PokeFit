@@ -31,7 +31,7 @@ export default class Pokebox extends React.Component {
                     setPokemonDetails={this.props.setPokemonDetails}
                     number={pokemons.indexOf(pokemon)}/>
                 )
-                : <div>No Pokemon Found :(</div>
+                : <div>NO POKéMON FOUND :(</div>
               }
             </div>
           </div>
