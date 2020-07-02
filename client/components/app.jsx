@@ -31,7 +31,6 @@ export default class App extends React.Component {
       currLon: null,
       currMilesWalked: null,
       sessionTimeWalked: 0,
-      startTime: 0,
       locationError: null,
       backgroundImage: null,
       timeOfDay: null,
@@ -43,6 +42,7 @@ export default class App extends React.Component {
       encounterModal: false,
       totalEncounters: 0,
       berries: 0,
+      startTime: {},
       timeSinceLastEncounter: 0,
       captureSucces: false
     };
@@ -71,17 +71,16 @@ export default class App extends React.Component {
     this.takeItem = this.takeItem.bind(this);
     this.toggleEncounterModal = this.toggleEncounterModal.bind(this);
     this.setCaughtDetails = this.setCaughtDetails.bind(this);
+    this.getStartTime = this.getStartTime.bind(this);
   }
 
   componentDidMount() {
     this.getStats();
     this.getBackground();
-    const d = new Date();
-    const startTime = d.getTime();
-    this.setState({ startTime });
     if (!this.state.stats) {
       this.setState({ stats: { milesWalked: 0, encounters: 0, timeWalked: 0 } });
     }
+    this.getStartTime();
   }
 
   resetState() {
@@ -94,25 +93,34 @@ export default class App extends React.Component {
     });
   }
 
+  getStartTime() {
+    const startTime = new Date();
+    const startMin = startTime.getMinutes();
+    const startHour = startTime.getHours();
+    this.setState({ startTime: { startHour: startHour, startMin: startMin } });
+  }
+
   getTimeWalked() {
-    if (!this.state.timeWalked) {
-      const startTime = this.state.startTime;
-      let currentTime = 0;
-      let timeDiff = 0;
-      setInterval(() => {
-        const d = new Date();
-        currentTime = d.getTime();
-        timeDiff = currentTime - startTime;
-        const tw = Math.round(timeDiff / 60000);
-        this.setState({ sessionTimeWalked: tw });
-        if (!this.state.encounterType) {
-          this.setState({ timeSinceLastEncounter: (this.state.timeSinceLastEncounter + 1) });
-          if (this.state.timeSinceLastEncounter > 2) {
-            this.getEncounter();
-          }
+    const startTime = this.state.startTime;
+    let sessionTimeWalked = 0;
+    setInterval(() => {
+      const currentTime = new Date();
+      const currentHour = currentTime.getHours();
+      const currentMinute = currentTime.getMinutes();
+      if (currentHour === startTime.startHour) {
+        sessionTimeWalked = currentMinute - startTime.startMin;
+      } else if (currentHour > startTime.startHour && currentMinute < startTime.startMin) {
+        sessionTimeWalked = (currentMinute + 60 * (currentHour - startTime.startHour) - startTime.startMin);
+      } else {
+        sessionTimeWalked = (currentMinute - startTime.startMin) + ((currentHour - startTime.startHour) * 60);
+      }
+      this.setState({ sessionTimeWalked });
+      if (!this.state.encounterType) {
+        if (this.state.sessionTimeWalked % 3 === 0) {
+          this.getEncounter();
         }
-      }, 60000);
-    }
+      }
+    }, 30000);
   }
 
   shuffle(array) {
