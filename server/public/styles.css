@@ -874,7 +874,7 @@ height: 100px;
   margin-right: 5px;
 }
 
-.pokemon-list {
+.pokemon-list, .backpack-list {
   text-align: left;
   line-height: 35px;
   padding-left: 50px;
@@ -883,7 +883,7 @@ height: 100px;
   overflow-y: scroll;
   height: 80%;
 }
-
+/*
 .backpack-list {
   text-align: left;
   padding-left: 15px;
@@ -891,7 +891,7 @@ height: 100px;
   overflow: hidden;
   overflow-y: scroll;
   height: 80%;
-}
+} */
 
 .item-row {
   display: flex;
@@ -1031,7 +1031,7 @@ background-image: url('assets/images/ash-walk.gif');
     padding-left: 14px;
     white-space: nowrap
   }
-  .stats-number,   {
+  .stats-number {
     font-size: 11px
   }
   .action-body {
@@ -1043,7 +1043,7 @@ background-image: url('assets/images/ash-walk.gif');
   .pokedex-footer, .pokedex-header {
     border-radius: 0;
   }
-  .pokemon-list, .backpack-item-entry {
+  .pokemon-list, .backpack-list, .backpack-item-entry {
     line-height: 8px;
   }
 }
