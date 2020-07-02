@@ -36,8 +36,8 @@ export default class Walk extends React.Component {
                 <div className="stats-number">{this.props.timeWalked} </div>
               </div>
               <div className="stats-text stats-text-walk-screen">
-                <div className="stats-label">POKé BALLS: </div>
-                <div className="stats-number">{}</div>
+                <div className="stats-label">CURRENT TIME: </div>
+                <div className="stats-number">{new Date().getHours()} : {new Date().getMinutes()}</div>
               </div>
             </div>
           </div>
