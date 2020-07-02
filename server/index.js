@@ -148,9 +148,24 @@ app.get('/api/pokemon/:pokemonId', (req, res, next) => {
     return res.status(400).json({ error: 'invalid pokemonId' });
   }
   const sql = `
-     select  *
-       from  "pokemon"
-      where  "pokemon_id" = $1
+       select "name",
+              "type",
+              "type_secondary" as "typeSecondary",
+              "height",
+              "habitat",
+              "weight",
+              "capture_rate" as "captureRate",
+              "sprite_front_default" as "spriteFrontDefault",
+              "sprite_back_default" as "spriteBackDefault",
+              "sprite_front_shiny" as "spriteFrontShiny",
+              "sprite_back_shiny" as "spriteBackShiny",
+              "flavor_text" as "flavorText",
+              "flavor_text_new" as "flavorTextNew",
+              "growth_rate" as "growthRate",
+              "species",
+              "pokemon_id" as "pokemonId"
+        from  "pokemon"
+       where  "pokemon_id" = $1
   `;
   const params = [pokemonId];
   db.query(sql, params)
@@ -314,7 +329,7 @@ app.post('/api/pokeboxes', (req, res, next) => {
   if (!userId) {
     return res.status(400).json({ error: 'userId required ' });
   }
-  const pokemonId = req.body.pokemon_id;
+  const pokemonId = req.body.pokemonId;
   const name = req.body.name;
   const sql = `
   insert into pokeboxes (pokemon_id, user_id, name)

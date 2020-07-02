@@ -300,6 +300,14 @@ position: relative;
   background-repeat: no-repeat;
 }
 
+.item-modal-image-container {
+  height: 80%;
+  width: 35%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .modal-body {
   height: 85%;
   width: 100%;

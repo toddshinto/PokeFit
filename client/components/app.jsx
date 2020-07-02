@@ -70,6 +70,7 @@ export default class App extends React.Component {
     this.captureSuccess = this.captureSuccess.bind(this);
     this.takeItem = this.takeItem.bind(this);
     this.toggleEncounterModal = this.toggleEncounterModal.bind(this);
+    this.setCaughtDetails = this.setCaughtDetails.bind(this);
   }
 
   componentDidMount() {
@@ -266,7 +267,7 @@ export default class App extends React.Component {
   attemptCatch(ball) {
     const multiplier = ball.effect;
     const randomRoll = Math.floor(Math.random() * 300) + 1;
-    const captureRate = this.state.wildPokemon.capture_rate;
+    const captureRate = this.state.wildPokemon.captureRate;
     const berry = this.state.berries;
     fetch('/api/backpack-items/use', {
       method: 'PUT',
@@ -278,9 +279,11 @@ export default class App extends React.Component {
       .then(this.getItems())
       .catch(err => console.error(err));
     if (ball.item_id === 1) {
+      // this.setState({ wildPokemon: { ...this.state.wildPokemon, ballSprite: ball.sprite } });
       this.captureSuccess();
     } else {
       if (randomRoll - berry <= (captureRate * multiplier)) {
+        // this.setState({ wildPokemon: { ...this.state.wildPokemon, ballSprite: ball.sprite } });
         this.captureSuccess();
       } else {
         this.setState({ encounterType: 'capture-fail' });
@@ -339,6 +342,11 @@ export default class App extends React.Component {
     if (pokemons) {
       this.setState({ pokemonDetails: pokemons[index] });
     }
+  }
+
+  setCaughtDetails(pokemon) {
+    this.setState({ pokemonDetails: pokemon });
+    this.resetState();
   }
 
   setItemDetails(index) {
@@ -543,7 +551,9 @@ export default class App extends React.Component {
       case 'capture-success' :
         if (this.state.encounterModal) {
           modal = <CaptureSuccessModal
+            setCaughtDetails={this.setCaughtDetails}
             getPokemon={this.getPokemon}
+            pokemons={this.state.pokemons}
             pokemon={this.state.wildPokemon}
             resetState={this.resetState}
             toggleEncounterModal={this.toggleEncounterModal}

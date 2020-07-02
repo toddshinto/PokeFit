@@ -79,7 +79,7 @@ export default class Encounter extends React.Component {
                 </div>
               </div>
               <div className="top-screen-second-row">
-                <div className="pokemon-encounter" style={{ backgroundImage: `url(${wildPokemon.sprite_front_default})` }} />
+                <div className="pokemon-encounter" style={{ backgroundImage: `url(${wildPokemon.spriteFrontDefault})` }} />
               </div>
             </div>
           </div>

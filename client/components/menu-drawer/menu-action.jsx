@@ -54,6 +54,8 @@ export default class MenuAction extends React.Component {
       .then(res => res.json())
       .then(response => {
         this.props.setAction('releaseSuccess');
+        this.props.getPokemon();
+        this.props.setView('pokebox');
       });
   }
 

@@ -3,13 +3,8 @@ import PokemonListItem from './pokemon-list-item';
 import PokemonDetails from './pokemon-details';
 
 export default class Pokebox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.pokemons = this.props.pokemons;
-  }
-
   render() {
-    const pokemons = this.pokemons;
+    const pokemons = this.props.pokemons;
     return (
       <div className="pokedex-body">
         <PokemonDetails
