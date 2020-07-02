@@ -15,7 +15,7 @@ export default class Backpack extends React.Component {
           <div className="pokedex-rectangle-screen">
             <div className="pokedex-headline">BACKPACK</div>
             <div className="backpack-list to-uppercase">
-              {items.length > 1
+              {items.length > 0
                 ? items.map(item =>
                   <ListItem
                     number={items.indexOf(item)}
