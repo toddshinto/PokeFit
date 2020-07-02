@@ -28,7 +28,7 @@ app.get('/api/users', (req, res, next) => {
     insert into backpack_items (user_id, item_id, quantity)
     values ($1, $2, $3)
   `;
-  if (userId) {
+  if (userId > 0) {
     const sql = `
       select  "user_id" as "userId",
               "miles_walked" as "milesWalked",
@@ -43,11 +43,10 @@ app.get('/api/users', (req, res, next) => {
       .then(result => {
         if (result.rows.length < 1) {
           db.query(newUser)
-            .then(result => {
-              if (result.rows.length > 0) {
-                req.session.userId = result.rows[0].userId;
-                const itemParams = [result.rows[0].userId, 4, 15];
-                process.stdout.write('hello 51');
+            .then(result2 => {
+              if (result2.rows.length > 0) {
+                req.session.userId = result2.rows[0].userId;
+                const itemParams = [result2.rows[0].userId, 4, 15];
                 db.query(givePokeballs, itemParams)
                   .then(result => {
                     if (result.length < 1) {
