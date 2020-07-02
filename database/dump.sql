@@ -28,10 +28,10 @@ ALTER TABLE ONLY public.backpack_items DROP CONSTRAINT "backpackItems_pk";
 ALTER TABLE public.users ALTER COLUMN user_id DROP DEFAULT;
 ALTER TABLE public.pokeboxes ALTER COLUMN pokebox_id DROP DEFAULT;
 ALTER TABLE public.backpack_items ALTER COLUMN backpack_id DROP DEFAULT;
-DROP SEQUENCE public."users_userId_seq";
+DROP SEQUENCE public.users_user_id_seq;
 DROP TABLE public.users;
 DROP TABLE public.pokemon;
-DROP SEQUENCE public."pokeboxes_pokeboxId_seq";
+DROP SEQUENCE public.pokeboxes_pokebox_id_seq;
 DROP TABLE public.pokeboxes;
 DROP TABLE public.items;
 DROP SEQUENCE public.backpack_items_backpack_id_seq;
@@ -92,8 +92,8 @@ SET default_with_oids = false;
 CREATE TABLE public.backpack_items (
     backpack_id integer NOT NULL,
     user_id integer NOT NULL,
-    item_id integer NOT NULL,
-    quantity integer NOT NULL,
+    item_id smallint NOT NULL,
+    quantity smallint NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL
 );
@@ -141,20 +141,22 @@ CREATE TABLE public.items (
 
 CREATE TABLE public.pokeboxes (
     pokebox_id integer NOT NULL,
-    user_id character varying(16) NOT NULL,
-    pokemon_id integer NOT NULL,
+    user_id smallint NOT NULL,
+    pokemon_id smallint NOT NULL,
     name character varying(16) NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    is_shiny boolean
+    is_shiny boolean,
+    ball_sprite text,
+    item_id smallint NOT NULL
 );
 
 
 --
--- Name: pokeboxes_pokeboxId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: pokeboxes_pokebox_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."pokeboxes_pokeboxId_seq"
+CREATE SEQUENCE public.pokeboxes_pokebox_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -164,10 +166,10 @@ CREATE SEQUENCE public."pokeboxes_pokeboxId_seq"
 
 
 --
--- Name: pokeboxes_pokeboxId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: pokeboxes_pokebox_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."pokeboxes_pokeboxId_seq" OWNED BY public.pokeboxes.pokebox_id;
+ALTER SEQUENCE public.pokeboxes_pokebox_id_seq OWNED BY public.pokeboxes.pokebox_id;
 
 
 --
@@ -202,17 +204,17 @@ CREATE TABLE public.users (
     user_id integer NOT NULL,
     miles_walked integer NOT NULL,
     encounters integer NOT NULL,
+    time_walked integer NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    time_walked integer
+    updated_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
 --
--- Name: users_userId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."users_userId_seq"
+CREATE SEQUENCE public.users_user_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -222,10 +224,10 @@ CREATE SEQUENCE public."users_userId_seq"
 
 
 --
--- Name: users_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."users_userId_seq" OWNED BY public.users.user_id;
+ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
 
 
 --
@@ -239,14 +241,14 @@ ALTER TABLE ONLY public.backpack_items ALTER COLUMN backpack_id SET DEFAULT next
 -- Name: pokeboxes pokebox_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.pokeboxes ALTER COLUMN pokebox_id SET DEFAULT nextval('public."pokeboxes_pokeboxId_seq"'::regclass);
+ALTER TABLE ONLY public.pokeboxes ALTER COLUMN pokebox_id SET DEFAULT nextval('public.pokeboxes_pokebox_id_seq'::regclass);
 
 
 --
 -- Name: users user_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public."users_userId_seq"'::regclass);
+ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.users_user_id_seq'::regclass);
 
 
 --
@@ -254,17 +256,6 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public."
 --
 
 COPY public.backpack_items (backpack_id, user_id, item_id, quantity, created_at, updated_at) FROM stdin;
-7	1	2	3	2020-07-01 06:16:44.711792+00	2020-07-01 06:16:44.711792+00
-5	1	4	27	2020-07-01 05:33:10.87361+00	2020-07-01 10:20:41.144015+00
-1	1	1	9	2020-07-01 05:15:31.846827+00	2020-07-01 10:27:14.348421+00
-21	18	24	0	2020-07-01 09:43:21.142422+00	2020-07-01 10:48:33.995135+00
-24	18	3	3	2020-07-01 10:00:58.166567+00	2020-07-01 10:50:51.185791+00
-25	18	22	0	2020-07-01 10:07:36.292335+00	2020-07-01 11:02:22.161609+00
-10	18	23	17	2020-07-01 08:01:44.918337+00	2020-07-01 17:03:56.044265+00
-27	18	15	7	2020-07-01 10:09:09.896413+00	2020-07-01 17:04:06.21499+00
-15	18	1	3	2020-07-01 08:38:20.209137+00	2020-07-01 17:34:06.164731+00
-35	18	14	5	2020-07-01 17:43:13.046515+00	2020-07-01 17:43:13.046515+00
-11	18	4	1	2020-07-01 08:01:53.098366+00	2020-07-01 17:44:25.411763+00
 \.
 
 
@@ -306,60 +297,7 @@ COPY public.items (item_id, name, item_type, item_short_desc, item_long_desc, it
 -- Data for Name: pokeboxes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.pokeboxes (pokebox_id, user_id, pokemon_id, name, created_at, updated_at, is_shiny) FROM stdin;
-1	2	1	Bulbasaur	2020-06-24 07:52:33.331801+00	2020-06-24 07:52:33.331801+00	\N
-2	2	4	Charmander	2020-06-24 07:53:09.859013+00	2020-06-24 07:53:09.859013+00	\N
-3	2	7	Squirtle	2020-06-24 07:53:18.274833+00	2020-06-24 07:53:18.274833+00	\N
-4	1	7	Turtle	2020-06-24 20:23:59.20849+00	2020-06-24 20:26:20.314579+00	\N
-5	1	7	Squirtle	2020-06-25 07:54:18.994215+00	2020-06-25 07:54:18.994215+00	\N
-6	1	7	Squirtle	2020-06-25 07:54:21.043486+00	2020-06-25 07:54:21.043486+00	\N
-7	1	7	Squirtle	2020-06-25 07:54:22.060805+00	2020-06-25 07:54:22.060805+00	\N
-10	6	1	Bulbasaur	2020-06-26 00:49:23.739248+00	2020-06-26 17:41:39.413317+00	\N
-9	6	4	Charmander	2020-06-26 00:49:18.082235+00	2020-06-26 17:41:51.82505+00	\N
-8	6	7	Squirtle	2020-06-26 00:49:08.630756+00	2020-06-26 17:41:54.144032+00	\N
-14	18	150	Mewtwo	2020-06-30 04:57:00.859897+00	2020-06-30 04:57:53.003785+00	\N
-13	18	149	Dragonite	2020-06-30 04:56:57.967563+00	2020-06-30 04:58:00.177286+00	\N
-15	18	86	Seel	2020-06-30 04:57:07.912109+00	2020-06-30 04:58:07.738982+00	\N
-12	18	53	Persian	2020-06-30 04:56:54.179918+00	2020-06-30 04:58:16.871816+00	\N
-11	18	7	Squirtle	2020-06-30 04:56:49.830426+00	2020-06-30 05:01:21.835299+00	\N
-16	18	46	paras	2020-06-30 23:22:17.945331+00	2020-06-30 23:22:17.945331+00	\N
-17	18	137	porygon	2020-06-30 23:48:20.528681+00	2020-06-30 23:48:20.528681+00	\N
-18	18	88	grimer	2020-06-30 23:53:22.858368+00	2020-06-30 23:53:22.858368+00	\N
-19	18	51	dugtrio	2020-06-30 23:54:49.67352+00	2020-06-30 23:54:49.67352+00	\N
-20	18	104	cubone	2020-06-30 23:55:19.514605+00	2020-06-30 23:55:19.514605+00	\N
-21	18	71	victreebel	2020-07-01 00:00:11.72177+00	2020-07-01 00:00:11.72177+00	\N
-22	18	28	sandslash	2020-07-01 00:08:20.752496+00	2020-07-01 00:08:20.752496+00	\N
-23	18	51	dugtrio	2020-07-01 00:09:38.313734+00	2020-07-01 00:09:38.313734+00	\N
-24	18	18	pidgeot	2020-07-01 00:16:22.678968+00	2020-07-01 00:16:22.678968+00	\N
-25	18	48	venonat	2020-07-01 00:35:20.562918+00	2020-07-01 00:35:20.562918+00	\N
-26	18	131	lapras	2020-07-01 00:36:20.536552+00	2020-07-01 00:36:20.536552+00	\N
-27	18	63	abra	2020-07-01 00:37:16.262849+00	2020-07-01 00:37:16.262849+00	\N
-28	18	94	gengar	2020-07-01 00:39:12.334818+00	2020-07-01 00:39:12.334818+00	\N
-29	18	85	dodrio	2020-07-01 00:40:44.947442+00	2020-07-01 00:40:44.947442+00	\N
-30	18	120	staryu	2020-07-01 00:50:29.539254+00	2020-07-01 00:50:29.539254+00	\N
-31	18	73	tentacruel	2020-07-01 04:57:24.60873+00	2020-07-01 04:57:24.60873+00	\N
-32	18	111	rhyhorn	2020-07-01 08:13:38.363589+00	2020-07-01 08:13:38.363589+00	\N
-33	18	18	pidgeot	2020-07-01 08:15:16.993265+00	2020-07-01 08:15:16.993265+00	\N
-34	18	136	flareon	2020-07-01 08:24:50.249585+00	2020-07-01 08:24:50.249585+00	\N
-35	18	135	jolteon	2020-07-01 08:26:23.903759+00	2020-07-01 08:26:23.903759+00	\N
-36	18	96	drowzee	2020-07-01 08:29:25.76861+00	2020-07-01 08:29:25.76861+00	\N
-37	18	12	butterfree	2020-07-01 08:30:11.365284+00	2020-07-01 08:30:11.365284+00	\N
-38	18	98	krabby	2020-07-01 08:35:58.50435+00	2020-07-01 08:35:58.50435+00	\N
-39	18	78	rapidash	2020-07-01 08:38:40.600665+00	2020-07-01 08:38:40.600665+00	\N
-40	18	11	metapod	2020-07-01 08:39:42.053438+00	2020-07-01 08:39:42.053438+00	\N
-41	18	101	electrode	2020-07-01 08:41:54.259764+00	2020-07-01 08:41:54.259764+00	\N
-42	18	72	tentacool	2020-07-01 08:43:07.882208+00	2020-07-01 08:43:07.882208+00	\N
-43	18	31	nidoqueen	2020-07-01 09:43:27.487664+00	2020-07-01 09:43:27.487664+00	\N
-44	18	111	rhyhorn	2020-07-01 09:44:01.375338+00	2020-07-01 09:44:01.375338+00	\N
-45	18	23	ekans	2020-07-01 10:00:04.502392+00	2020-07-01 10:00:04.502392+00	\N
-46	18	59	arcanine	2020-07-01 10:07:30.294218+00	2020-07-01 10:07:30.294218+00	\N
-47	18	20	raticate	2020-07-01 10:07:45.131405+00	2020-07-01 10:07:45.131405+00	\N
-48	18	69	bellsprout	2020-07-01 10:23:50.687214+00	2020-07-01 10:23:50.687214+00	\N
-49	18	100	voltorb	2020-07-01 10:40:27.420732+00	2020-07-01 10:40:27.420732+00	\N
-50	18	19	rattata	2020-07-01 10:44:14.070503+00	2020-07-01 10:44:14.070503+00	\N
-51	18	112	rhydon	2020-07-01 10:53:13.073956+00	2020-07-01 10:53:13.073956+00	\N
-52	18	113	chansey	2020-07-01 17:04:06.214681+00	2020-07-01 17:04:06.214681+00	\N
-53	18	145	zapdos	2020-07-01 17:33:49.540839+00	2020-07-01 17:33:49.540839+00	\N
+COPY public.pokeboxes (pokebox_id, user_id, pokemon_id, name, created_at, updated_at, is_shiny, ball_sprite, item_id) FROM stdin;
 \.
 
 
@@ -526,26 +464,7 @@ COPY public.pokemon (pokemon_id, name, type, type_secondary, sprite_front_defaul
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, time_walked) FROM stdin;
-2	0	0	2020-06-24 20:53:49.892899+00	2020-06-27 00:07:32.496148+00	0
-3	0	0	2020-06-25 07:36:12.390305+00	2020-06-27 00:07:32.496148+00	0
-4	0	0	2020-06-25 07:36:14.63789+00	2020-06-27 00:07:32.496148+00	0
-1	3	6	2020-06-24 18:23:31.445757+00	2020-06-27 00:07:32.496148+00	0
-5	3	2	2020-06-25 18:32:21.109893+00	2020-06-27 00:07:32.496148+00	0
-6	0	0	2020-06-26 17:32:45.568468+00	2020-06-27 00:07:32.496148+00	0
-7	0	0	2020-06-26 18:26:57.796025+00	2020-06-27 00:07:32.496148+00	0
-8	0	0	2020-06-26 18:29:54.653006+00	2020-06-27 00:07:32.496148+00	0
-9	0	0	2020-06-26 18:32:35.153231+00	2020-06-27 00:07:32.496148+00	0
-10	0	0	2020-06-26 18:33:01.564755+00	2020-06-27 00:07:32.496148+00	0
-11	0	0	2020-06-26 18:34:16.658712+00	2020-06-27 00:07:32.496148+00	0
-12	0	0	2020-06-26 18:36:44.985178+00	2020-06-27 00:07:32.496148+00	0
-13	0	0	2020-06-26 18:56:58.476857+00	2020-06-27 00:07:32.496148+00	0
-14	0	0	2020-06-26 21:29:25.038443+00	2020-06-27 00:07:32.496148+00	0
-15	0	0	2020-06-27 00:19:52.392332+00	2020-06-27 00:19:52.392332+00	0
-16	0	0	2020-06-27 04:42:00.042219+00	2020-06-27 04:42:00.042219+00	0
-17	0	0	2020-06-27 04:42:54.712485+00	2020-06-27 04:42:54.712485+00	0
-18	0	0	2020-06-30 00:18:07.31492+00	2020-06-30 00:18:07.31492+00	0
-19	0	0	2020-06-30 17:59:53.788886+00	2020-06-30 17:59:53.788886+00	0
+COPY public.users (user_id, miles_walked, encounters, time_walked, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -553,21 +472,21 @@ COPY public.users (user_id, miles_walked, encounters, created_at, updated_at, ti
 -- Name: backpack_items_backpack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.backpack_items_backpack_id_seq', 36, true);
+SELECT pg_catalog.setval('public.backpack_items_backpack_id_seq', 1, false);
 
 
 --
--- Name: pokeboxes_pokeboxId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: pokeboxes_pokebox_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."pokeboxes_pokeboxId_seq"', 53, true);
+SELECT pg_catalog.setval('public.pokeboxes_pokebox_id_seq', 1, false);
 
 
 --
--- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 19, true);
+SELECT pg_catalog.setval('public.users_user_id_seq', 1, false);
 
 
 --

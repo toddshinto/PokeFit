@@ -35,7 +35,7 @@ export default class CaptureFailModal extends React.Component {
         <div className="modal-title" style={{ backgroundColor: 'red' }}>OH NO! THE POKéMON BROKE FREE!</div>
         <div className="modal-body">
           <div className="modal-body-title to-uppercase">{`${this.props.pokemon.name} ${message[this.randomIndex]}`}</div>
-          <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.pokemon.sprite_front_default})` }} />
+          <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.pokemon.spriteFrontDefault})` }} />
           <div className="modal-button-container">
             <div className="answer modal-button">TRY AGAIN</div>
           </div>

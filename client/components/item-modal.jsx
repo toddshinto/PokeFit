@@ -14,7 +14,7 @@ export default class ItemModal extends React.Component {
           className="modal-title to-uppercase"
           style={{ backgroundColor: 'yellow' }}>{`You found ${this.props.item.quantity} ${this.props.item.name}${s}!`}</div>
         <div className="modal-body">
-          <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.item.sprite})` }} />
+          <div className="item-modal-image-container" style={{ backgroundImage: `url(${this.props.item.sprite})` }} />
           <div className="modal-button-container">
             <div onClick={() => {
               this.props.takeItem();

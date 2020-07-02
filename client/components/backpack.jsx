@@ -14,11 +14,9 @@ export default class Backpack extends React.Component {
           item={this.props.itemDetails} />
         <div className="pokedex-screen-container">
           <div className="pokedex-rectangle-screen">
-            <div className="pokedex-headline">
-              BACKPACK
-            </div>
-            <div className="backpack-list to-capitalize">
-              {items.length > 1
+            <div className="pokedex-headline">BACKPACK</div>
+            <div className="backpack-list to-uppercase">
+              {items.length > 0
                 ? items.map(item =>
                   <ListItem
                     number={items.indexOf(item)}
@@ -27,9 +25,8 @@ export default class Backpack extends React.Component {
                     setItemDetails={this.props.setItemDetails}
                   />
                 )
-                : <div>No items Found :(</div>
+                : <div>NO ITEMS FOUND:(</div>
               }
-
             </div>
           </div>
         </div>

@@ -11,7 +11,7 @@ export default class PokemonModal extends React.Component {
         <div className="modal-title" style={{ backgroundColor: 'yellow' }}>A WILD POKEMON APPEARED!</div>
         <div className="modal-body">
           <div className="modal-body-title to-uppercase">{this.props.pokemon.name}</div>
-          <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.pokemon.sprite_front_default})` }}/>
+          <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.pokemon.spriteFrontDefault})` }}/>
           <div className="modal-button-container">
             <div onClick={() => {
               this.props.setView('encounter');

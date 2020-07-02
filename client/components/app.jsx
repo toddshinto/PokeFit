@@ -70,16 +70,15 @@ export default class App extends React.Component {
     this.captureSuccess = this.captureSuccess.bind(this);
     this.takeItem = this.takeItem.bind(this);
     this.toggleEncounterModal = this.toggleEncounterModal.bind(this);
+    this.setCaughtDetails = this.setCaughtDetails.bind(this);
   }
 
   componentDidMount() {
     this.getStats();
-    this.getPokemon();
     this.getBackground();
     const d = new Date();
     const startTime = d.getTime();
     this.setState({ startTime });
-    this.getItems();
     if (!this.state.stats) {
       this.setState({ stats: { milesWalked: 0, encounters: 0, timeWalked: 0 } });
     }
@@ -266,7 +265,7 @@ export default class App extends React.Component {
   attemptCatch(ball) {
     const multiplier = ball.effect;
     const randomRoll = Math.floor(Math.random() * 300) + 1;
-    const captureRate = this.state.wildPokemon.capture_rate;
+    const captureRate = this.state.wildPokemon.captureRate;
     const berry = this.state.berries;
     fetch('/api/backpack-items/use', {
       method: 'PUT',
@@ -278,10 +277,12 @@ export default class App extends React.Component {
       .then(this.getItems())
       .catch(err => console.error(err));
     if (ball.item_id === 1) {
-      this.captureSuccess();
+      const caughtPokemon = { ...this.state.wildPokemon, ballSprite: ball.sprite, itemId: ball.item_id };
+      this.captureSuccess(caughtPokemon);
     } else {
       if (randomRoll - berry <= (captureRate * multiplier)) {
-        this.captureSuccess();
+        const caughtPokemon = { ...this.state.wildPokemon, ballSprite: ball.sprite, itemId: ball.item_id };
+        this.captureSuccess(caughtPokemon);
       } else {
         this.setState({ encounterType: 'capture-fail' });
         this.toggleEncounterModal();
@@ -289,14 +290,13 @@ export default class App extends React.Component {
     }
   }
 
-  captureSuccess() {
-    const pokemon = this.state.wildPokemon;
+  captureSuccess(caughtPokemon) {
     fetch('/api/pokeboxes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(pokemon)
+      body: JSON.stringify(caughtPokemon)
     })
       .then(res => res.json())
       .then(data => {
@@ -344,6 +344,11 @@ export default class App extends React.Component {
     if (pokemons) {
       this.setState({ pokemonDetails: pokemons[index] });
     }
+  }
+
+  setCaughtDetails(pokemon) {
+    this.setState({ pokemonDetails: pokemon });
+    this.resetState();
   }
 
   setItemDetails(index) {
@@ -444,6 +449,8 @@ export default class App extends React.Component {
           timeOfDay={this.state.timeOfDay}
           backgroundImage={this.state.backgroundImage}
           setView={this.setView}
+          getItems={this.getItems}
+          getPokemon={this.getPokemon}
           getStartPosition={this.getStartPosition}
           getCurrentPosition={this.getCurrentPosition}
         />;
@@ -521,6 +528,7 @@ export default class App extends React.Component {
           modal = <TookItemModal
             item={this.state.foundItem}
             resetState={this.resetState}
+            getItems={this.getItems}
             toggleEncounterModal={this.toggleEncounterModal}
             setView={this.setView}
           />;
@@ -548,7 +556,9 @@ export default class App extends React.Component {
       case 'capture-success' :
         if (this.state.encounterModal) {
           modal = <CaptureSuccessModal
+            setCaughtDetails={this.setCaughtDetails}
             getPokemon={this.getPokemon}
+            pokemons={this.state.pokemons}
             pokemon={this.state.wildPokemon}
             resetState={this.resetState}
             toggleEncounterModal={this.toggleEncounterModal}

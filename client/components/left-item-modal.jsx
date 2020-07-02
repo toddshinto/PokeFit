@@ -44,7 +44,7 @@ export default class LeftItemModal extends React.Component {
         <div className="modal-title to-uppercase" style={{ backgroundColor: 'red' }}>{`YOU LEFT ${this.props.item.quantity} ${this.props.item.name}${s}`}</div>
         <div className="modal-body">
           <div className="modal-body-title to-uppercase">{this.props.item.name}</div>
-          <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.item.sprite})` }} />
+          <div className="item-modal-image-container" style={{ backgroundImage: `url(${this.props.item.sprite})` }} />
           <div className="modal-button-container">
             <div className="answer modal-button">CONTINUE</div>
 >>>>>>> 3928358af7b6512002e450df68e012da2fd73e94

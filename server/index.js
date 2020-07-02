@@ -16,7 +16,7 @@ app.use(express.json());
 app.get('/api/users', (req, res, next) => {
   const userId = req.session.userId;
   const newUser = `
-             insert into  "users" ("miles_walked", "encounters", "time_walked")
+            insert into  "users" ("miles_walked", "encounters", "time_walked")
                  values   (0, 0, 0)
                returning  "user_id" as "userId",
                           "miles_walked" as "milesWalked",
@@ -24,6 +24,10 @@ app.get('/api/users', (req, res, next) => {
                           "time_walked" as "timeWalked",
                           "created_at" as "createdAt"
             `;
+  const givePokeballs = `
+    insert into backpack_items (user_id, item_id, quantity)
+    values ($1, $2, $3)
+  `;
   if (userId) {
     const sql = `
       select  "user_id" as "userId",
@@ -42,20 +46,35 @@ app.get('/api/users', (req, res, next) => {
             .then(result => {
               if (result.rows.length > 0) {
                 req.session.userId = result.rows[0].userId;
-                return res.status(201).json(result.rows[0]);
+                const itemParams = [result.rows[0].userId, 4, 15];
+                process.stdout.write('hello 51');
+                db.query(givePokeballs, itemParams)
+                  .then(result => {
+                    if (result.length < 1) {
+                      throw new ClientError('cannot insert free pokeballs', 404);
+                    }
+                  });
+                return res.status(200).result.rows[0];
               }
             })
             .catch(err => next(err));
-
+        } else {
+          return res.status(202).json(result.rows[0]);
         }
-        return res.status(200).json(result.rows[0]);
       })
       .catch(err => next(err));
   } else {
     db.query(newUser)
       .then(result => {
         req.session.userId = result.rows[0].userId;
-        return res.status(201).json(result.rows[0]);
+        const itemParams = [result.rows[0].userId, 4, 15];
+        db.query(givePokeballs, itemParams)
+          .then(result => {
+            if (result.length < 1) {
+              throw new ClientError('cannot insert free pokeballs', 404);
+            }
+          });
+        return res.status(200).json(result.rows[0]);
       })
       .catch(err => next(err));
   }
@@ -105,12 +124,11 @@ app.put('/api/users', (req, res, next) => {
 
 app.get('/api/pokeboxes', (req, res, next) => {
   const userId = req.session.userId;
-  if (!userId) {
-    return res.status(400).json({ error: 'userId required' });
-  }
   const sql = `
     select  "pb"."pokebox_id" as "pokeboxId",
             "pb"."name",
+            "pb"."ball_sprite" as "ballSprite",
+            "pb"."item_id" as "itemId",
             "p"."type",
             "p"."type_secondary" as "typeSecondary",
             "p"."height",
@@ -148,9 +166,24 @@ app.get('/api/pokemon/:pokemonId', (req, res, next) => {
     return res.status(400).json({ error: 'invalid pokemonId' });
   }
   const sql = `
-     select  *
-       from  "pokemon"
-      where  "pokemon_id" = $1
+       select "name",
+              "type",
+              "type_secondary" as "typeSecondary",
+              "height",
+              "habitat",
+              "weight",
+              "capture_rate" as "captureRate",
+              "sprite_front_default" as "spriteFrontDefault",
+              "sprite_back_default" as "spriteBackDefault",
+              "sprite_front_shiny" as "spriteFrontShiny",
+              "sprite_back_shiny" as "spriteBackShiny",
+              "flavor_text" as "flavorText",
+              "flavor_text_new" as "flavorTextNew",
+              "growth_rate" as "growthRate",
+              "species",
+              "pokemon_id" as "pokemonId"
+        from  "pokemon"
+       where  "pokemon_id" = $1
   `;
   const params = [pokemonId];
   db.query(sql, params)
@@ -282,9 +315,6 @@ app.put('/api/backpack-items/use', (req, res, next) => {
 
 app.get('/api/backpack-items', (req, res, next) => {
   const userId = req.session.userId;
-  if (!userId) {
-    return res.status(400).json({ error: 'userId required' });
-  }
   const sql = `
     select  "i"."item_short_desc" as "shortDesc",
             "i"."item_long_desc" as "longDesc",
@@ -314,14 +344,16 @@ app.post('/api/pokeboxes', (req, res, next) => {
   if (!userId) {
     return res.status(400).json({ error: 'userId required ' });
   }
-  const pokemonId = req.body.pokemon_id;
+  const pokemonId = req.body.pokemonId;
   const name = req.body.name;
+  const itemId = req.body.itemId;
+  const ballSprite = req.body.ballSprite;
   const sql = `
-  insert into pokeboxes (pokemon_id, user_id, name)
-  values ($1, $2, $3)
+  insert into pokeboxes (pokemon_id, user_id, name, item_id, ball_sprite)
+  values ($1, $2, $3, $4, $5)
   returning *
   `;
-  const params = [pokemonId, userId, name];
+  const params = [pokemonId, userId, name, itemId, ballSprite];
   db.query(sql, params)
     .then(result => res.status(200).json(result.rows[0]))
     .catch(err => next(err));
