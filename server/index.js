@@ -109,7 +109,7 @@ app.put('/api/users', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       if (!req.session.pokefitUserId) {
-        req.sessionpokefitUserId = result.rows[0].userId;
+        req.session.pokefitUserId = result.rows[0].userId;
       }
       req.session.cookie.expires = new Date(Date.now() + 315360000000);
       req.session.cookie.maxAge = 315360000000;

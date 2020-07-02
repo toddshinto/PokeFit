@@ -1017,6 +1017,7 @@ background-image: url('assets/images/ash-walk.gif');
   height: 100%;
   margin-top: 10px;
   background-position: center;
+  background-repeat: no-repeat;
   background-size: contain;
   width: 2em;
 }
