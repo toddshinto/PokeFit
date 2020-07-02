@@ -18,13 +18,13 @@ export default class PokemonDetails extends React.Component {
 
   render() {
     const pokemon = this.props.pokemon;
-    const viewDetails = this.state.viewDetails;
-    const height = (this.props.pokemon.height / 3.048);
-    const feet = Math.floor(height);
-    const inches = Math.round((height - feet) * 12);
-    const weight = Math.round((this.props.pokemon.weight / 4.536));
     let details;
     if (pokemon) {
+      const viewDetails = this.state.viewDetails;
+      const height = (this.props.pokemon.height / 3.048);
+      const feet = Math.floor(height);
+      const inches = Math.round((height - feet) * 12);
+      const weight = Math.round((this.props.pokemon.weight / 4.536));
       switch (viewDetails) {
         case 'stats':
           details = (

@@ -19,7 +19,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'start',
+      view: 'walk',
       stats: null,
       pokemons: [],
       items: [],
@@ -279,11 +279,11 @@ export default class App extends React.Component {
       .then(this.getItems())
       .catch(err => console.error(err));
     if (ball.item_id === 1) {
-      // this.setState({ wildPokemon: { ...this.state.wildPokemon, ballSprite: ball.sprite } });
+      this.setState({ wildPokemon: { ...this.state.wildPokemon, ballSprite: ball.sprite, ballId: ball.item_id } });
       this.captureSuccess();
     } else {
       if (randomRoll - berry <= (captureRate * multiplier)) {
-        // this.setState({ wildPokemon: { ...this.state.wildPokemon, ballSprite: ball.sprite } });
+        this.setState({ wildPokemon: { ...this.state.wildPokemon, ballSprite: ball.sprite, ballId: ball.item_id } });
         this.captureSuccess();
       } else {
         this.setState({ encounterType: 'capture-fail' });

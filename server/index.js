@@ -42,20 +42,19 @@ app.get('/api/users', (req, res, next) => {
             .then(result => {
               if (result.rows.length > 0) {
                 req.session.userId = result.rows[0].userId;
-                return res.status(201).json(result.rows[0]);
+                return result;
               }
             })
             .catch(err => next(err));
-
         }
-        return res.status(200).json(result.rows[0]);
+        return res.status(202).json(result.rows[0]);
       })
       .catch(err => next(err));
   } else {
     db.query(newUser)
       .then(result => {
         req.session.userId = result.rows[0].userId;
-        return res.status(201).json(result.rows[0]);
+        return res.status(200).json(result.rows[0]);
       })
       .catch(err => next(err));
   }
@@ -105,9 +104,9 @@ app.put('/api/users', (req, res, next) => {
 
 app.get('/api/pokeboxes', (req, res, next) => {
   const userId = req.session.userId;
-  if (!userId) {
-    return res.status(400).json({ error: 'userId required' });
-  }
+  // if (!userId) {
+  //   return res.status(400).json({ error: 'userId required' });
+  // }
   const sql = `
     select  "pb"."pokebox_id" as "pokeboxId",
             "pb"."name",
@@ -297,9 +296,9 @@ app.put('/api/backpack-items/use', (req, res, next) => {
 
 app.get('/api/backpack-items', (req, res, next) => {
   const userId = req.session.userId;
-  if (!userId) {
-    return res.status(400).json({ error: 'userId required' });
-  }
+  // if (!userId) {
+  //   return res.status(400).json({ error: 'userId required' });
+  // }
   const sql = `
     select  "i"."item_short_desc" as "shortDesc",
             "i"."item_long_desc" as "longDesc",
