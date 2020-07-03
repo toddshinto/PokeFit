@@ -28,7 +28,7 @@ export default class CaptureFailModal extends React.Component {
       'no really throw it',
       'you are adopted your parents dont love you',
       'you cant be serious',
-      'go on ill wait'
+      'go on ill wait',
       'says too bad you don\'t have a master ball',
       'rolls eyes'
     ];
