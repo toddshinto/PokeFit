@@ -3,7 +3,7 @@ import React from 'react';
 export default class CaptureFailModal extends React.Component {
   constructor(props) {
     super(props);
-    this.randomIndex = Math.floor(Math.random() * 17);
+    this.randomIndex = Math.floor(Math.random() * 19);
   }
 
   render() {
@@ -23,6 +23,12 @@ export default class CaptureFailModal extends React.Component {
       'was the one that got away',
       'says my grandma throws better than you',
       'cackles maniacally',
+      'says too bad you don\t have a master ball',
+      'rolls eyes',
+      'no really throw it',
+      'you are adopted your parents dont love you',
+      'you cant be serious',
+      'go on ill wait'
       'says too bad you don\'t have a master ball',
       'rolls eyes'
     ];
