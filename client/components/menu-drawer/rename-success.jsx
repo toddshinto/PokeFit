@@ -14,7 +14,7 @@ export default class RenameSuccess extends React.Component {
           <div className="pokeball-icon-small bottom-right-small" />
           <div className="action-header green-bg">SUCCESS!</div>
           <div className="action-body action-body-message" style={{ textAlign: 'center' }}>{'YOUR POKéMON IS NOW NAMED'}</div>
-          <div className="action-body action-body-message" style={{ textAlign: 'center', marginTop: '-10px' }}>{this.props.pokemonNew}</div>
+          <div className="action-body action-body-message to-uppercase" style={{ textAlign: 'center', marginTop: '-10px' }}>{this.props.pokemonNew}</div>
         </div>
       </div>
     );

@@ -27,7 +27,7 @@ export default class Rename extends React.Component {
               className="pokemon-rename to-uppercase"
               maxLength="12"
             />
-            <button className='modal-button answer green-bg' type='submit'>ENTER</button>
+            <button className='modal-button answer green-bg' type='submit' style={{ padding: '2px 2px 2px 5px' }}>ENTER</button>
           </form>
         </div>
       </div>

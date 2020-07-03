@@ -260,7 +260,7 @@ position: relative;
   position: absolute;
   top: 50%;
   margin: 0 auto;
-  z-index: 700;
+  z-index: 1100;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -366,6 +366,8 @@ position: relative;
 .answer, .black-answer {
   cursor: pointer;
   padding: 4px;
+  letter-spacing: .2em;
+  font-family: pokemon;
 }
 
 .answer:hover {

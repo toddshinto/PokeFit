@@ -38,12 +38,12 @@ export default class CaptureFailModal extends React.Component {
         <div className="pokeball-icon top-left"></div>
         <div className="pokeball-icon bottom-right"></div>
         <div className="pokeball-icon bottom-left"></div>
-        <div className="modal-title" style={{ backgroundColor: 'red', color: 'white' }}>OH NO! THE POKéMON BROKE FREE!</div>
+        <div className="modal-title red-bg">OH NO! THE POKéMON BROKE FREE!</div>
         <div className="modal-body">
           <div className="modal-body-title to-uppercase">{`${this.props.pokemon.name} ${message[this.randomIndex]}`}</div>
           <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.pokemon.spriteFrontDefault})` }} />
           <div className="modal-button-container">
-            <div className="answer modal-button" style={{ backgroundColor: 'red', color: 'white' }}>TRY AGAIN</div>
+            <div className="answer modal-button green-bg">TRY AGAIN</div>
           </div>
         </div>
       </div>

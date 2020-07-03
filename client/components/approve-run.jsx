@@ -9,7 +9,7 @@ export default class ApproveRun extends React.Component {
 
   handleYes(e) {
     e.stopPropagation();
-    this.props.setView('walk');
+    if (this.props.view === 'encounter') { this.props.setView('walk'); }
     this.props.toggleEncounterModal();
     this.props.resetState();
   }

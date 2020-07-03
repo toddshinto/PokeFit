@@ -22,12 +22,12 @@ export default class BerryUsedModal extends React.Component {
         <div className="pokeball-icon top-left"></div>
         <div className="pokeball-icon bottom-right"></div>
         <div className="pokeball-icon bottom-left"></div>
-        <div className="modal-title" style={{ backgroundColor: '#33ACFB', color: 'white' }}>BERRY GIVEN TO POKéMON!</div>
+        <div className="modal-title blue-bg">BERRY GIVEN TO POKéMON!</div>
         <div className="modal-body">
           <div className="modal-body-title to-uppercase">{`${this.props.pokemon.name} ${message[this.randomIndex]}`}</div>
           <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.pokemon.spriteFrontDefault})` }} />
           <div className="modal-button-container">
-            <div className="answer modal-button" style={{ backgroundColor: '#4BB543', color: 'white' }}>CONTINUE</div>
+            <div className="answer modal-button green-bg">CONTINUE</div>
           </div>
         </div>
       </div>
