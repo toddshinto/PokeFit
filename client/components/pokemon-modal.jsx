@@ -16,10 +16,10 @@ export default class PokemonModal extends React.Component {
             <div onClick={() => {
               this.props.setView('encounter');
               this.props.toggleEncounterModal();
-            }} className="answer modal-button">FIGHT</div>
+            }} className="answer answer-true modal-button" style={{ backgroundColor: '#4BB543', color: 'white' }}>FIGHT</div>
             <div onClick={() => {
-              this.props.setEncounterType('approve-run');
-            }} className="answer modal-button">RUN</div>
+              this.props.resetState();
+            }} className="answer answer-false modal-button" style={{ backgroundColor: 'red', color: 'white' }}>RUN</div>\
           </div>
         </div>
       </div>

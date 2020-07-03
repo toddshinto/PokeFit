@@ -25,6 +25,7 @@ export default class PokemonDetails extends React.Component {
       const feet = Math.floor(height);
       const inches = Math.round((height - feet) * 12);
       const weight = Math.round((this.props.pokemon.weight / 4.536));
+      let next;
       switch (viewDetails) {
         case 'stats':
           details = (
@@ -35,6 +36,7 @@ export default class PokemonDetails extends React.Component {
               <div >{'Weight: '}<span className='weight'>{weight} lbs.</span></div>
             </div>
           );
+          next = 'description-cont';
           break;
         case 'description':
           details = (
@@ -43,6 +45,7 @@ export default class PokemonDetails extends React.Component {
               <div>{pokemon.flavorText}</div>
             </div>
           );
+          next = 'stats';
           break;
         case 'description-cont':
           details = (
@@ -50,6 +53,7 @@ export default class PokemonDetails extends React.Component {
               <div>{pokemon.flavorTextNew}</div>
             </div>
           );
+          next = 'description';
           break;
       }
       return (
@@ -76,6 +80,7 @@ export default class PokemonDetails extends React.Component {
             }}>
               <div className="top-screen-picture" style={{ backgroundImage: `url(${pokemon.spriteFrontDefault})` }} />
               {details}
+              <div className="see-more" onClick={() => this.changeView(next)}></div>
             </div>
           </div>
         </div>

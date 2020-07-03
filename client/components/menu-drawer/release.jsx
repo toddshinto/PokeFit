@@ -18,8 +18,8 @@ export default class Release extends React.Component {
           <div className='action-body action-body-message'>
             {'Your POKéMON will be released...'}
             <div className='action-yes-no'>
-              <div className='answer' onClick={this.props.releasePokemon}>YES</div>
-              <div className='answer' onClick={() => {
+              <div className='answer modal-button' style={{ backgroundColor: '#4BB543', color: 'white' }} onClick={this.props.releasePokemon}>YES</div>
+              <div className='answer modal-button' style={{ backgroundColor: 'red', color: 'white' }} onClick={() => {
                 this.props.setAction(null);
                 this.props.closeDrawer();
               }}>NO</div>
