@@ -44,7 +44,6 @@ export default class App extends React.Component {
       totalEncounters: 0,
       berries: 0,
       startTime: {},
-      timeSinceLastEncounter: 0,
       captureSucces: false
     };
     this.setView = this.setView.bind(this);
@@ -89,16 +88,12 @@ export default class App extends React.Component {
       wildPokemon: null,
       berries: 0,
       foundItem: null,
-      timeSinceLastEncounter: 0,
       encounterType: null
     });
   }
 
   getStartTime() {
     const startTime = new Date().getTime();
-    // const startMin = startTime.getMinutes();
-    // const startHour = startTime.getHours();
-    // this.setState({ startTime: { startHour: startHour, startMin: startMin } });
     this.setState({ startTime });
   }
 
@@ -106,15 +101,6 @@ export default class App extends React.Component {
     const startTime = this.state.startTime;
     setInterval(() => {
       const currentTime = new Date().getTime();
-      // const currentHour = currentTime.getHours();
-      // const currentMinute = currentTime.getMinutes();
-      // if (currentHour === startTime.startHour) {
-      //   sessionTimeWalked = currentMinute - startTime.startMin;
-      // } else if (currentHour > startTime.startHour && currentMinute < startTime.startMin) {
-      //   sessionTimeWalked = (currentMinute + 60 * (currentHour - startTime.startHour) - startTime.startMin);
-      // } else {
-      //   sessionTimeWalked = (currentMinute - startTime.startMin) + ((currentHour - startTime.startHour) * 60);
-      // }
       const sessionTimeWalked = Math.round((currentTime - startTime) / 60000);
       this.setState({ sessionTimeWalked });
       if (!this.state.encounterType) {
@@ -379,7 +365,6 @@ export default class App extends React.Component {
 
   setView(view) {
     this.setState({ view });
-    this.getTimeWalked();
   }
 
   openDrawer() {
@@ -454,6 +439,7 @@ export default class App extends React.Component {
       case 'start':
         display = <Start
           timeOfDay={this.state.timeOfDay}
+          getTimeWalked={this.getTimeWalked}
           backgroundImage={this.state.backgroundImage}
           setView={this.setView}
           getItems={this.getItems}
@@ -467,6 +453,7 @@ export default class App extends React.Component {
           timeOfDay={this.state.timeOfDay}
           stats={this.state.stats}
           setView={this.setView}
+          getTimeWalked={this.getTimeWalked}
           backgroundImage={this.state.backgroundImage}
           timeWalked={this.state.sessionTimeWalked}
           pokemons={this.state.pokemons} />;
@@ -619,7 +606,8 @@ export default class App extends React.Component {
             {display}
             <Footer
               view={this.state.view}
-              setView={this.setView} />
+              setView={this.setView}
+              resetState={this.resetState} />
           </div>
         </div>
     );

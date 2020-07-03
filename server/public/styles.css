@@ -959,6 +959,7 @@ font-size: 14px;
   border: 2px solid black;
   background-size: contain;
   height: 35px;
+  cursor: pointer;
   background-position: center;
   background-repeat: no-repeat;
   background-origin: content-box;
