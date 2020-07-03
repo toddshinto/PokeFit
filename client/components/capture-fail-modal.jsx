@@ -23,7 +23,7 @@ export default class CaptureFailModal extends React.Component {
       'was the one that got away',
       'says my grandma throws better than you',
       'cackles maniacally',
-      'says too bad you don\t have a master ball',
+      'says too bad you don\'t have a master ball',
       'rolls eyes'
     ];
     return (
