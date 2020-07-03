@@ -104,7 +104,7 @@ export default class App extends React.Component {
       const sessionTimeWalked = Math.round((currentTime - startTime) / 60000);
       this.setState({ sessionTimeWalked });
       if (!this.state.encounterType) {
-        if (this.state.sessionTimeWalked % 1 === 0) {
+        if (this.state.sessionTimeWalked % 3 === 0) {
           this.getEncounter();
         }
       }
