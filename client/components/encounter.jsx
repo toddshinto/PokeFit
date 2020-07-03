@@ -105,9 +105,9 @@ export default class Encounter extends React.Component {
                 </div>
                 <div
                   className="encounter-button"
-                  onClick={ () => {
-                    this.props.setView('walk');
-                    this.props.resetState();
+                  onClick={() => {
+                    this.props.toggleEncounterModal();
+                    this.props.setEncounterType('approve-run');
                   }}>
                 RUN
                 </div>

@@ -14,6 +14,7 @@ import CaptureFailModal from './capture-fail-modal';
 import BerryUsedModal from './berry-used-modal';
 import TookItemModal from './took-item-modal';
 import LeftItemModal from './left-item-modal';
+import ApproveRun from './approve-run';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -213,7 +214,10 @@ export default class App extends React.Component {
   getCurrentPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
-        position => this.setState({ currLat: position.coords.latitude, currLon: position.coords.longitude })
+        position => {
+          this.setState({ currLat: position.coords.latitude, currLon: position.coords.longitude });
+          this.calculateDistance();
+        }
         , error => {
           switch (error.code) {
             case (0):
@@ -512,9 +516,22 @@ export default class App extends React.Component {
           setView={this.setView}
           resetState={this.resetState}
           getItems={this.getItems}
+          setEncounterType={this.setEncounterType}
+          toggleEncounterModal={this.toggleEncounterModal}
         />;
     }
     switch (this.state.encounterType) {
+      case 'approve-run':
+        if (this.state.encounterModal) {
+          modal = <ApproveRun
+            pokemon = { this.state.wildPokemon }
+            toggleEncounterModal = { this.toggleEncounterModal }
+            setEncounterType = { this.setEncounterType }
+            setView={this.setView}
+            resetState={this.resetState}
+          />;
+        }
+        break;
       case 'item':
         if (this.state.encounterModal) {
           modal = <ItemModal
@@ -552,6 +569,7 @@ export default class App extends React.Component {
             setView={this.setView}
             pokemon={this.state.wildPokemon}
             resetState={this.resetState}
+            setEncounterType={this.setEncounterType}
             toggleEncounterModal={this.toggleEncounterModal}
           />;
         }
