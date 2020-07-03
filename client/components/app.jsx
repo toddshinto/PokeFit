@@ -19,7 +19,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'pokebox',
+      view: 'start',
       stats: null,
       pokemons: [],
       items: [],
