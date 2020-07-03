@@ -95,29 +95,30 @@ export default class App extends React.Component {
   }
 
   getStartTime() {
-    const startTime = new Date();
-    const startMin = startTime.getMinutes();
-    const startHour = startTime.getHours();
-    this.setState({ startTime: { startHour: startHour, startMin: startMin } });
+    const startTime = new Date().getTime();
+    // const startMin = startTime.getMinutes();
+    // const startHour = startTime.getHours();
+    // this.setState({ startTime: { startHour: startHour, startMin: startMin } });
+    this.setState({ startTime });
   }
 
   getTimeWalked() {
     const startTime = this.state.startTime;
-    let sessionTimeWalked = 0;
     setInterval(() => {
-      const currentTime = new Date();
-      const currentHour = currentTime.getHours();
-      const currentMinute = currentTime.getMinutes();
-      if (currentHour === startTime.startHour) {
-        sessionTimeWalked = currentMinute - startTime.startMin;
-      } else if (currentHour > startTime.startHour && currentMinute < startTime.startMin) {
-        sessionTimeWalked = (currentMinute + 60 * (currentHour - startTime.startHour) - startTime.startMin);
-      } else {
-        sessionTimeWalked = (currentMinute - startTime.startMin) + ((currentHour - startTime.startHour) * 60);
-      }
+      const currentTime = new Date().getTime();
+      // const currentHour = currentTime.getHours();
+      // const currentMinute = currentTime.getMinutes();
+      // if (currentHour === startTime.startHour) {
+      //   sessionTimeWalked = currentMinute - startTime.startMin;
+      // } else if (currentHour > startTime.startHour && currentMinute < startTime.startMin) {
+      //   sessionTimeWalked = (currentMinute + 60 * (currentHour - startTime.startHour) - startTime.startMin);
+      // } else {
+      //   sessionTimeWalked = (currentMinute - startTime.startMin) + ((currentHour - startTime.startHour) * 60);
+      // }
+      const sessionTimeWalked = Math.round((currentTime - startTime) / 60000);
       this.setState({ sessionTimeWalked });
       if (!this.state.encounterType) {
-        if (this.state.sessionTimeWalked % 3 === 0) {
+        if (this.state.sessionTimeWalked % 1 === 0) {
           this.getEncounter();
         }
       }
@@ -379,7 +380,6 @@ export default class App extends React.Component {
   setView(view) {
     this.setState({ view });
     this.getTimeWalked();
-    this.getPokemon();
   }
 
   openDrawer() {
@@ -528,6 +528,7 @@ export default class App extends React.Component {
             toggleEncounterModal = { this.toggleEncounterModal }
             setEncounterType = { this.setEncounterType }
             setView={this.setView}
+            view={this.state.view}
             resetState={this.resetState}
           />;
         }
@@ -581,6 +582,7 @@ export default class App extends React.Component {
             getPokemon={this.getPokemon}
             pokemons={this.state.pokemons}
             pokemon={this.state.wildPokemon}
+            setEncounterType={this.setEncounterType}
             resetState={this.resetState}
             toggleEncounterModal={this.toggleEncounterModal}
             setView={this.setView}

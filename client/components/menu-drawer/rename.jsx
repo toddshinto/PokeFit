@@ -9,7 +9,7 @@ export default class Rename extends React.Component {
           <div className="pokeball-icon-small top-right-small" />
           <div className="pokeball-icon-small bottom-left-small" />
           <div className="pokeball-icon-small bottom-right-small" />
-          <div className="action-header" style={{ backgroundColor: 'rgb(51, 172, 251)', color: 'white' }}>Name your Pokémon:</div>
+          <div className="action-header green-bg">Name your Pokémon:</div>
           <div className="exit-sm"
             onClick={() => {
               this.props.setAction(null);
@@ -27,7 +27,7 @@ export default class Rename extends React.Component {
               className="pokemon-rename to-uppercase"
               maxLength="12"
             />
-            <button className='rename-enter' type='submit'>ENTER</button>
+            <button className='modal-button answer green-bg' type='submit'>ENTER</button>
           </form>
         </div>
       </div>

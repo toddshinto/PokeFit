@@ -1048,7 +1048,7 @@ background-image: url('assets/images/ash-walk.gif');
   color: #4BB543;
 }
 
-.use-catch:hover {
+.use-catch, .green-bg {
   color: white;
   background-color: #4BB543
 }
@@ -1057,7 +1057,7 @@ background-image: url('assets/images/ash-walk.gif');
   color: #33ACFB;
 }
 
-.use-item:hover {
+.use-item, .blue-bg {
   color: white;
   background-color: #33ACFB;
 }
@@ -1066,7 +1066,7 @@ background-image: url('assets/images/ash-walk.gif');
   color: red;
 }
 
-.use-run:hover {
+.use-run, .red-bg {
   color: white;
   background-color: red;
 }
