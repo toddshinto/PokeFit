@@ -19,7 +19,7 @@ export default class PokemonModal extends React.Component {
             }} className="answer answer-true modal-button" style={{ backgroundColor: '#4BB543', color: 'white' }}>FIGHT</div>
             <div onClick={() => {
               this.props.resetState();
-            }} className="answer answer-false modal-button" style={{ backgroundColor: 'red', color: 'white' }}>RUN</div>\
+            }} className="answer answer-false modal-button" style={{ backgroundColor: 'red', color: 'white' }}>RUN</div>
           </div>
         </div>
       </div>
