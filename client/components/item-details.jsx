@@ -29,7 +29,7 @@ export default class itemDetails extends React.Component {
         <div className="pokedex-screen-container">
           <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }} >
             <div className="top-screen-first-row">
-              <div className="top-screen-title to-capitalize">{item.name}</div>
+              <div className="top-screen-title to-uppercase">{item.name}</div>
             </div>
             <div className="top-screen-second-row">
               <div className="top-screen-picture">
