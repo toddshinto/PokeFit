@@ -87,7 +87,7 @@ export default class Encounter extends React.Component {
             <div className="pokedex-rectangle-screen" id="rectangle-screen">
               <div className="encounter-actions">
                 <div
-                  className="encounter-button"
+                  className="encounter-button use-catch"
                   onClick={() => {
                     this.toggleMenu();
                     this.props.getItems();
@@ -96,7 +96,7 @@ export default class Encounter extends React.Component {
                 </div>
                 {pokeballList}
                 <div
-                  className="encounter-button"
+                  className="encounter-button use-item"
                   onClick={() => {
                     this.toggleItemMenu();
                     this.props.getItems();
@@ -104,7 +104,7 @@ export default class Encounter extends React.Component {
                 ITEMS
                 </div>
                 <div
-                  className="encounter-button"
+                  className="encounter-button use-run"
                   onClick={() => {
                     this.props.toggleEncounterModal();
                     this.props.setEncounterType('approve-run');

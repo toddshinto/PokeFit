@@ -1044,6 +1044,32 @@ background-image: url('assets/images/ash-walk.gif');
   box-shadow: inset 0 0 3px grey
 }
 
+.use-catch{
+  color: #4BB543;
+}
+
+.use-catch:hover {
+  color: white;
+  background-color: #4BB543
+}
+
+.use-item {
+  color: #33ACFB;
+}
+
+.use-item:hover {
+  color: white;
+  background-color: #33ACFB;
+}
+
+.use-run {
+  color: red;
+}
+
+.use-run:hover {
+  color: white;
+  background-color: red;
+}
 @media (max-width: 600px) {
   .stats-label, .button-text, .modal-title, .modal-button, .backpack-item-name-flex,
   .modal-body-title, .list-item, .pokemon-desc, .backpack-item-entry, .backpack-item-name,
