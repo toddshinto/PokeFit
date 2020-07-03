@@ -19,10 +19,10 @@ export default class ItemModal extends React.Component {
             <div onClick={() => {
               this.props.takeItem();
               this.props.setEncounterType('took-item');
-            }} className="answer modal-button">TAKE</div>
+            }} className="answer modal-button" style={{ backgroundColor: '#4BB543', color: 'white' }}>TAKE</div>
             <div onClick={() => {
               this.props.setEncounterType('left-item');
-            }} className="answer modal-button">LEAVE</div>
+            }} className="answer modal-button" style={{ backgroundColor: 'red', color: 'white' }}>LEAVE</div>
           </div>
         </div>
       </div>

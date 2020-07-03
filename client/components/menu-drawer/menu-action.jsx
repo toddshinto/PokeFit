@@ -17,11 +17,12 @@ export default class MenuAction extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ pokemon: this.props.pokemon });
+    this.setState({ pokemon: this.props.pokemon, rename: this.props.pokemon.name });
   }
 
   handleNameChange(event) {
-    this.setState({ rename: event.target.value });
+    const value = event.target.value.replace(/[^A-z0-9]/ig, '');
+    this.setState({ rename: value });
   }
 
   handleSubmit() {
@@ -68,6 +69,7 @@ export default class MenuAction extends React.Component {
           handleNameChange={this.handleNameChange}
           closeDrawer={this.props.closeDrawer}
           setAction={this.props.setAction}
+          rename={this.state.rename}
           pokemonName={this.props.pokemon.name} />;
         break;
       case 'release':

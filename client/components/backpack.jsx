@@ -24,7 +24,7 @@ export default class Backpack extends React.Component {
                     setItemDetails={this.props.setItemDetails}
                   />
                 )
-                : <div>NO ITEMS FOUND:(</div>
+                : <div style={{ marginTop: '10px' }}>NO ITEMS FOUND:(</div>
               }
             </div>
           </div>

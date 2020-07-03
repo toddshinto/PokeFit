@@ -22,9 +22,10 @@ export default class Rename extends React.Component {
             onSubmit={this.props.handleSubmit}>
             <input
               type="text"
-              defaultValue={this.props.pokemonName}
               onChange={this.props.handleNameChange}
+              value={this.props.rename}
               className="pokemon-rename to-uppercase"
+              maxLength="12"
             />
             <button className='rename-enter' type='submit'>ENTER</button>
           </form>

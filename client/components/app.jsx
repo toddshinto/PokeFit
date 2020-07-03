@@ -19,7 +19,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'start',
+      view: 'pokebox',
       stats: null,
       pokemons: [],
       items: [],
@@ -39,7 +39,7 @@ export default class App extends React.Component {
       encounterType: null,
       wildPokemon: null,
       foundItem: null,
-      encounterModal: false,
+      encounterModal: true,
       totalEncounters: 0,
       berries: 0,
       startTime: {},
