@@ -29,7 +29,7 @@ export default class PokemonDetails extends React.Component {
       switch (viewDetails) {
         case 'stats':
           details = (
-            <div className="pokemon-desc" onClick={() => this.changeView('description')}>
+            <div className="pokemon-desc" style={{ marginTop: '45px' }}onClick={() => this.changeView('description')}>
               <div>{pokemon.species}</div>
               <div className='to-capitalize'>Type: {pokemon.type}</div>
               <div>{`Height: ${feet}'${inches}''`}</div>
