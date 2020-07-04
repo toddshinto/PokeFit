@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppContext } from '../app-context';
 
 export default class RenameSuccess extends React.Component {
   render() {
@@ -20,3 +21,5 @@ export default class RenameSuccess extends React.Component {
     );
   }
 }
+
+RenameSuccess.contextType = AppContext;

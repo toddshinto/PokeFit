@@ -3,6 +3,7 @@ import Rename from './rename';
 import RenameSuccess from './rename-success';
 import Release from './release';
 import ReleaseSuccess from './release-success';
+import { AppContext } from '../app-context';
 
 export default class MenuAction extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ export default class MenuAction extends React.Component {
 
   render() {
     let screen;
-    switch (this.props.action) {
+    switch (this.context.action) {
       case 'rename' :
         screen = <Rename
           handleSubmit={this.handleSubmit}
@@ -83,7 +84,7 @@ export default class MenuAction extends React.Component {
       default:
         screen = <></>;
     }
-    if (this.props.action) {
+    if (this.context.action) {
       return (
         <div>
           {screen}
@@ -93,3 +94,5 @@ export default class MenuAction extends React.Component {
     return <></>;
   }
 }
+
+MenuAction.contextType = AppContext;
