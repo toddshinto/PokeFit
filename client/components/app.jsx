@@ -105,11 +105,11 @@ export default class App extends React.Component {
       const sessionTimeWalked = Math.round((currentTime - startTime) / 60000);
       this.setState({ sessionTimeWalked });
       if (!this.state.encounterType) {
-        if (this.state.sessionTimeWalked % 3 === 0) {
+        if (this.state.sessionTimeWalked % 2 === 0) {
           this.getEncounter();
         }
       }
-    }, 30000);
+    }, 25000);
   }
 
   shuffle(array) {
