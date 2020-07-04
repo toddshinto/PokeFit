@@ -17,17 +17,13 @@ app.get('/api/users', (req, res, next) => {
   const userId = req.session.pokefitUserId;
   const newUser = `
             insert into  "users" ("miles_walked", "encounters", "time_walked")
-                 values   (0, 0, 0)
-               returning  "user_id" as "userId",
-                          "miles_walked" as "milesWalked",
-                          "encounters",
-                          "time_walked" as "timeWalked",
-                          "created_at" as "createdAt"
+                values   (0, 0, 0)
+              returning  "user_id" as "userId",
+                         "miles_walked" as "milesWalked",
+                         "encounters",
+                         "time_walked" as "timeWalked",
+                         "created_at" as "createdAt"
             `;
-  const givePokeballs = `
-    insert into backpack_items (user_id, item_id, quantity)
-    values ($1, $2, $3)
-  `;
   if (userId > 0) {
     const sql = `
       select  "user_id" as "userId",
@@ -46,13 +42,6 @@ app.get('/api/users', (req, res, next) => {
             .then(result2 => {
               if (result2.rows.length > 0) {
                 req.session.pokefitUserId = result2.rows[0].userId;
-                const itemParams = [result2.rows[0].userId, 4, 15];
-                db.query(givePokeballs, itemParams)
-                  .then(result => {
-                    if (result.length < 1) {
-                      throw new ClientError('cannot insert free pokeballs', 404);
-                    }
-                  });
                 return res.status(200).result.rows[0];
               }
             })
@@ -66,13 +55,6 @@ app.get('/api/users', (req, res, next) => {
     db.query(newUser)
       .then(result => {
         req.session.pokefitUserId = result.rows[0].userId;
-        const itemParams = [result.rows[0].userId, 4, 15];
-        db.query(givePokeballs, itemParams)
-          .then(result => {
-            if (result.length < 1) {
-              throw new ClientError('cannot insert free pokeballs', 404);
-            }
-          });
         return res.status(200).json(result.rows[0]);
       })
       .catch(err => next(err));

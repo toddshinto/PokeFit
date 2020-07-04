@@ -92,7 +92,7 @@ export default class Encounter extends React.Component {
                     this.toggleMenu();
                     this.props.getItems();
                   }}>
-                CATCH
+                POKéBALLS
                 </div>
                 {pokeballList}
                 <div
@@ -101,7 +101,7 @@ export default class Encounter extends React.Component {
                     this.toggleItemMenu();
                     this.props.getItems();
                   }}>
-                ITEMS
+                BERRIES
                 </div>
                 <div
                   className="encounter-button use-run"

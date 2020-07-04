@@ -14,12 +14,12 @@ export default class LeftItemModal extends React.Component {
         <div className="pokeball-icon top-left"></div>
         <div className="pokeball-icon bottom-right"></div>
         <div className="pokeball-icon bottom-left"></div>
-        <div className="modal-title to-uppercase" style={{ backgroundColor: 'red', color: 'white' }}>{'YOU LEFT A GIFT'}</div>
+        <div className="modal-title to-uppercase red-bg">{'YOU LEFT A GIFT'}</div>
         <div className="modal-body">
           <div className="modal-body-title to-uppercase" style={{ marginTop: '10px' }}>{`${this.props.item.quantity} ${this.props.item.name}${s}`}</div>
           <div className="item-modal-image-container" style={{ backgroundImage: `url(${this.props.item.sprite})` }} />
           <div className="modal-button-container">
-            <div className="answer modal-button" style={{ backgroundColor: '#4BB543', color: 'white' }}>CONTINUE</div>
+            <div className="answer modal-button green-bg">CONTINUE</div>
           </div>
         </div>
       </div>

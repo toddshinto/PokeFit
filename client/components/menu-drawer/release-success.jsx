@@ -9,7 +9,7 @@ export default class ReleaseSuccess extends React.Component {
           <div className="pokeball-icon-small top-right-small" />
           <div className="pokeball-icon-small bottom-left-small" />
           <div className="pokeball-icon-small bottom-right-small" />
-          <div className='action-header' style={{ backgroundColor: 'green' }}>Success</div>
+          <div className='action-header green-bg'>Success</div>
           <div className='action-body action-body-message' onClick={() => {
             this.props.closeDrawer();
             this.props.setAction(null);

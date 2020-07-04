@@ -260,7 +260,7 @@ position: relative;
   position: absolute;
   top: 50%;
   margin: 0 auto;
-  z-index: 700;
+  z-index: 1100;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -366,6 +366,8 @@ position: relative;
 .answer, .black-answer {
   cursor: pointer;
   padding: 4px;
+  letter-spacing: .2em;
+  font-family: pokemon;
 }
 
 .answer:hover {
@@ -959,6 +961,7 @@ font-size: 14px;
   border: 2px solid black;
   background-size: contain;
   height: 35px;
+  cursor: pointer;
   background-position: center;
   background-repeat: no-repeat;
   background-origin: content-box;
@@ -1048,7 +1051,7 @@ background-image: url('assets/images/ash-walk.gif');
   color: #4BB543;
 }
 
-.use-catch:hover {
+.use-catch, .green-bg {
   color: white;
   background-color: #4BB543
 }
@@ -1057,7 +1060,7 @@ background-image: url('assets/images/ash-walk.gif');
   color: #33ACFB;
 }
 
-.use-item:hover {
+.use-item, .blue-bg {
   color: white;
   background-color: #33ACFB;
 }
@@ -1066,10 +1069,11 @@ background-image: url('assets/images/ash-walk.gif');
   color: red;
 }
 
-.use-run:hover {
+.use-run, .red-bg {
   color: white;
   background-color: red;
 }
+
 @media (max-width: 600px) {
   .stats-label, .button-text, .modal-title, .modal-button, .backpack-item-name-flex,
   .modal-body-title, .list-item, .pokemon-desc, .backpack-item-entry, .backpack-item-name,
@@ -1115,4 +1119,12 @@ background-image: url('assets/images/ash-walk.gif');
   .background-container {
     background-size: cover
   }
+}
+
+.close-buttons {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width:  15px 0 15px 30px;
+  border-color:  transparent transparent transparent #f1ba2f;
 }

@@ -19,6 +19,7 @@ export default class Start extends React.Component {
           Promise.all([this.props.getItems(), this.props.getPokemon()]);
           this.props.getCurrentPosition();
           this.props.getStartPosition();
+          this.props.getTimeWalked();
         }} className={`press-start ${pressStartNight}`}>PRESS START</div>
         <div className='start-sprites-container'>
           <div className={`pikachu-sprite-container ${glow}`} />
