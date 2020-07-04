@@ -1,26 +1,34 @@
 import React from 'react';
+import { AppContext } from './app-context';
 
 export default class Start extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleStart = this.handleStart.bind(this);
+  }
+
+  handleStart() {
+    this.context.setView('home');
+    Promise.all([this.context.getItems(), this.context.getPokemon()]);
+    this.context.getCurrentPosition();
+    this.context.getStartPosition();
+    this.context.getTimeWalked();
+  }
+
   render() {
     let glow = '';
     let pressStartNight = '';
-    if (this.props.timeOfDay === 'midnight' || this.props.timeOfDay === 'night') {
+    if (this.context.timeOfDay === 'midnight' || this.context.timeOfDay === 'night') {
       glow = 'glow';
       pressStartNight = 'press-start-night';
     }
     return (
       <div className="main-background"
-        style={{ backgroundImage: `url(assets/images/${this.props.timeOfDay}-bg.gif)` }}>
+        style={{ backgroundImage: `url(assets/images/${this.context.timeOfDay}-bg.gif)` }}>
         <div className="pokefit-logo">
           <img src="/assets/images/pokefit-shadow.png" alt="pokefit logo" className="pokefit-logo" />
         </div>
-        <div onClick={() => {
-          this.props.setView('home');
-          Promise.all([this.props.getItems(), this.props.getPokemon()]);
-          this.props.getCurrentPosition();
-          this.props.getStartPosition();
-          this.props.getTimeWalked();
-        }} className={`press-start ${pressStartNight}`}>PRESS START</div>
+        <div onClick={this.handleStart} className={`press-start ${pressStartNight}`}>PRESS START</div>
         <div className='start-sprites-container'>
           <div className={`pikachu-sprite-container ${glow}`} />
           <div className={`ash-sprite-container ${glow}`} />
@@ -29,3 +37,5 @@ export default class Start extends React.Component {
     );
   }
 }
+
+Start.contextType = AppContext;

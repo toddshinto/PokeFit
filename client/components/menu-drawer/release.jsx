@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppContext } from '../app-context';
 
 export default class Release extends React.Component {
   render() {
@@ -12,16 +13,16 @@ export default class Release extends React.Component {
           <div className='action-header red-bg' style={{ borderBottom: '2px solid black' }}>{'Are you sure?'}</div>
           <div className="exit-sm"
             onClick={() => {
-              this.props.setAction(null);
-              this.props.closeDrawer();
+              this.context.setAction(null);
+              this.context.closeDrawer();
             }}>X</div>
           <div className='action-body action-body-message'>
             {'Your POKéMON will be released...'}
             <div className='action-yes-no'>
-              <div className='answer modal-button green-bg' onClick={this.props.releasePokemon}>YES</div>
+              <div className='answer modal-button green-bg' onClick={() => this.props.releasePokemon()}>YES</div>
               <div className='answer modal-button red-bg' onClick={() => {
-                this.props.setAction(null);
-                this.props.closeDrawer();
+                this.context.setAction(null);
+                this.context.closeDrawer();
               }}>NO</div>
             </div>
           </div>
@@ -30,3 +31,5 @@ export default class Release extends React.Component {
     );
   }
 }
+
+Release.contextType = AppContext;

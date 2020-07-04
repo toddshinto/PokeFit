@@ -15,6 +15,7 @@ import BerryUsedModal from './berry-used-modal';
 import TookItemModal from './took-item-modal';
 import LeftItemModal from './left-item-modal';
 import ApproveRun from './approve-run';
+import { AppContext } from './app-context';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ export default class App extends React.Component {
       encounterModal: true,
       totalEncounters: 0,
       berries: 0,
-      startTime: {},
+      startTime: null,
       captureSucces: false
     };
     this.setView = this.setView.bind(this);
@@ -77,10 +78,10 @@ export default class App extends React.Component {
   componentDidMount() {
     this.getStats();
     this.getBackground();
+    this.getStartTime();
     if (!this.state.stats) {
       this.setState({ stats: { milesWalked: 0, encounters: 0, timeWalked: 0 } });
     }
-    this.getStartTime();
   }
 
   resetState() {
@@ -136,7 +137,7 @@ export default class App extends React.Component {
         .then(res => res.json())
         .then(item => this.setState({ foundItem: { ...item, quantity }, encounterType: thisEncounterType, encounterModal: true }));
     } else if (thisEncounterType === 'pokemon') {
-      const randomPokemon = Math.floor(Math.random() * 151);
+      const randomPokemon = Math.floor(Math.random() * 151) + 1;
       fetch(`/api/pokemon/${randomPokemon}`)
         .then(res => res.json())
         .then(pokemon => this.setState({ wildPokemon: pokemon, encounterType: thisEncounterType, encounterModal: true }));
@@ -409,9 +410,9 @@ export default class App extends React.Component {
       case (13):
       case (14):
       case (15):
+      case (16):
         backgroundImage = 'afternoon';
         break;
-      case (16):
       case (17):
         backgroundImage = 'late-afternoon';
         break;
@@ -420,9 +421,9 @@ export default class App extends React.Component {
         backgroundImage = 'evening';
         break;
       case (20):
-      case (21):
         backgroundImage = 'late-evening';
         break;
+      case (21):
       case (22):
       case (23):
       case (24):
@@ -437,179 +438,113 @@ export default class App extends React.Component {
     let modal = null;
     switch (this.state.view) {
       case 'start':
-        display = <Start
-          timeOfDay={this.state.timeOfDay}
-          getTimeWalked={this.getTimeWalked}
-          backgroundImage={this.state.backgroundImage}
-          setView={this.setView}
-          getItems={this.getItems}
-          getPokemon={this.getPokemon}
-          getStartPosition={this.getStartPosition}
-          getCurrentPosition={this.getCurrentPosition}
-        />;
+        display = <Start />;
         break;
       case 'home':
-        display = <HomePage
-          timeOfDay={this.state.timeOfDay}
-          stats={this.state.stats}
-          setView={this.setView}
-          getTimeWalked={this.getTimeWalked}
-          backgroundImage={this.state.backgroundImage}
-          timeWalked={this.state.sessionTimeWalked}
-          pokemons={this.state.pokemons} />;
+        display = <HomePage />;
         break;
       case 'backpack':
-        display = <Backpack
-          items={this.state.items}
-          itemDetails={this.state.itemDetails}
-          setItemDetails={this.setItemDetails}
-          setView={this.setView}
-          timeOfDay={this.state.timeOfDay}
-          backgroundImage={this.state.backgroundImage}
-        />;
+        display = <Backpack />;
         break;
       case 'walk':
-        display = <Walk
-          timeWalked={this.state.sessionTimeWalked}
-          stats={this.state.stats}
-          setView={this.setView}
-          encounters={this.state.totalEncounters}
-          timeOfDay={this.state.timeOfDay}
-          backgroundImage={this.state.backgroundImage} />;
+        display = <Walk />;
         break;
       case 'pokebox':
-        display = <Pokebox
-          openDrawer={this.openDrawer}
-          closeDrawer={this.closeDrawer}
-          setAction={this.setAction}
-          opened={this.state.opened}
-          action={this.state.action}
-          timeOfDay={this.state.timeOfDay}
-          backgroundImage={this.state.backgroundImage}
-          setView={this.setView}
-          pokemons={this.state.pokemons}
-          setPokemonDetails={this.setPokemonDetails}
-          pokemonDetails={this.state.pokemonDetails}
-          getPokemon={this.getPokemon}
-        />;
+        display = <Pokebox />;
         break;
       case 'encounter':
-        display = <Encounter
-          items={this.state.items}
-          wildPokemon={this.state.wildPokemon}
-          timeOfDay={this.state.timeOfDay}
-          attemptCatch={this.attemptCatch}
-          attemptBerry={this.attemptBerry}
-          setView={this.setView}
-          resetState={this.resetState}
-          getItems={this.getItems}
-          setEncounterType={this.setEncounterType}
-          toggleEncounterModal={this.toggleEncounterModal}
-        />;
+        display = <Encounter />;
     }
     switch (this.state.encounterType) {
       case 'approve-run':
         if (this.state.encounterModal) {
-          modal = <ApproveRun
-            pokemon = { this.state.wildPokemon }
-            toggleEncounterModal = { this.toggleEncounterModal }
-            setEncounterType = { this.setEncounterType }
-            setView={this.setView}
-            view={this.state.view}
-            resetState={this.resetState}
-          />;
+          modal = <ApproveRun />;
         }
         break;
       case 'item':
         if (this.state.encounterModal) {
-          modal = <ItemModal
-            item={this.state.foundItem}
-            resetState={this.resetState}
-            takeItem={this.takeItem}
-            setEncounterType={this.setEncounterType}
-            toggleEncounterModal={this.toggleEncounterModal}
-          />;
+          modal = <ItemModal />;
         }
         break;
       case 'took-item':
         if (this.state.encounterModal) {
-          modal = <TookItemModal
-            item={this.state.foundItem}
-            resetState={this.resetState}
-            getItems={this.getItems}
-            toggleEncounterModal={this.toggleEncounterModal}
-            setView={this.setView}
-          />;
+          modal = <TookItemModal />;
         }
         break;
       case 'left-item':
         if (this.state.encounterModal) {
-          modal = <LeftItemModal
-            item={this.state.foundItem}
-            resetState={this.resetState}
-            toggleEncounterModal={this.toggleEncounterModal}
-          />;
+          modal = <LeftItemModal />;
         }
         break;
       case 'pokemon' :
         if (this.state.encounterModal) {
-          modal = <PokemonModal
-            setView={this.setView}
-            pokemon={this.state.wildPokemon}
-            resetState={this.resetState}
-            setEncounterType={this.setEncounterType}
-            toggleEncounterModal={this.toggleEncounterModal}
-          />;
+          modal = <PokemonModal />;
         }
         break;
       case 'capture-success' :
         if (this.state.encounterModal) {
-          modal = <CaptureSuccessModal
-            setCaughtDetails={this.setCaughtDetails}
-            getPokemon={this.getPokemon}
-            pokemons={this.state.pokemons}
-            pokemon={this.state.wildPokemon}
-            setEncounterType={this.setEncounterType}
-            resetState={this.resetState}
-            toggleEncounterModal={this.toggleEncounterModal}
-            setView={this.setView}
-          />;
+          modal = <CaptureSuccessModal />;
         }
         break;
       case 'capture-fail' :
         if (this.state.encounterModal) {
-          modal = <CaptureFailModal
-            pokemon={this.state.wildPokemon}
-            toggleEncounterModal={this.toggleEncounterModal}
-            setEncounterType={this.setEncounterType}
-          />;
+          modal = <CaptureFailModal />;
         }
         break;
       case 'used-berry' :
         if (this.state.encounterModal) {
-          modal = <BerryUsedModal
-            pokemon={this.state.wildPokemon}
-            toggleEncounterModal={this.toggleEncounterModal}
-            setEncounterType={this.setEncounterType}
-          />;
+          modal = <BerryUsedModal />;
         }
     }
     return (
-      this.state.view === 'home' || this.state.view === 'start'
-        ? display
-        : <div className="background-container-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
-          <div className="background-container" >
-            <Header
-              setView={this.setView}
-              resetState={this.resetState}/>
-            {modal}
-            {display}
-            <Footer
-              view={this.state.view}
-              setView={this.setView}
-              resetState={this.resetState} />
-          </div>
-        </div>
+      <AppContext.Provider value={{
+        timeOfDay: this.state.timeOfDay,
+        timeWalked: this.state.sessionTimeWalked,
+        stats: this.state.stats,
+        encounters: this.state.totalEncounters,
+        pokemons: this.state.pokemons,
+        items: this.state.items,
+        opened: this.state.opened,
+        action: this.state.action,
+        encounterModal: this.state.encounterModal,
+        encounterType: this.state.encounterType,
+        pokemonDetails: this.state.pokemonDetails,
+        itemDetails: this.state.itemDetails,
+        wildPokemon: this.state.wildPokemon,
+        foundItem: this.state.foundItem,
+        backgroundImage: this.state.backgroundImage,
+        getTimeWalked: this.getTimeWalked,
+        setItemDetails: this.setItemDetails,
+        getStats: this.getStats,
+        setView: this.setView,
+        getItems: this.getItems,
+        getPokemon: this.getPokemon,
+        getStartPosition: this.getStartPosition,
+        getCurrentPosition: this.getCurrentPosition,
+        setPokemonDetails: this.setPokemonDetails,
+        openDrawer: this.openDrawer,
+        closeDrawer: this.closeDrawer,
+        setAction: this.setAction,
+        shuffle: this.shuffle,
+        resetState: this.resetState,
+        takeItem: this.takeItem,
+        setEncounterType: this.setEncounterType,
+        toggleEncounterModal: this.toggleEncounterModal,
+        attemptCatch: this.attemptCatch,
+        attemptBerry: this.attemptBerry,
+        setCaughtDetails: this.setCaughtDetails
+      }}>
+        {this.state.view === 'home' || this.state.view === 'start'
+          ? display
+          : <div className="background-container-container" style={{ backgroundImage: `url(${this.state.backgroundImage})` }}>
+            <div className="background-container" >
+              <Header />
+              {modal}
+              {display}
+              <Footer />
+            </div>
+          </div>}
+      </AppContext.Provider>
     );
   }
 }

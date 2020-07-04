@@ -1,5 +1,6 @@
 import React from 'react';
 import MenuAction from './menu-action';
+import { AppContext } from '../app-context';
 
 export default class Menu extends React.Component {
   render() {
@@ -7,20 +8,20 @@ export default class Menu extends React.Component {
     let menuTriangle = 'menu-triangle';
     let rename = 'menu-drawer-item';
     let release = 'menu-drawer-item';
-    if (this.props.opened) {
+    if (this.context.opened) {
       menu = 'menu-opened';
       menuTriangle = 'menu-triangle-opened';
     }
-    if (this.props.action === 'rename') {
+    if (this.context.action === 'rename') {
       rename = 'menu-drawer-item-selected';
     }
-    if (this.props.action === 'release') {
+    if (this.context.action === 'release') {
       release = 'menu-drawer-item-selected';
     }
-    if (this.props.timeOfDay === 'midnight' || this.props.timeOfDay === 'night') {
+    if (this.context.timeOfDay === 'midnight' || this.context.timeOfDay === 'night') {
       menu = 'menu-night';
       menuTriangle = 'menu-triangle-opened';
-      if (this.props.opened) {
+      if (this.context.opened) {
         menu = 'menu-night-opened';
         menuTriangle = 'menu-triangle';
       }
@@ -28,24 +29,26 @@ export default class Menu extends React.Component {
     return (
       <>
         <div className={menu} onClick={() => {
-          this.props.openDrawer();
-          if (this.props.action) {
-            this.props.setAction(null);
+          this.context.openDrawer();
+          if (this.context.action) {
+            this.context.setAction(null);
           }
         }}>
           Menu
           <div className={menuTriangle}>
           </div></div>
-        {this.props.opened
+        {this.context.opened
           ? (
             <div className='menu-drawer'>
-              <div className={rename} onClick={() => this.props.setAction('rename')}>Rename</div>
-              <div className={release} onClick={() => this.props.setAction('release')}>Release</div>
+              <div className={rename} onClick={() => this.context.setAction('rename')}>Rename</div>
+              <div className={release} onClick={() => this.context.setAction('release')}>Release</div>
             </div>
           )
           : <></>}
-        {this.props.action ? <MenuAction getPokemon={this.props.getPokemon} action={this.props.action} pokemon={this.props.pokemon} closeDrawer={this.props.closeDrawer} setAction={this.props.setAction} setPokemonDetails={this.props.setPokemonDetails} setView={this.props.setView}/> : <></>}
+        {this.context.action ? <MenuAction /> : <></>}
       </>
     );
   }
 }
+
+Menu.contextType = AppContext;

@@ -1,27 +1,24 @@
 import React from 'react';
 import ItemDetails from './item-details';
-import ListItem from './item-list-item';
+import ItemListItem from './item-list-item';
+import { AppContext } from './app-context';
 
 export default class Backpack extends React.Component {
   render() {
-    const items = this.props.items;
+    const items = this.context.items;
     return (
       <div className="pokedex-body">
-        <ItemDetails
-          timeOfDay={this.props.timeOfDay}
-          backgroundImage={this.props.backgroundImage}
-          item={this.props.itemDetails} />
+        <ItemDetails />
         <div className="pokedex-screen-container">
           <div className="pokedex-rectangle-screen">
             <div className="pokedex-headline">BACKPACK</div>
             <div className="backpack-list to-uppercase">
               {items.length > 0
                 ? items.map(item =>
-                  <ListItem
+                  <ItemListItem
                     number={items.indexOf(item)}
                     key={items.indexOf(item)}
                     item={item}
-                    setItemDetails={this.props.setItemDetails}
                   />
                 )
                 : <div style={{ marginTop: '10px' }}>NO ITEMS FOUND:(</div>
@@ -33,3 +30,5 @@ export default class Backpack extends React.Component {
     );
   }
 }
+
+Backpack.contextType = AppContext;

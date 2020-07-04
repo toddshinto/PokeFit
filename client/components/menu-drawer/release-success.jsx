@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppContext } from '../app-context';
 
 export default class ReleaseSuccess extends React.Component {
   render() {
@@ -11,14 +12,16 @@ export default class ReleaseSuccess extends React.Component {
           <div className="pokeball-icon-small bottom-right-small" />
           <div className='action-header green-bg'>Success</div>
           <div className='action-body action-body-message' onClick={() => {
-            this.props.closeDrawer();
-            this.props.setAction(null);
-            this.props.setPokemonDetails(0);
+            this.context.closeDrawer();
+            this.context.setAction(null);
+            this.context.setPokemonDetails(0);
           }}>
-            <div className='action-body-message'>{'Okay... Bye-bye '}<span className="to-uppercase">{this.props.pokemon}!</span>{'\n  See you around...'}</div>
+            <div className='action-body-message'>{'Okay... Bye-bye '}<span className="to-uppercase">{this.context.pokemonDetails.name}!</span>{'\n  See you around...'}</div>
           </div>
         </div>
       </div>
     );
   }
 }
+
+ReleaseSuccess.contextType = AppContext;

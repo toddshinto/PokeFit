@@ -17,7 +17,7 @@ export default class MenuAction extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ pokemon: this.props.pokemon, rename: this.props.pokemon.name });
+    this.setState({ pokemon: this.context.pokemonDetails, rename: this.context.pokemonDetails.name });
   }
 
   handleNameChange(event) {
@@ -38,9 +38,9 @@ export default class MenuAction extends React.Component {
     })
       .then(res => res.json())
       .then(response => {
-        this.props.setAction('renameSuccess');
+        this.context.setAction('renameSuccess');
       });
-    this.props.setView('pokebox');
+    this.context.setView('pokebox');
   }
 
   releasePokemon() {
@@ -54,9 +54,9 @@ export default class MenuAction extends React.Component {
     })
       .then(res => res.json())
       .then(response => {
-        this.props.setAction('releaseSuccess');
-        this.props.getPokemon();
-        this.props.setView('pokebox');
+        this.context.setAction('releaseSuccess');
+        this.context.getPokemon();
+        this.context.setView('pokebox');
       });
   }
 
@@ -67,31 +67,18 @@ export default class MenuAction extends React.Component {
         screen = <Rename
           handleSubmit={this.handleSubmit}
           handleNameChange={this.handleNameChange}
-          closeDrawer={this.props.closeDrawer}
-          setAction={this.props.setAction}
-          rename={this.state.rename}
-          pokemonName={this.props.pokemon.name} />;
+          rename={this.state.rename} />;
         break;
       case 'release':
         screen = <Release
-          setAction={this.props.setAction}
-          releasePokemon={this.releasePokemon}
-          closeDrawer={this.props.closeDrawer}
-          pokemon={this.state.pokemon}/>;
+          releasePokemon={this.releasePokemon} />;
         break;
       case 'renameSuccess' :
         screen = <RenameSuccess
-          setAction={this.props.setAction}
-          closeDrawer={this.props.closeDrawer}
-          pokemonOld={this.props.pokemon.name}
           pokemonNew={this.state.rename}/>;
         break;
       case 'releaseSuccess' :
-        screen = <ReleaseSuccess
-          setAction={this.props.setAction}
-          pokemon={this.props.pokemon.name}
-          setPokemonDetails={this.props.setPokemonDetails}
-          closeDrawer={this.props.closeDrawer}/>;
+        screen = <ReleaseSuccess />;
         break;
       default:
         screen = <></>;

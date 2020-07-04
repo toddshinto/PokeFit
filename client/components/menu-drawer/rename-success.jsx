@@ -5,8 +5,8 @@ export default class RenameSuccess extends React.Component {
     return (
       <div className="action-modal">
         <div className="action-contents" onClick={() => {
-          this.props.setAction(null);
-          this.props.closeDrawer();
+          this.context.setAction(null);
+          this.context.closeDrawer();
         }}>
           <div className='pokeball-icon-small top-left-small' />
           <div className="pokeball-icon-small top-right-small" />

@@ -50,6 +50,7 @@ transition: all .3 ease-in-out;
   height: 75%;
   background-color: #DA1332;
   margin-top: -5px;
+  margin-bottom: -5px;
   width: 100%;
   box-sizing: border-box;
   max-width: 1024px;
