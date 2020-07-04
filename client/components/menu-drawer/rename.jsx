@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppContext } from '../app-context';
 
 export default class Rename extends React.Component {
   render() {
@@ -12,8 +13,8 @@ export default class Rename extends React.Component {
           <div className="action-header green-bg">Name your Pokémon:</div>
           <div className="exit-sm"
             onClick={() => {
-              this.props.setAction(null);
-              this.props.closeDrawer();
+              this.context.setAction(null);
+              this.context.closeDrawer();
             }}>X</div>
           <form
             className = "action-body"
@@ -34,3 +35,5 @@ export default class Rename extends React.Component {
     );
   }
 }
+
+Rename.contextType = AppContext;

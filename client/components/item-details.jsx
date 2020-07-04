@@ -1,22 +1,9 @@
 import React from 'react';
+import { AppContext } from './app-context';
 
-export default class itemDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewDetails: 'stats'
-    };
-    this.changeView = this.changeView.bind(this);
-  }
-
-  changeView(view) {
-    this.setState({
-      viewDetails: view
-    });
-  }
-
+export default class ItemDetails extends React.Component {
   render() {
-    const item = this.props.item;
+    const item = this.context.itemDetails;
     let details;
     if (item) {
       details = (
@@ -27,7 +14,7 @@ export default class itemDetails extends React.Component {
       );
       return (
         <div className="pokedex-screen-container">
-          <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }} >
+          <div className="pokedex-display-screen" style={{ backgroundImage: `url(/assets/images/${this.context.timeOfDay}-bg-sm.gif)` }} >
             <div className="top-screen-first-row">
               <div className="top-screen-title to-uppercase">{item.name}</div>
             </div>
@@ -43,7 +30,7 @@ export default class itemDetails extends React.Component {
     } else {
       return (
         <div className="pokedex-screen-container">
-          <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.props.backgroundImage})` }}>
+          <div className="pokedex-display-screen" style={{ backgroundImage: `url(${this.context.timeOfDay}-bg-sm.gif)` }}>
             <div className="top-display-header" style={{ backgroundColor: 'yellow' }}>GO FIND SOME ITEMS!</div>
           </div>
         </div>
@@ -51,3 +38,5 @@ export default class itemDetails extends React.Component {
     }
   }
 }
+
+ItemDetails.contextType = AppContext;

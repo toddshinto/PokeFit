@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppContext } from './app-context';
 
 export default class Header extends React.Component {
   render() {
@@ -6,8 +7,8 @@ export default class Header extends React.Component {
       <div className='pokedex-header'>
         <div className="triangle-button"
           onClick={() => {
-            this.props.setView('home');
-            this.props.resetState();
+            this.context.setView('home');
+            this.context.resetState();
           }
           }/>
         <div className="right-side-buttons">
@@ -21,3 +22,5 @@ export default class Header extends React.Component {
     );
   }
 }
+
+Header.contextType = AppContext;

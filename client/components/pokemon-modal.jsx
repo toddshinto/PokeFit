@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppContext } from './app-context';
 
 export default class PokemonModal extends React.Component {
   render() {
@@ -10,15 +11,15 @@ export default class PokemonModal extends React.Component {
         <div className="pokeball-icon bottom-left"></div>
         <div className="modal-title" style={{ backgroundColor: 'yellow' }}>A WILD POKEMON APPEARED!</div>
         <div className="modal-body">
-          <div className="modal-body-title to-uppercase">{this.props.pokemon.name}</div>
-          <div className="modal-image-container" style={{ backgroundImage: `url(${this.props.pokemon.spriteFrontDefault})` }}/>
+          <div className="modal-body-title to-uppercase">{this.context.wildPokemon.name}</div>
+          <div className="modal-image-container" style={{ backgroundImage: `url(${this.context.wildPokemon.spriteFrontDefault})` }}/>
           <div className="modal-button-container">
             <div onClick={() => {
-              this.props.setView('encounter');
-              this.props.toggleEncounterModal();
+              this.context.setView('encounter');
+              this.context.toggleEncounterModal();
             }} className="answer answer-true modal-button green-bg">FIGHT</div>
             <div onClick={() => {
-              this.props.setEncounterType('approve-run');
+              this.context.setEncounterType('approve-run');
             }} className="answer answer-false modal-button red-bg">RUN</div>
           </div>
         </div>
@@ -26,3 +27,5 @@ export default class PokemonModal extends React.Component {
     );
   }
 }
+
+PokemonModal.contextType = AppContext;

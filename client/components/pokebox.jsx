@@ -1,24 +1,14 @@
 import React from 'react';
 import PokemonListItem from './pokemon-list-item';
 import PokemonDetails from './pokemon-details';
+import { AppContext } from './app-context';
 
 export default class Pokebox extends React.Component {
   render() {
-    const pokemons = this.props.pokemons;
+    const pokemons = this.context.pokemons;
     return (
       <div className="pokedex-body">
-        <PokemonDetails
-          openDrawer={this.props.openDrawer}
-          closeDrawer={this.props.closeDrawer}
-          setAction={this.props.setAction}
-          opened={this.props.opened}
-          action={this.props.action}
-          timeOfDay={this.props.timeOfDay}
-          pokemon={this.props.pokemonDetails}
-          getPokemon={this.props.getPokemon}
-          setPokemonDetails={this.props.setPokemonDetails}
-          backgroundImage={this.props.backgroundImage}
-          setView={this.props.setView}/>
+        <PokemonDetails />
         <div className="pokedex-screen-container" >
           <div className="pokedex-rectangle-screen">
             <div className="pokedex-headline">POKéBOX</div>
@@ -28,7 +18,6 @@ export default class Pokebox extends React.Component {
                   <PokemonListItem
                     key={pokemons.indexOf(pokemon)}
                     pokemon={pokemon}
-                    setPokemonDetails={this.props.setPokemonDetails}
                     number={pokemons.indexOf(pokemon)}/>
                 )
                 : <div style={{ marginTop: '10px' }}>NO POKéMON FOUND :(</div>
@@ -40,3 +29,5 @@ export default class Pokebox extends React.Component {
     );
   }
 }
+
+Pokebox.contextType = AppContext;

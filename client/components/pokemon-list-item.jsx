@@ -1,10 +1,11 @@
 import React from 'react';
+import { AppContext } from './app-context';
 
 export default class PokemonListItem extends React.Component {
   render() {
     const pokemon = this.props.pokemon;
     return (
-      <div className="list-item to-uppercase item-row" onClick={() => this.props.setPokemonDetails(this.props.number)}>
+      <div className="list-item to-uppercase item-row" onClick={() => this.context.setPokemonDetails(this.props.number)}>
         <span className="">{(this.props.number + 1)}. </span>
         <div className="pokemon-ball" style={{ backgroundImage: `url(${pokemon.ballSprite})` }} />
         <div style={{ width: '70%' }}>{pokemon.name}</div>
@@ -12,3 +13,5 @@ export default class PokemonListItem extends React.Component {
     );
   }
 }
+
+PokemonListItem.contextType = AppContext;

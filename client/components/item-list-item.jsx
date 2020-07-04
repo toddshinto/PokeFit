@@ -1,10 +1,11 @@
 import React from 'react';
+import { AppContext } from './app-context';
 
-export default class itemListItem extends React.Component {
+export default class ItemListItem extends React.Component {
   render() {
     const item = this.props.item;
     return (
-      <div className="list-item item-row" onClick={() => this.props.setItemDetails(this.props.number)}>
+      <div className="list-item item-row" onClick={() => this.context.setItemDetails(this.props.number)}>
         <div className="item-number">{`${(this.props.number + 1)}.`}</div>
         <div className="backpack-item-entry">
           <div className="backpack-item-name-flex">
@@ -20,3 +21,5 @@ export default class itemListItem extends React.Component {
     );
   }
 }
+
+ItemListItem.contextType = AppContext;

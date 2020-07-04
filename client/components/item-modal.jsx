@@ -1,9 +1,10 @@
 import React from 'react';
+import { AppContext } from './app-context';
 
 export default class ItemModal extends React.Component {
   render() {
     let s = '';
-    if (this.props.item.quantity > 1) { s = 's'; }
+    if (this.context.foundItem.quantity > 1) { s = 's'; }
     return (
       <div className="modal-container">
         <div className="pokeball-icon top-right"></div>
@@ -12,16 +13,16 @@ export default class ItemModal extends React.Component {
         <div className="pokeball-icon bottom-left"></div>
         <div
           className="modal-title to-uppercase"
-          style={{ backgroundColor: 'yellow' }}>{`You found ${this.props.item.quantity} ${this.props.item.name}${s}!`}</div>
+          style={{ backgroundColor: 'yellow' }}>{`You found ${this.context.foundItem.quantity} ${this.context.foundItem.name}${s}!`}</div>
         <div className="modal-body">
-          <div className="item-modal-image-container" style={{ backgroundImage: `url(${this.props.item.sprite})` }} />
+          <div className="item-modal-image-container" style={{ backgroundImage: `url(${this.context.foundItem.sprite})` }} />
           <div className="modal-button-container">
             <div onClick={() => {
-              this.props.takeItem();
-              this.props.setEncounterType('took-item');
+              this.context.takeItem();
+              this.context.setEncounterType('took-item');
             }} className="answer modal-button green-bg">TAKE</div>
             <div onClick={() => {
-              this.props.setEncounterType('left-item');
+              this.context.setEncounterType('left-item');
             }} className="answer modal-button red-bg">LEAVE</div>
           </div>
         </div>
@@ -29,3 +30,5 @@ export default class ItemModal extends React.Component {
     );
   }
 }
+
+ItemModal.contextType = AppContext;
