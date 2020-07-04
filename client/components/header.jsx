@@ -14,7 +14,7 @@ export default class Header extends React.Component {
         <div className="right-side-buttons">
           <div className="button yellow-circle-button" />
           <div className="button green-circle-button" />
-          <div className="button outer-white-circle">
+          <div className="button outer-white-circle" onClick={() => this.context.getEncounter()}>
             <div className="inner-blue-circle" />
           </div>
         </div>
