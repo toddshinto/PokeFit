@@ -8,6 +8,9 @@ export default class ApproveRun extends React.Component {
   }
 
   handleYes() {
+    if (this.context.view === 'encounter') {
+      this.context.setView('walk');
+    }
     this.context.toggleEncounterModal();
     this.context.resetState();
   }
@@ -24,11 +27,7 @@ export default class ApproveRun extends React.Component {
           <div className="modal-body-title to-uppercase">{this.context.wildPokemon.name}</div>
           <div className="modal-image-container" style={{ backgroundImage: `url(${this.context.wildPokemon.spriteFrontDefault})` }} />
           <div className="modal-button-container">
-            <div onClick={() => {
-              this.context.view === 'encounter'
-                ? this.context.setView('walk')
-                : this.handleYes();
-            }} className="answer modal-button green-bg">YES</div>
+            <div onClick={() => this.handleYes()} className="answer modal-button green-bg">YES</div>
             <div onClick={() => {
               this.context.view === 'encounter'
                 ? this.context.toggleEncounterModal()
