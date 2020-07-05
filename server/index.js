@@ -64,35 +64,18 @@ app.get('/api/users', (req, res, next) => {
 app.put('/api/users', (req, res, next) => {
   const milesWalked = req.body.milesWalked;
   const encounters = req.body.encounters;
-  const userId = req.session.pokefitUserId;
+  const userId = req.body.pokefitUserId;
   const timeWalked = req.body.timeWalked;
-  if (!milesWalked) {
-    return res.status(400).json({ error: 'miles_walked required' });
-  }
-  if (!encounters) {
-    return res.status(400).json({ error: 'encounters required' });
-  }
-  if (!userId) {
-    return res.status(400).json({ error: 'how did this happen sir. userId required, restart app' });
-  }
   const sql = `
        update  "users"
           set  "miles_walked" = $2,
                "encounters" = $3,
                "time_walked" = $4
         where  "user_id" = $1
-    returning  "user_id" as "userId",
-               "miles_walked" as "milesWalked",
-               "time_walked" as "timeWalked",
-               "encounters",
-               "updated_at" as "updatedAt"
   `;
   const params = [userId, milesWalked, encounters, timeWalked];
   db.query(sql, params)
     .then(result => {
-      if (!req.session.pokefitUserId) {
-        req.session.pokefitUserId = result.rows[0].userId;
-      }
       req.session.cookie.expires = new Date(Date.now() + 315360000000);
       req.session.cookie.maxAge = 315360000000;
       return res.status(200).json(result.rows[0]);
