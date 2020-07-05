@@ -248,7 +248,7 @@ export default class App extends React.Component {
         milesWalked: this.state.stats.milesWalked + this.state.currMilesWalked
       }
     }));
-    const sendStats = {
+    const sendState = {
       ...this.state.stats,
       milesWalked: this.state.stats.milesWalked.toFixed(2) * 100
     };
@@ -257,7 +257,7 @@ export default class App extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(sendStats)
+      body: JSON.stringify(sendState)
     })
       .catch(err => console.error(err));
   }
