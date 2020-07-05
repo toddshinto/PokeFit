@@ -22,7 +22,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: 'start',
-      stats: { milesWalked: 0, encounters: 0, timeWalked: 0 },,
+      stats: { milesWalked: 0, encounters: 0, timeWalked: 0 },
       pokemons: [],
       items: [],
       pokemonDetails: null,
@@ -504,8 +504,10 @@ export default class App extends React.Component {
         totalEncounters: this.state.totalEncounters,
         pokemons: this.state.pokemons,
         items: this.state.items,
+        view: this.state.view,
         opened: this.state.opened,
         action: this.state.action,
+        currMilesWalked: this.state.currMilesWalked,
         encounterModal: this.state.encounterModal,
         encounterType: this.state.encounterType,
         pokemonDetails: this.state.pokemonDetails,
