@@ -12,7 +12,10 @@ export default class Footer extends React.Component {
 
   handleClick(e) {
     e.stopPropagation();
-    this.setState({ isClicked: !this.state.isClicked });
+    this.setState({ isClicked: !this.state.isClicked })
+    if (this.context.encounterType === 'encounter') {
+      this.context.resetState();
+    };
   }
 
   render() {
@@ -25,7 +28,7 @@ export default class Footer extends React.Component {
     );
     if (this.state.isClicked) {
       footer = (
-        <div className="pokedex-footer" onClick={e => { this.handleClick(e); this.context.resetState(); }}>
+        <div className="pokedex-footer">
           <div className={'pokebox-button-container'} onClick={() => this.context.setView('pokebox')}>
             <div className={'pokebox-button-icon button-icon'} />
           </div>
